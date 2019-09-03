@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class HelloWorld {
+public class GameLoop {
 
     // The window handle
     private long window;
@@ -45,12 +45,12 @@ public class HelloWorld {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
-        GLFWVidMode mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        int window_width = mode.width();
-        int window_height = mode.height();
+//        GLFWVidMode mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+//        int window_width = mode.width();
+//        int window_height = mode.height();
 
         // Create the window
-        window = glfwCreateWindow(window_width, window_height, "Hello World!", glfwGetPrimaryMonitor(), NULL);
+        window = glfwCreateWindow(600, 600, "Hello World!", NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -99,21 +99,34 @@ public class HelloWorld {
         // Set the clear color
         // glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
+        float red = 1, green = 0, blue = 0;
+
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             glBegin(GL_QUADS);
-                glColor4f(1, 0, 0, 0);
+                glColor4f(red, green, blue, 0);
                 glVertex2f(-1f, 1f);
-                glColor4f(0, 1, 0, 0);
+                glColor4f(blue, red, green, 0);
                 glVertex2f(1f, 1f);
-                glColor4f(0, 0, 1, 0);
+                glColor4f(green, blue, red, 0);
                 glVertex2f(1f, -1f);
-                glColor4f(1, 1, 1, 0);
+                glColor4f(red, green, blue, 0);
                 glVertex2f(-1f, -1f);
             glEnd();
+
+            if(red > 0 && blue < 0) {
+                red -= 0.01;
+                green += 0.01;
+            } else if (green > 0) {
+                green -= 0.01;
+                blue += 0.01;
+            } else {
+                blue -= 0.01;
+                red += 0.01;
+            }
 
             glfwSwapBuffers(window); // swap the color buffers
 
@@ -124,7 +137,7 @@ public class HelloWorld {
     }
 
     public static void main(String[] args) {
-        new HelloWorld().run();
+        new GameLoop().run();
     }
 
 }
