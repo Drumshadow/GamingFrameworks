@@ -45,8 +45,12 @@ public class HelloWorld {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
+        GLFWVidMode mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        int window_width = mode.width();
+        int window_height = mode.height();
+
         // Create the window
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
+        window = glfwCreateWindow(window_width, window_height, "Hello World!", glfwGetPrimaryMonitor(), NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -93,12 +97,23 @@ public class HelloWorld {
         GL.createCapabilities();
 
         // Set the clear color
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        // glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+            glBegin(GL_QUADS);
+                glColor4f(1, 0, 0, 0);
+                glVertex2f(-1f, 1f);
+                glColor4f(0, 1, 0, 0);
+                glVertex2f(1f, 1f);
+                glColor4f(0, 0, 1, 0);
+                glVertex2f(1f, -1f);
+                glColor4f(1, 1, 1, 0);
+                glVertex2f(-1f, -1f);
+            glEnd();
 
             glfwSwapBuffers(window); // swap the color buffers
 
