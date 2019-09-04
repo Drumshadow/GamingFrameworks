@@ -9,17 +9,14 @@ public class Input {
     private int action; // 0, 1, 2
     enum purpose{Create, Destroy, MoveLeft, MoveRight, MoveUp, MoveDown, PlaySound};
     private purpose purpose;
-    String objName; //Most likely temporary till we make an actual object class
-    double speed;
-    String sndName;
+    private String objName; //Most likely temporary till we make an actual object class
+    private double speed;
+    private String sndName;
 
-    Input(int k, int a, String oN) {
+    Input(int k, int a, String oN, String pur) {
         key = k;
         action = a;
         objName = oN;
-    }
-
-    public void setCoD(String pur) {
         if (pur.equals("Create")) {
             purpose = purpose.Create;
         }
@@ -27,22 +24,30 @@ public class Input {
             purpose = purpose.Destroy;
         }
     }
-    public void setMove(String dir, double s) {
-        if (dir.equals("Left")) {
+
+    Input(int k, int a, String oN, String pur, double s) {
+        key = k;
+        action = a;
+        objName = oN;
+        if (pur.equals("Left")) {
             purpose = purpose.MoveLeft;
         }
-        else if (dir.equals("Right")) {
+        else if (pur.equals("Right")) {
             purpose = purpose.MoveRight;
         }
-        else if (dir.equals("Up")) {
+        else if (pur.equals("Up")) {
             purpose = purpose.MoveUp;
         }
-        else if (dir.equals("Down")) {
+        else if (pur.equals("Down")) {
             purpose = purpose.MoveDown;
         }
         speed = s;
     }
-    public void setPlaySound(String s) {
+
+    Input(int k, int a, String oN, String pur, String s) {
+        key = k;
+        action = a;
+        objName = oN;
         purpose = purpose.PlaySound;
         sndName = s;
     }
