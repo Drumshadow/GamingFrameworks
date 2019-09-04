@@ -7,6 +7,8 @@ import org.lwjgl.system.*;
 
 import java.nio.*;
 
+import java.util.ArrayList;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -33,6 +35,15 @@ public class GameLoop {
         glfwSetErrorCallback(null).free();
     }
 
+        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        // Will use this section to handle inputs, don't delete plz
+        /*glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+            for (int i = 0; i < inputs.size(); i++) {
+                if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
+                    inputs.get(i).execute();
+            }
+        });*/
+  
     private void loop() {
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
@@ -48,6 +59,7 @@ public class GameLoop {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
+
         while ( !glfwWindowShouldClose(newWindow.window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
@@ -72,6 +84,7 @@ public class GameLoop {
                 blue -= 0.01;
                 red += 0.01;
             }
+
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
 
