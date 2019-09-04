@@ -3,6 +3,8 @@ package sources;
 import org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWKeyCallback.*;
 
+import java.io.File;
+
 
 public class Input {
     private int key;  // 0-256? Not sure
@@ -11,12 +13,12 @@ public class Input {
     private purpose purpose;
     private String objName; //Most likely temporary till we make an actual object class
     private double speed;
-    private String sndName;
+    private File sndName;
 
-    Input(int k, int a, String oN, String pur) {
+    Input(int k, int a, String pur) {
         key = k;
         action = a;
-        objName = oN;
+        // objName = oN;
         if (pur.equals("Create")) {
             purpose = purpose.Create;
         }
@@ -25,10 +27,10 @@ public class Input {
         }
     }
 
-    Input(int k, int a, String oN, String pur, double s) {
+    Input(int k, int a, String pur, double s) {
         key = k;
         action = a;
-        objName = oN;
+        // objName = oN;
         if (pur.equals("Left")) {
             purpose = purpose.MoveLeft;
         }
@@ -44,12 +46,12 @@ public class Input {
         speed = s;
     }
 
-    Input(int k, int a, String oN, String pur, String s) {
+    Input(int k, int a, File snd) {
         key = k;
         action = a;
-        objName = oN;
+        //objName = oN;
         purpose = purpose.PlaySound;
-        sndName = s;
+        sndName = snd;
     }
 
     public int getKey() {
@@ -68,6 +70,7 @@ public class Input {
         }
         else if (purpose == purpose.MoveLeft) {
             // Move Left
+            System.out.println("Moving Left!");
         }
         else if (purpose == purpose.MoveRight) {
             // Move Right
@@ -75,9 +78,11 @@ public class Input {
         }
         else if (purpose == purpose.MoveUp) {
             // Move Up
+            System.out.println("Moving Up!");
         }
         else if (purpose == purpose.MoveDown) {
             // Move Down
+            System.out.println("Moving Down!");
         }
         else if (purpose == purpose.PlaySound) {
             // Play Sound

@@ -6,6 +6,7 @@ import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -41,10 +42,22 @@ public class InitWindow {
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
+        ArrayList<Input> inputs = new ArrayList<>();
+
+        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", 10));
+        inputs.add(new Input(GLFW_KEY_D, GLFW_PRESS, "Right", 10));
+        inputs.add(new Input(GLFW_KEY_UP, GLFW_PRESS, "Up", 10));
+        inputs.add(new Input(GLFW_KEY_DOWN, GLFW_PRESS, "Down", 10));
+
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        // Will use this section to handle inputs, don't delete plz
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+            for (int i = 0; i < inputs.size(); i++) {
+                if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
+                    inputs.get(i).execute();
+                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+                    glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+            }
         });
 
         // Get the thread stack and push a new frame

@@ -34,15 +34,6 @@ public class GameLoop {
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        // Will use this section to handle inputs, don't delete plz
-        /*glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            for (int i = 0; i < inputs.size(); i++) {
-                if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
-                    inputs.get(i).execute();
-            }
-        });*/
   
     private void loop() {
         // This line is critical for LWJGL's interoperation with GLFW's
