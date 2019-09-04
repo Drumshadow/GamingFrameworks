@@ -4,7 +4,6 @@
  */
 
 import java.awt.Rectangle;
-import java.awt.geom.Area;
 
 // represents a generic game object
 public class GameObject {
@@ -29,7 +28,11 @@ public class GameObject {
     private int xSpeed;
     private int ySpeed;
 
+    // TODO: add acceleration and max speeds
+
     private Rectangle boundBox;
+    // TODO: add circle hit box?
+    // TODO: add custom hit box?
 
     /*==================================================
                      Initialization
@@ -55,20 +58,18 @@ public class GameObject {
 
     // TODO: create bounding box
     // TODO: load sprite
+    // TODO: draw
 
     /*==================================================
                         Movement
     ==================================================*/
 
-    public void moveX() {
-        this.x =+ xSpeed;
-    }
+    public void move() {
 
-    public void moveY() {
-        this.y =+ ySpeed;
     }
 
     // TODO: jump
+    // TODO: falling
 
     /*==================================================
                         Collision
@@ -84,7 +85,25 @@ public class GameObject {
         return this.boundBox.intersects(other.boundBox);
     }
 
-    // TODO: more accurate collision check
+    // checks future collision in x direction
+    public boolean xCollisionCheck(GameObject other) {
+
+        // make temporary bounding box for future position
+        Rectangle futureBox = new Rectangle(this.x + this.xSpeed,
+                this.y, this.width, this.height);
+
+        return futureBox.intersects(other.boundBox);
+    }
+
+    // checks future collision in y direction
+    public boolean yCollisionCheck(GameObject other) {
+
+        // make temporary bounding box for future position
+        Rectangle futureBox = new Rectangle(this.x,
+                this.y + this.ySpeed, this.width, this.height);
+
+        return futureBox.intersects(other.boundBox);
+    }
 
     /*==================================================
                    Setters and Getters
