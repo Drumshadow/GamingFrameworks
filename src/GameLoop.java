@@ -4,6 +4,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import java.nio.*;
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -32,6 +33,15 @@ public class GameLoop {
     }
 
     private void init() {
+
+        ArrayList<Input> inputs = new ArrayList<>();
+        Input test = new Input(GLFW_KEY_D, GLFW_PRESS, "Dummy");
+        test.setPlaySound("testing");
+        inputs.add(test);
+        Input test2 = new Input(GLFW_KEY_A, GLFW_PRESS, "Dummy");
+        test2.setMove("Right", 1);
+        inputs.add(test2);
+
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
         GLFWErrorCallback.createPrint(System.err).set();
@@ -56,8 +66,10 @@ public class GameLoop {
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+            for (int i = 0; i < inputs.size(); i++) {
+                if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
+                    inputs.get(i).execute();
+            }
         });
 
         // Get the thread stack and push a new frame
