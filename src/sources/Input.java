@@ -2,6 +2,7 @@ package sources;
 
 import org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWKeyCallback.*;
+import org.lwjgl.*;
 
 import java.io.File;
 
@@ -71,6 +72,8 @@ public class Input {
         else if (purpose == purpose.MoveLeft) {
             // Move Left
             System.out.println("Moving Left!");
+
+
         }
         else if (purpose == purpose.MoveRight) {
             // Move Right
