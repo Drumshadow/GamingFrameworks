@@ -22,8 +22,8 @@ public class GameObject {
     private double ySpeed;
 
     // dimensions of hit box
-    private double width;
-    private double height;
+    private int width;
+    private int height;
 
     // TODO: add acceleration and max speeds
 
@@ -37,7 +37,9 @@ public class GameObject {
 
     public GameObject() {
         this.objName = "Empty Object";
+
         this.spritePath = null;
+        this.sprite = null;
 
         // TODO: default sprite when none is given?
 
@@ -47,8 +49,8 @@ public class GameObject {
         this.x = 0.0;
         this.y = 0.0;
 
-        this.width = 0.0;
-        this.height = 0.0;
+        this.width = 0;
+        this.height = 0;
 
         this.xSpeed = 0.0;
         this.ySpeed = 0.0;
@@ -56,8 +58,13 @@ public class GameObject {
         this.boundBox = null;
     }
 
+    // creates bounding box according to current position and sprite dimensions
+    public void createBoundingBox() {
+        this.boundBox = new Rectangle2D.Double(this.x, this.y,
+                (double)this.width, (double)this.height);
+    }
+
     // TODO: non generic constructor?
-    // TODO: create bounding box
 
     /*==================================================
                         Drawing
@@ -77,15 +84,47 @@ public class GameObject {
     // sets width and height
     public void shrinkSprite() {
 
-        int minX = Integer.MAX_VALUE;
-        int maxX = Integer.MIN_VALUE;
-        int minY = Integer.MAX_VALUE;
-        int maxY = Integer.MIN_VALUE;
+        int xMin = Integer.MAX_VALUE;
+        int xMax = Integer.MIN_VALUE;
+        int yMin = Integer.MAX_VALUE;
+        int yMax = Integer.MIN_VALUE;
 
-        for (int i = 0; i < this.sprite.getWidth(); i++) {
+        // cycle through each pixel
+        for (int x = 0; x < this.sprite.getWidth(); x++) {
+            for (int y = 0; y < this.sprite.getHeight(); y++) {
 
+                // get the color of the current pixel
+                int color = this.sprite.getRGB(x, y);
+                int alpha = (color >> 24) & 0xFF;
+
+                // resize sprite bounds if a non-empty pixel was found
+                if (alpha != 0) {
+
+                    xMin = Math.min(x, xMin);
+                    xMax = Math.max(x, xMax);
+                    yMin = Math.min(y, yMin);
+                    yMax = Math.max(y, yMax);
+                }
+            }
         }
 
+        // create new, smaller sprite
+        this.width = xMax - xMin;
+        this.height = yMax - yMin;
+
+        BufferedImage smallSprite = new BufferedImage(this.width, this.height,
+                BufferedImage.TYPE_INT_ARGB);
+
+        // copy over non-empty pixels from original sprite
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                smallSprite.setRGB(x, y, this.sprite.getRGB(x + xMin,
+                        y + yMin));
+            }
+        }
+
+        // set new sprite
+        this.sprite = smallSprite;
     }
 
     /*==================================================
@@ -247,19 +286,19 @@ public class GameObject {
         return this.y;
     }
 
-    public void setWidth(double w) {
+    public void setWidth(int w) {
         this.width = w;
     }
 
-    public double getWidth() {
+    public int getWidth() {
         return this.width;
     }
 
-    public void setHeight(double h) {
+    public void setHeight(int h) {
         this.height = h;
     }
 
-    public double getHeight() {
+    public int getHeight() {
         return this.height;
     }
 
