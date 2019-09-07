@@ -1,4 +1,4 @@
-
+package sources;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;

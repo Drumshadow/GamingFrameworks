@@ -11,14 +11,14 @@ public class Input {
     private int action; // 0, 1, 2
     enum purpose{Create, Destroy, MoveLeft, MoveRight, MoveUp, MoveDown, PlaySound};
     private purpose purpose;
-    private String objName; //Most likely temporary till we make an actual object class
+    private GameObject obj;
     private double speed;
     private File sndName;
 
-    Input(int k, int a, String pur) {
+    Input(int k, int a, GameObject o, String pur) {
         key = k;
         action = a;
-        // objName = oN;
+        obj = o;
         if (pur.equals("Create")) {
             purpose = purpose.Create;
         }
@@ -27,10 +27,10 @@ public class Input {
         }
     }
 
-    Input(int k, int a, String pur, double s) {
+    Input(int k, int a, String pur, GameObject o, double s) {
         key = k;
         action = a;
-        // objName = oN;
+        obj = o;
         if (pur.equals("Left")) {
             purpose = purpose.MoveLeft;
         }
@@ -46,10 +46,10 @@ public class Input {
         speed = s;
     }
 
-    Input(int k, int a, File snd) {
+    Input(int k, int a, GameObject o, File snd) {
         key = k;
         action = a;
-        //objName = oN;
+        obj = o;
         purpose = purpose.PlaySound;
         sndName = snd;
     }
@@ -63,13 +63,12 @@ public class Input {
 
     public void execute() {
         if (purpose == purpose.Create) {
-            // Create object
+            // Create Object
         }
         else if (purpose == purpose.Destroy) {
             // Destroy object
         }
         else if (purpose == purpose.MoveLeft) {
-            // Move Left
             System.out.println("Moving Left!");
         }
         else if (purpose == purpose.MoveRight) {

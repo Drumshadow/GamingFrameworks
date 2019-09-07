@@ -1,3 +1,5 @@
+package sources;
+import sources.GameObject;
 
 public class GameRoom {
 
