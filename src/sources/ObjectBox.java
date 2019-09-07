@@ -88,6 +88,18 @@ public class ObjectBox {
                    Setters and Getters
     ==================================================*/
 
+    // updates position and bounding box
+    public void updatePosition() {
+
+        // update position
+        this.x += xSpeed;
+        this.y += ySpeed;
+
+        // update hit box
+        this.boundBox.x = this.x;
+        this.boundBox.y = this.y;
+    }
+
     public void setX(double x) {
         this.x = x;
     }

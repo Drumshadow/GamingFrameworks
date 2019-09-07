@@ -28,4 +28,6 @@ public class ObjectList {
     public void addObject(GameObject o) {
         this.oList.add(o);
     }
+
+    // TODO: add helpful functions
 }

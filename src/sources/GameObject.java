@@ -121,7 +121,19 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(Vector<GameObject> objs) {
+    public void move(Vector<GameObject> roomObjs) {
+
+        // check collision
+        if (this.canCollide) {
+            // TODO: do collision stuff
+        }
+
+        // update position
+        this.hitBox.updatePosition();
+
+        // TODO: jump
+        // TODO: falling
+
 /*
         // check collision
         if (this.canCollide) {
@@ -152,9 +164,6 @@ public class GameObject {
                     }
                 }
 
-                // TODO: update speeds
-                // TODO: decide between look-ahead collision or other??
-
                 if (xCollide)
                     xSpeed = 0;
 
@@ -162,19 +171,8 @@ public class GameObject {
                     ySpeed = 0;
 
             }
-        }
-
-        // move if able
-        this.x += xSpeed;
-        this.y += ySpeed;
-
-        // update hit box
-        this.boundBox.x = this.x;
-        this.boundBox.y = this.y;*/
+        }*/
     }
-
-    // TODO: jump
-    // TODO: falling
 
     /*==================================================
                    Setters and Getters
