@@ -1,6 +1,6 @@
 
-import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 // represents a generic game object
@@ -9,7 +9,7 @@ public class GameObject {
     private String objName;
 
     private String spritePath;
-    private Image sprite;
+    private BufferedImage sprite;
 
     private boolean hasGravity;
     private boolean canCollide;
@@ -70,6 +70,21 @@ public class GameObject {
 
     // draws object
     public void drawObject() {
+
+    }
+
+    // shrinks sprite down to smallest size (gets rid of empty space)
+    // sets width and height
+    public void shrinkSprite() {
+
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxY = Integer.MIN_VALUE;
+
+        for (int i = 0; i < this.sprite.getWidth(); i++) {
+
+        }
 
     }
 
