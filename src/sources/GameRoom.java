@@ -1,3 +1,5 @@
+package sources;
+import sources.GameObject;
 /*
  * Main Author: Ashley Roesler
  */

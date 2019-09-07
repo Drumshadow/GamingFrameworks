@@ -42,12 +42,7 @@ public class InitWindow {
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
-        ArrayList<Input> inputs = new ArrayList<>();
-
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", 10));
-        inputs.add(new Input(GLFW_KEY_D, GLFW_PRESS, "Right", 10));
-        inputs.add(new Input(GLFW_KEY_UP, GLFW_PRESS, "Up", 10));
-        inputs.add(new Input(GLFW_KEY_DOWN, GLFW_PRESS, "Down", 10));
+        InputList inputs = new InputList();
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz
