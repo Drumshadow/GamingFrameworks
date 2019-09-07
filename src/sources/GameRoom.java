@@ -1,9 +1,10 @@
-package sources;
-import sources.GameObject;
 /*
  * Main Author: Ashley Roesler
  */
 
+package sources;
+
+import sources.GameObject;
 import java.util.Vector;
 
 public class GameRoom {
@@ -32,9 +33,9 @@ public class GameRoom {
                     Object Control
     ==================================================*/
 
-    // adds empty object to room
-    public void addObject() {
-        this.allObjects.add(new GameObject());
+    // adds object to room
+    public void addObject(GameObject o) {
+        this.allObjects.add(o);
     }
 
     /*==================================================

@@ -1,14 +1,15 @@
-package sources;
 /*
  * Main Author: Ashley Roesler
  */
 
-import java.awt.geom.Rectangle2D;
+package sources;
+
+import sources.ObjectBox;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Vector;
 
-// represents a generic game object
+// contains info common across all instances of an object
 public class GameObject {
 
     private String objName;
@@ -16,29 +17,20 @@ public class GameObject {
     private String spritePath;
     private BufferedImage sprite;
 
-    private boolean canCollide;
+    // TODO: invisible objects
+    // TODO: default sprite when none is given?
+
+    // dimensions of sprite
+    private int width;
+    private int height;
 
     // no gravity is gravityFactor = 0
     // controls "weight" of object
     private double gravityFactor;
 
-    // TODO: invisible objects
+    private boolean canCollide;
 
-    // position based on top-left corner
-    private double x;
-    private double y;
-
-    private double xSpeed;
-    private double ySpeed;
-
-    // dimensions of hit box
-    private int width;
-    private int height;
-
-    // TODO: add acceleration and max speeds
-    // TODO: add circle / custom hit boxes??
-
-    private Rectangle2D.Double boundBox;
+    private ObjectBox hitBox;
 
     /*==================================================
                      Initialization
@@ -50,28 +42,15 @@ public class GameObject {
         this.spritePath = null;
         this.sprite = null;
 
-        // TODO: default sprite when none is given?
+        this.width = 0;
+        this.height = 0;
 
         this.canCollide = false;
 
         this.gravityFactor = 0.0;
 
-        this.x = 0.0;
-        this.y = 0.0;
-
-        this.width = 0;
-        this.height = 0;
-
-        this.xSpeed = 0.0;
-        this.ySpeed = 0.0;
-
-        this.boundBox = null;
-    }
-
-    // creates bounding box
-    public void createBoundingBox() {
-        this.boundBox = new Rectangle2D.Double(this.x, this.y,
-                (double)this.width, (double)this.height);
+        this.hitBox = new ObjectBox();
+        this.hitBox.createBoundingBox(this.width, this.height);
     }
 
     // TODO: non generic constructor?
@@ -143,7 +122,7 @@ public class GameObject {
 
     // moves objects and performs collision detection
     public void move(Vector<GameObject> objs) {
-
+/*
         // check collision
         if (this.canCollide) {
 
@@ -191,62 +170,18 @@ public class GameObject {
 
         // update hit box
         this.boundBox.x = this.x;
-        this.boundBox.y = this.y;
+        this.boundBox.y = this.y;*/
     }
 
     // TODO: jump
     // TODO: falling
 
     /*==================================================
-                        Collision
-    ==================================================*/
-
-    // checks if two bounding boxes have collided
-    public Boolean basicCollisionCheck(GameObject other) {
-
-        // make sure objects can be collided with
-        if (!this.canCollide || !other.canCollide)
-            return false;
-
-        return this.boundBox.intersects(other.boundBox);
-    }
-
-    // checks future collision in x direction
-    public boolean xCollisionCheck(GameObject other) {
-
-        // make temporary bounding box for future position
-        Rectangle2D.Double futureBox = new Rectangle2D.Double(
-                this.x + this.xSpeed, this.y, this.width, this.height);
-
-        return futureBox.intersects(other.boundBox);
-    }
-
-    // checks future collision in y direction
-    public boolean yCollisionCheck(GameObject other) {
-
-        // make temporary bounding box for future position
-        Rectangle2D.Double futureBox = new Rectangle2D.Double(this.x,
-                this.y + this.ySpeed, this.width, this.height);
-
-        return futureBox.intersects(other.boundBox);
-    }
-
-    // checks future collision in both x and y directions
-    public boolean futureCollisionCheck(GameObject other) {
-
-        // make temporary bounding box for future position
-        Rectangle2D.Double futureBox = new Rectangle2D.Double(
-                this.x + this.xSpeed, this.y + this.ySpeed,
-                this.width, this.height);
-
-        return futureBox.intersects(other.boundBox);
-    }
-
-    /*==================================================
                    Setters and Getters
     ==================================================*/
 
     // TODO: add value validation
+    // TODO: add updates to all attrib affected by change
 
     public void setObjName(String o) {
         this.objName = o;
@@ -288,22 +223,6 @@ public class GameObject {
         return this.canCollide;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getX() {
-        return this.x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getY() {
-        return this.y;
-    }
-
     public void setWidth(int w) {
         this.width = w;
     }
@@ -320,30 +239,6 @@ public class GameObject {
         return this.height;
     }
 
-    public void setXSpeed(double s) {
-        this.xSpeed = s;
-    }
-
-    public double getXSpeed() {
-        return this.xSpeed;
-    }
-
-    public void setYSpeed(double s) {
-        this.ySpeed = s;
-    }
-
-    public double getYSpeed() {
-        return this.ySpeed;
-    }
-
-    public void setBoundBox(Rectangle2D.Double b) {
-        this.boundBox = b;
-    }
-
-    public Rectangle2D.Double getBoundBox() {
-        return this.boundBox;
-    }
-
     /*==================================================
                       Miscellaneous
     ==================================================*/
@@ -351,9 +246,8 @@ public class GameObject {
     // generates object's hashcode for equality check
     public int hashcode() {
         return Objects.hash(this.objName, this.spritePath, this.sprite,
-                this.gravityFactor, this.canCollide, this.x, this.y,
-                this.width, this.height, this.xSpeed, this.ySpeed,
-                this.boundBox);
+                this.gravityFactor, this.canCollide, this.width, this.height,
+                this.hitBox);
     }
 
     // checks if two objects are the same
