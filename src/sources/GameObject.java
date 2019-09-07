@@ -1,7 +1,12 @@
 package sources;
+/*
+ * Main Author: Ashley Roesler
+ */
+
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
+import java.util.Vector;
 
 // represents a generic game object
 public class GameObject {
@@ -11,8 +16,13 @@ public class GameObject {
     private String spritePath;
     private BufferedImage sprite;
 
-    private boolean hasGravity;
     private boolean canCollide;
+
+    // no gravity is gravityFactor = 0
+    // controls "weight" of object
+    private double gravityFactor;
+
+    // TODO: invisible objects
 
     // position based on top-left corner
     private double x;
@@ -26,10 +36,9 @@ public class GameObject {
     private int height;
 
     // TODO: add acceleration and max speeds
+    // TODO: add circle / custom hit boxes??
 
     private Rectangle2D.Double boundBox;
-    // TODO: add circle hit box?
-    // TODO: add custom hit box?
 
     /*==================================================
                      Initialization
@@ -43,8 +52,9 @@ public class GameObject {
 
         // TODO: default sprite when none is given?
 
-        this.hasGravity = false;
         this.canCollide = false;
+
+        this.gravityFactor = 0.0;
 
         this.x = 0.0;
         this.y = 0.0;
@@ -58,7 +68,7 @@ public class GameObject {
         this.boundBox = null;
     }
 
-    // creates bounding box according to current position and sprite dimensions
+    // creates bounding box
     public void createBoundingBox() {
         this.boundBox = new Rectangle2D.Double(this.x, this.y,
                 (double)this.width, (double)this.height);
@@ -132,7 +142,7 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(GameObject[] objs) {
+    public void move(Vector<GameObject> objs) {
 
         // check collision
         if (this.canCollide) {
@@ -254,12 +264,20 @@ public class GameObject {
         return this.spritePath;
     }
 
-    public void setHasGravity(boolean g) {
-        this.hasGravity = g;
+    public void setSprite(BufferedImage s) {
+        this.sprite = s;
     }
 
-    public boolean getHasGravity() {
-        return this.hasGravity;
+    public BufferedImage getSprite() {
+        return this.sprite;
+    }
+
+    public void setGravityFactor(double g) {
+        this.gravityFactor = g;
+    }
+
+    public double getGravityFactor() {
+        return this.gravityFactor;
     }
 
     public void setCanCollide(boolean c) {
@@ -332,9 +350,10 @@ public class GameObject {
 
     // generates object's hashcode for equality check
     public int hashcode() {
-        return Objects.hash(this.objName, this.spritePath, this.hasGravity,
-                this.canCollide, this.x, this.y, this.width, this.height,
-                this.xSpeed, this.ySpeed, this.boundBox);
+        return Objects.hash(this.objName, this.spritePath, this.sprite,
+                this.gravityFactor, this.canCollide, this.x, this.y,
+                this.width, this.height, this.xSpeed, this.ySpeed,
+                this.boundBox);
     }
 
     // checks if two objects are the same
