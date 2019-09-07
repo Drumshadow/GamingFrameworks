@@ -1,8 +1,5 @@
-/*
- * author: Ashley Roesler
- */
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 // represents a generic game object
@@ -15,22 +12,20 @@ public class GameObject {
     private boolean hasGravity;
     private boolean canCollide;
 
-    // TODO: decide in int or float
-
     // position based on top-left corner
-    private int x;
-    private int y;
+    private double x;
+    private double y;
+
+    private double xSpeed;
+    private double ySpeed;
 
     // dimensions of hit box
-    private int width;
-    private int height;
-
-    private int xSpeed;
-    private int ySpeed;
+    private double width;
+    private double height;
 
     // TODO: add acceleration and max speeds
 
-    private Rectangle boundBox;
+    private Rectangle2D.Double boundBox;
     // TODO: add circle hit box?
     // TODO: add custom hit box?
 
@@ -47,30 +42,34 @@ public class GameObject {
         this.hasGravity = false;
         this.canCollide = false;
 
-        this.x = 0;
-        this.y = 0;
+        this.x = 0.0;
+        this.y = 0.0;
 
-        this.width = 0;
-        this.height = 0;
+        this.width = 0.0;
+        this.height = 0.0;
 
-        this.xSpeed = 0;
-        this.ySpeed = 0;
+        this.xSpeed = 0.0;
+        this.ySpeed = 0.0;
 
         this.boundBox = null;
     }
 
     // TODO: non generic constructor?
+    // TODO: create bounding box
 
-    // sets object's sprite
-    // also crops sprite, making sure there is no empty space around the sprite
+    /*==================================================
+                        Drawing
+    ==================================================*/
+
+    // sets object's sprite and saves to file within game engine
     public void loadSprite(String spritePath) {
-
 
     }
 
-    // TODO: create bounding box
-    // TODO: load sprite
-    // TODO: draw
+    // draws object
+    public void drawObject() {
+
+    }
 
     /*==================================================
                         Movement
@@ -82,22 +81,51 @@ public class GameObject {
         // check collision
         if (this.canCollide) {
 
+            boolean xCollide;
+            boolean yCollide;
+
             for (GameObject o : objs) {
 
                 // don't collide with self and check if can collide
-                if (this.equals(o))
+                if (this.equals(o) || !o.canCollide)
                     continue;
 
-                // check if o can collide
-                if (!o.canCollide)
-                    continue;
+                // check x collision
+                xCollide = this.xCollisionCheck(o);
 
+                // check y collision
+                yCollide = this.yCollisionCheck(o);
+
+                // check both directions (ran into corner)
+                if (!xCollide && !yCollide) {
+
+                    if (this.futureCollisionCheck(o)) {
+
+                        // continue in the faster direction
+                        xCollide = ySpeed > xSpeed;
+                        yCollide = !xCollide;
+                    }
+                }
+
+                // TODO: update speeds
+                // TODO: decide between look-ahead collision or other??
+
+                if (xCollide)
+                    xSpeed = 0;
+
+                if (yCollide)
+                    ySpeed = 0;
 
             }
         }
 
         // move if able
+        this.x += xSpeed;
+        this.y += ySpeed;
 
+        // update hit box
+        this.boundBox.x = this.x;
+        this.boundBox.y = this.y;
     }
 
     // TODO: jump
@@ -121,8 +149,8 @@ public class GameObject {
     public boolean xCollisionCheck(GameObject other) {
 
         // make temporary bounding box for future position
-        Rectangle futureBox = new Rectangle(this.x + this.xSpeed,
-                this.y, this.width, this.height);
+        Rectangle2D.Double futureBox = new Rectangle2D.Double(
+                this.x + this.xSpeed, this.y, this.width, this.height);
 
         return futureBox.intersects(other.boundBox);
     }
@@ -131,7 +159,7 @@ public class GameObject {
     public boolean yCollisionCheck(GameObject other) {
 
         // make temporary bounding box for future position
-        Rectangle futureBox = new Rectangle(this.x,
+        Rectangle2D.Double futureBox = new Rectangle2D.Double(this.x,
                 this.y + this.ySpeed, this.width, this.height);
 
         return futureBox.intersects(other.boundBox);
@@ -141,8 +169,9 @@ public class GameObject {
     public boolean futureCollisionCheck(GameObject other) {
 
         // make temporary bounding box for future position
-        Rectangle futureBox = new Rectangle(this.x + this.xSpeed,
-                this.y + this.ySpeed, this.width, this.height);
+        Rectangle2D.Double futureBox = new Rectangle2D.Double(
+                this.x + this.xSpeed, this.y + this.ySpeed,
+                this.width, this.height);
 
         return futureBox.intersects(other.boundBox);
     }
@@ -185,59 +214,59 @@ public class GameObject {
         return this.canCollide;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
-    public void setWidth(int w) {
+    public void setWidth(double w) {
         this.width = w;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return this.width;
     }
 
-    public void setHeight(int h) {
+    public void setHeight(double h) {
         this.height = h;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return this.height;
     }
 
-    public void setXSpeed(int s) {
+    public void setXSpeed(double s) {
         this.xSpeed = s;
     }
 
-    public int getXSpeed() {
+    public double getXSpeed() {
         return this.xSpeed;
     }
 
-    public void setYSpeed(int s) {
+    public void setYSpeed(double s) {
         this.ySpeed = s;
     }
 
-    public int getYSpeed() {
+    public double getYSpeed() {
         return this.ySpeed;
     }
 
-    public void setBoundBox(Rectangle b) {
+    public void setBoundBox(Rectangle2D.Double b) {
         this.boundBox = b;
     }
 
-    public Rectangle getBoundBox() {
+    public Rectangle2D.Double getBoundBox() {
         return this.boundBox;
     }
 

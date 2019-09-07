@@ -1,6 +1,3 @@
-/*
- * author: Ashley Roesler
- */
 
 public class GameRoom {
 
@@ -9,6 +6,9 @@ public class GameRoom {
 
     private GameObject[] allObjects;
 
+    private double gravity;
+
     // TODO: all the functions..... which functions? no clue
     // TODO: make function that passes allObjects to object (move() function)
+    // TODO: also pass gravity to object?
 }
