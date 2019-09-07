@@ -1,4 +1,5 @@
 
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class GameObject {
     private String objName;
 
     private String spritePath;
+    private Image sprite;
 
     private boolean hasGravity;
     private boolean canCollide;
