@@ -3,6 +3,8 @@ package sources.objCode;
 import sources.GameRoom;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -155,12 +157,22 @@ public class GameObject {
 
     // sets object's sprite and saves to file within game engine
     public void loadSprite(String spritePath) {
-
+        this.spritePath = spritePath;
+        // get sprite from file
+        try {
+            this.sprite = ImageIO.read(new File(this.spritePath));
+        } catch (IOException e) {
+            System.out.println("ERROR: bad path to sprite image");
+            this.sprite = null;
+        }
     }
 
     // draws object
     public void drawObject() {
-
+        Graphics2D g2d = sprite.createGraphics();
+        g2d.setBackground(Color.red);
+        g2d.fill(new Ellipse2D.Float(0, 0, 200, 100));
+        //g2d.dispose();
     }
 
     // shrinks sprite down to smallest size (gets rid of empty space)
