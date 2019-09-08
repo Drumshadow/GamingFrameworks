@@ -78,10 +78,7 @@ public class Audio {
         //Play the sound
         alSourcePlay(sourcePointer);
 
-        try {
-            //Wait for a second
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {
+        while(alGetSourcei(sourcePointer, AL_SOURCE_STATE) == AL_PLAYING) {
         }
 
         //Terminate OpenAL
@@ -92,6 +89,7 @@ public class Audio {
     }
 
     void playSound(){
+
         //might not need this function, but im leaving it here to be safe
     }
 

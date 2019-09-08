@@ -67,7 +67,9 @@ public class Input {
         }
         else if (purpose == purpose.MoveLeft) {
             System.out.println("Moving Left!");
-            sounds.setFileName("./audio-files/oof.ogg");
+            if(sounds.fileName == null) {
+                sounds.setFileName("./audio-files/oof.ogg");
+            }
             sounds.loadPlaySound();
             obj.move(roomObjects);
         }
