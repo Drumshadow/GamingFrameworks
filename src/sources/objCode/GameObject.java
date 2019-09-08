@@ -3,6 +3,8 @@ package sources.objCode;
 import sources.GameRoom;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -145,7 +147,10 @@ public class GameObject {
 
     // draws object
     public void drawObject() {
-
+        Graphics2D g2d = sprite.createGraphics();
+        g2d.setBackground(Color.red);
+        g2d.fill(new Ellipse2D.Float(0, 0, 200, 100));
+        //g2d.dispose();
     }
 
     // shrinks sprite down to smallest size (gets rid of empty space)

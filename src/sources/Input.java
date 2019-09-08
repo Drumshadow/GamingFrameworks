@@ -10,7 +10,6 @@ public class Input {
     private purpose purpose;
     private GameObject obj;
     private double speed;
-    private String sndName;
     Audio sounds = new Audio();
 
     Input(int k, int a, GameObject o, String pur) {
@@ -44,12 +43,12 @@ public class Input {
         speed = s;
     }
 
-    Input(int k, int a, GameObject o, String pur, String snd) {
+    Input(int k, int a, GameObject o, String pur, Audio snd) {
         key = k;
         action = a;
         obj = o;
         purpose = purpose.PlaySound;
-        sndName = snd;
+        sounds = snd;
     }
 
     public int getKey() {
@@ -70,10 +69,6 @@ public class Input {
         }
         else if (purpose == purpose.MoveLeft) {
             System.out.println("Moving Left!");
-            if(sounds.fileName == null) {
-                sounds.setFileName("./audio-files/oof.ogg");
-            }
-            sounds.loadPlaySound();
             obj.move(roomObjects);
         }
         else if (purpose == purpose.MoveRight) {
@@ -90,7 +85,9 @@ public class Input {
         }
         else if (purpose == purpose.PlaySound) {
             // Play Sound
-            sounds.setFileName(sndName);
+            if(sounds.fileName == null) {
+                sounds.setFileName("./audio-files/oof.ogg");
+            }
             sounds.loadPlaySound();
         }
     }
