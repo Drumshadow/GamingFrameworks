@@ -121,6 +121,34 @@ public class GameObject {
         this.hitBox.createBoundingBox(this.width, this.height);
     }
 
+    //TODO: Make sure this does not suck, I added this to get some other stuff working but may need to be fixed.
+    public GameObject(String name, String path, int w, int h, double gravity, boolean collide) {
+        this.objName = name;
+        this.spritePath = path;
+
+        // get sprite from file
+        try {
+            this.sprite = ImageIO.read(new File(this.spritePath));
+        } catch (IOException e) {
+            System.out.println("ERROR: bad path to sprite image");
+            this.sprite = null;
+        }
+
+        this.width = w;
+        this.height = h;
+        this.gravityFactor = gravity;
+        this.canCollide = collide;
+
+        if (this.boxCode == 1) {
+            this.hitBox = new RoundBox();
+        }
+        else {
+            this.hitBox = new BoxyBox();
+        }
+
+        this.hitBox.createBoundingBox(this.width, this.height);
+    }
+
     /*==================================================
                         Drawing
     ==================================================*/

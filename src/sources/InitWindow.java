@@ -3,6 +3,7 @@ package sources;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
+import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
 import static org.lwjgl.system.MemoryUtil.*;
