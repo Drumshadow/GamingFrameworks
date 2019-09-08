@@ -42,6 +42,7 @@ public class InitWindow {
             throw new RuntimeException("Failed to create the GLFW window");
 
         InputList inputs = new InputList();
+        ObjectList objects = new ObjectList();
 
         inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", new GameObject("Mario", "./sprites/mario.jpg", 413, 550, 9.8, true), 2));
 
@@ -50,7 +51,7 @@ public class InitWindow {
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             for (int i = 0; i < inputs.size(); i++) {
                 if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
-                    inputs.get(i).execute();
+                    inputs.get(i).execute(objects);
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                     glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
             }

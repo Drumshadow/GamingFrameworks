@@ -1,8 +1,5 @@
 package sources;
 
-import java.io.File;
-
-
 public class Input {
     private int key;  // 0-256? Not sure
     private int action; // 0, 1, 2
@@ -10,7 +7,7 @@ public class Input {
     private purpose purpose;
     private GameObject obj;
     private double speed;
-    private File sndName;
+    private String sndName;
     Audio sounds = new Audio();
 
     Input(int k, int a, GameObject o, String pur) {
@@ -44,7 +41,7 @@ public class Input {
         speed = s;
     }
 
-    Input(int k, int a, GameObject o, File snd) {
+    Input(int k, int a, GameObject o, String pur, String snd) {
         key = k;
         action = a;
         obj = o;
@@ -59,9 +56,11 @@ public class Input {
         return action;
     }
 
-    public void execute() {
+    // the moves prob arent perfect yet
+    public void execute(ObjectList roomObjects ) {
         if (purpose == purpose.Create) {
             // Create Object
+            roomObjects.addObject(new GameObject(obj));
         }
         else if (purpose == purpose.Destroy) {
             // Destroy object
@@ -70,22 +69,24 @@ public class Input {
             System.out.println("Moving Left!");
             sounds.setFileName("./audio-files/oof.ogg");
             sounds.loadPlaySound();
+            obj.move(roomObjects);
         }
         else if (purpose == purpose.MoveRight) {
             // Move Right
-            System.out.println("Moving Right!");
+            obj.move(roomObjects);
         }
         else if (purpose == purpose.MoveUp) {
             // Move Up
-            System.out.println("Moving Up!");
+            obj.move(roomObjects);
         }
         else if (purpose == purpose.MoveDown) {
             // Move Down
-            System.out.println("Moving Down!");
+            obj.move(roomObjects);
         }
         else if (purpose == purpose.PlaySound) {
             // Play Sound
-            System.out.println("Bwoop!");
+            sounds.setFileName(sndName);
+            sounds.loadPlaySound();
         }
     }
 

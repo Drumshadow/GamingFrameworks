@@ -57,6 +57,23 @@ public class GameObject {
         this.hitBox.createBoundingBox(this.width, this.height);
     }
 
+    GameObject(GameObject go) {
+        this.objName = go.objName;
+
+        this.spritePath = go.spritePath;
+        this.sprite = go.sprite;
+
+        this.width = go.width;
+        this.height = go.height;
+
+        this.canCollide = go.canCollide;
+
+        this.gravityFactor = go.gravityFactor;
+
+        this.hitBox = new ObjectBox(go.hitBox);
+        this.hitBox.createBoundingBox(go.width, go.height);
+    }
+
     // TODO: non generic constructor?
 
     public GameObject(String objName, String spritePath, int width, int height, double gravityFactor, boolean canCollide) {
