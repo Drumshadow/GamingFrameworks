@@ -221,22 +221,6 @@ public class GameObject {
         return this.canCollide;
     }
 
-    public void setWidth(int w) {
-        this.width = w;
-    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public void setHeight(int h) {
-        this.height = h;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
     public void setXSpeed(double s) { hitBox.setXSpeed(s); }
 
     public void setYSpeed(double s) {hitBox.setYSpeed(s); }

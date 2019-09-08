@@ -23,7 +23,7 @@ public class GameLoop {
         ObjectList objects = new ObjectList();
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 9.8, 10, 7, 0);
-        mario.drawObject();
+        mario.getSprite().drawObject();
         inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
 
 
