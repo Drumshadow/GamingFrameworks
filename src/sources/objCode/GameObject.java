@@ -1,13 +1,8 @@
 package sources.objCode;
 
 import sources.GameRoom;
+import sources.Sprite;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 // represents generic object
@@ -15,15 +10,7 @@ public class GameObject {
 
     private String objName;
 
-    private String spritePath;
-    private BufferedImage sprite;
-
-    // TODO: invisible objects
-    // TODO: default sprite when none is given?
-
-    // dimensions of sprite
-    private int width;
-    private int height;
+    private Sprite sprite;
 
     // no gravity is gravityFactor = 0
     // controls "weight" of object
@@ -45,12 +32,7 @@ public class GameObject {
     // generic constructor
     public GameObject() {
         this.objName = "Empty Object";
-
-        this.spritePath = null;
         this.sprite = null;
-
-        this.width = 0;
-        this.height = 0;
 
         this.gravityFactor = 0.0;
         this.terminalV = 0.0;
@@ -60,19 +42,13 @@ public class GameObject {
 
         // default hit box is square
         this.boxCode = 0;
-        this.hitBox = new BoxyBox();
-        this.hitBox.createBoundingBox(this.width, this.height);
+        this.hitBox = null;
     }
 
     // copy constructor
     public GameObject(GameObject other) {
         this.objName = other.objName;
-
-        this.spritePath = other.spritePath;
-        this.sprite = other.sprite;
-
-        this.width = other.width;
-        this.height = other.height;
+        this.sprite = new Sprite(other.sprite);
 
         this.gravityFactor = other.gravityFactor;
         this.terminalV = other.terminalV;
@@ -90,7 +66,8 @@ public class GameObject {
             this.hitBox = new BoxyBox(other.hitBox);
         }
 
-        this.hitBox.createBoundingBox(other.width, other.height);
+        this.hitBox.createBoundingBox(other.sprite.getWidth(),
+                other.sprite.getHeight());
     }
 
     // constructor via given values (finds sprite via path)
@@ -99,14 +76,9 @@ public class GameObject {
                       double jump, int boxType) {
 
         this.objName = name;
-        this.spritePath = sprPath;
 
         // get sprite from file
-        this.sprite = this.loadSprite(sprPath);
-        this.shrinkSprite();
-
-        this.width = w;
-        this.height = h;
+        this.sprite = new Sprite(sprPath);
 
         this.gravityFactor = gravity;
         this.terminalV = tv;
@@ -124,79 +96,8 @@ public class GameObject {
             this.hitBox = new BoxyBox();
         }
 
-        this.hitBox.createBoundingBox(this.width, this.height);
-    }
-
-    /*==================================================
-                        Drawing
-    ==================================================*/
-
-    // gets sprite from given path
-    public BufferedImage loadSprite(String spritePath) {
-
-        // get sprite from file
-        try {
-            return ImageIO.read(new File(this.spritePath));
-
-        } catch (IOException e) {
-            System.out.println("ERROR: bad path to sprite image");
-            return null;
-        }
-    }
-
-    // draws object
-    public void drawObject() {
-        Graphics2D g2d = sprite.createGraphics();
-        g2d.setBackground(Color.red);
-        g2d.fill(new Ellipse2D.Float(0, 0, 200, 100));
-        //g2d.dispose();
-    }
-
-    // shrinks sprite down to smallest size (gets rid of empty space)
-    // sets width and height
-    public void shrinkSprite() {
-
-        int xMin = Integer.MAX_VALUE;
-        int xMax = Integer.MIN_VALUE;
-        int yMin = Integer.MAX_VALUE;
-        int yMax = Integer.MIN_VALUE;
-
-        // cycle through each pixel
-        for (int x = 0; x < this.sprite.getWidth(); x++) {
-            for (int y = 0; y < this.sprite.getHeight(); y++) {
-
-                // get the color of the current pixel
-                int color = this.sprite.getRGB(x, y);
-                int alpha = (color >> 24) & 0xFF;
-
-                // resize sprite bounds if a non-empty pixel was found
-                if (alpha != 0) {
-
-                    xMin = Math.min(x, xMin);
-                    xMax = Math.max(x, xMax);
-                    yMin = Math.min(y, yMin);
-                    yMax = Math.max(y, yMax);
-                }
-            }
-        }
-
-        // create new, smaller sprite
-        this.width = xMax - xMin;
-        this.height = yMax - yMin;
-
-        BufferedImage smallSprite = new BufferedImage(this.width, this.height,
-                BufferedImage.TYPE_INT_ARGB);
-
-        // copy over non-empty pixels from original sprite
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                smallSprite.setRGB(x, y, this.sprite.getRGB(x + xMin,
-                        y + yMin));
-            }
-        }
-
-        // set new sprite
-        this.sprite = smallSprite;
+        this.hitBox.createBoundingBox(this.sprite.getWidth(),
+                this.sprite.getHeight());
     }
 
     /*==================================================
@@ -288,19 +189,11 @@ public class GameObject {
         return this.objName;
     }
 
-    public void setSpritePath(String s) {
-        this.spritePath = s;
-    }
-
-    public String getSpritePath() {
-        return this.spritePath;
-    }
-
-    public void setSprite(BufferedImage s) {
+    public void setSprite(Sprite s) {
         this.sprite = s;
     }
 
-    public BufferedImage getSprite() {
+    public Sprite getSprite() {
         return this.sprite;
     }
 
@@ -328,31 +221,14 @@ public class GameObject {
         return this.canCollide;
     }
 
-    public void setWidth(int w) {
-        this.width = w;
-    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public void setHeight(int h) {
-        this.height = h;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
     /*==================================================
                       Miscellaneous
     ==================================================*/
 
     // generates object's hashcode for equality check
     public int hashcode() {
-        return Objects.hash(this.objName, this.spritePath, this.sprite,
-                this.gravityFactor, this.canCollide, this.width, this.height,
-                this.hitBox);
+        return Objects.hash(this.objName, this.sprite, this.gravityFactor,
+                this.canCollide, this.hitBox);
     }
 
     // checks if two objects are the same
