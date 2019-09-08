@@ -44,25 +44,6 @@ public class InitWindow {
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
-        InputList inputs = new InputList();
-        ObjectList objects = new ObjectList();
-      
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, 9.8, true);
-        mario.drawObject();
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
-
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        // Will use this section to handle inputs, don't delete plz
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            for (int i = 0; i < inputs.size(); i++) {
-                if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
-                    inputs.get(i).execute(objects);
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                    glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            }
-        });
-
         // Get the thread stack and push a new frame
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1); // int*
