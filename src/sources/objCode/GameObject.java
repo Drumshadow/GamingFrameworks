@@ -256,13 +256,21 @@ public class GameObject {
         this.hitBox.updatePosition();
     }
 
-    public void objectJump() {
+    public void objectJump(ObjectList roomObjs) {
 
         // check if colliding on bottom
+        if (this.canCollide) {
 
+            for (GameObject other : roomObjs.getOList()) {
 
-        // set vertical speed to -jumpspeed
-        // TODO: jump
+                if (this.hitBox.yCollisionCheck(other.hitBox) &&
+                        other.hitBox.y > this.hitBox.y) {
+
+                    this.hitBox.ySpeed = -this.jumpPower;
+                    break;
+                }
+            }
+        }
     }
 
     /*==================================================
