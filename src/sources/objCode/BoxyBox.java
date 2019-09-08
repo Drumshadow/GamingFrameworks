@@ -12,7 +12,7 @@ public class BoxyBox extends ObjectBox {
                      Initialization
     ==================================================*/
 
-    // generic constructor
+    // default constructor
     BoxyBox() {
         super();
         this.boundBox = null;

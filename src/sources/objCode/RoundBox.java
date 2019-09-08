@@ -12,7 +12,7 @@ public class RoundBox extends ObjectBox {
                      Initialization
     ==================================================*/
 
-    // generic constructor
+    // default constructor
     RoundBox() {
         super();
         this.boundBox = null;

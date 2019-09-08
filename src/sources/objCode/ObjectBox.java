@@ -16,7 +16,7 @@ abstract public class ObjectBox {
                      Initialization
     ==================================================*/
 
-    // generic constructor
+    // default constructor
     ObjectBox() {
 
         this.x = 0.0;

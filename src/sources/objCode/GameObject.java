@@ -29,7 +29,7 @@ public class GameObject {
                      Initialization
     ==================================================*/
 
-    // generic constructor
+    // default constructor
     public GameObject() {
         this.objName = "Empty Object";
         this.sprite = null;

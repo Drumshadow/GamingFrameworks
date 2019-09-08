@@ -23,7 +23,7 @@ public class GameRoom {
                      Initialization
     ==================================================*/
 
-    // generic constructor
+    // default constructor
     public GameRoom() {
 
         this.roomName = "Empty Room";

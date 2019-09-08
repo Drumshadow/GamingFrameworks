@@ -14,24 +14,14 @@ public class Sprite {
     private int width;
     private int height;
 
+    // TODO: invisible objects (future optimization)
+
+    // default is visible
+    private boolean isVisible;
+
     /*==================================================
                      Initialization
     ==================================================*/
-
-    // TODO: invisible objects
-    // TODO: default sprite when none is given?
-    // TODO: function that gets size of sprite
-    // TODO: stretching sprite to different size?
-    // TODO: sprite editor?
-
-    // generic constructor
-    public Sprite() {
-        this.spritePath = null;
-        this.sprite = null;
-
-        this.width = 0;
-        this.height = 0;
-    }
 
     // copy constructor
     public Sprite(Sprite s) {
@@ -41,6 +31,8 @@ public class Sprite {
 
         this.width = s.width;
         this.height = s.height;
+
+        this.isVisible = s.isVisible;
     }
 
     // value constructor (loads sprite from file)
@@ -51,6 +43,8 @@ public class Sprite {
         this.sprite = this.loadSprite(path);
 
         this.shrinkSprite();
+
+        this.isVisible = true;
     }
 
     // shrinks sprite down to smallest size (gets rid of empty space)
@@ -152,19 +146,19 @@ public class Sprite {
         return this.sprite;
     }
 
-    public void setWidth(int w) {
-        this.width = w;
-    }
-
     public int getWidth() {
         return this.width;
     }
 
-    public void setHeight(int h) {
-        this.height = h;
-    }
-
     public int getHeight() {
         return this.height;
+    }
+
+    public void setVisible(boolean v) {
+        this.isVisible = v;
+    }
+
+    public boolean getVisible() {
+        return this.isVisible;
     }
 }
