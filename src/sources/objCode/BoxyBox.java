@@ -1,50 +1,28 @@
-/*
- * Main Author: Ashley Roesler
- */
-
-package sources;
+package sources.objCode;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 import java.util.Objects;
 
-// Contains all information specific to one instance of an object
-public class ObjectBox {
-
-    // position based on top-left corner
-    private double x;
-    private double y;
-
-    private double xSpeed;
-    private double ySpeed;
+public class BoxyBox extends ObjectBox {
 
     private Rectangle2D.Double boundBox;
-
-    // TODO: add acceleration and max speeds??
-    // TODO: add circle / custom hit boxes??
 
     /*==================================================
                      Initialization
     ==================================================*/
 
-    public ObjectBox() {
-
-        this.x = 0.0;
-        this.y = 0.0;
-
-        this.xSpeed = 0.0;
-        this.ySpeed = 0.0;
-
+    // generic constructor
+    BoxyBox() {
+        super();
         this.boundBox = null;
     }
 
-    ObjectBox(ObjectBox ob) {
-        this.x = ob.x;
-        this.y = ob.y;
-
-        this.xSpeed = ob.xSpeed;
-        this.ySpeed = ob.ySpeed;
-
-        this.boundBox = ob.boundBox;
+    // copy constructor
+    BoxyBox(ObjectBox other) {
+        super(other);
+        this.boundBox = new Rectangle2D.Double(other.x, other.y,
+                other.getBoundBox().getWidth(), other.getBoundBox().getY());
     }
 
     // creates bounding box
@@ -58,7 +36,9 @@ public class ObjectBox {
 
     // checks if two bounding boxes have collided
     public Boolean basicCollisionCheck(ObjectBox other) {
-        return this.boundBox.intersects(other.boundBox);
+        return this.boundBox.intersects(other.x, other.y,
+                other.getBoundBox().getWidth(),
+                other.getBoundBox().getHeight());
     }
 
     // checks future collision in x direction
@@ -69,7 +49,9 @@ public class ObjectBox {
                 this.x + this.xSpeed, this.y, this.boundBox.width,
                 this.boundBox.height);
 
-        return futureBox.intersects(other.boundBox);
+        return futureBox.intersects(other.x, other.y,
+                other.getBoundBox().getWidth(),
+                other.getBoundBox().getHeight());
     }
 
     // checks future collision in y direction
@@ -80,7 +62,9 @@ public class ObjectBox {
                 this.y + this.ySpeed, this.boundBox.width,
                 this.boundBox.height);
 
-        return futureBox.intersects(other.boundBox);
+        return futureBox.intersects(other.x, other.y,
+                other.getBoundBox().getWidth(),
+                other.getBoundBox().getHeight());
     }
 
     // checks future collision in both x and y directions
@@ -91,7 +75,9 @@ public class ObjectBox {
                 this.x + this.xSpeed, this.y + this.ySpeed,
                 this.boundBox.width, this.boundBox.height);
 
-        return futureBox.intersects(other.boundBox);
+        return futureBox.intersects(other.x, other.y,
+                other.getBoundBox().getWidth(),
+                other.getBoundBox().getHeight());
     }
 
     /*==================================================
@@ -102,51 +88,18 @@ public class ObjectBox {
     public void updatePosition() {
 
         // update position
-        this.x += xSpeed;
-        this.y += ySpeed;
+        super.updatePosition();
 
-        // update hit box
-        this.boundBox.x = this.x;
-        this.boundBox.y = this.y;
+        // update bound box
+        this.boundBox = new Rectangle2D.Double(this.getX(), this.getY(),
+                this.boundBox.width, this.boundBox.height);
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public void setBoundBox(RectangularShape b) {
+        this.boundBox = (Rectangle2D.Double) b;
     }
 
-    public double getX() {
-        return this.x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getY() {
-        return this.y;
-    }
-
-    public void setXSpeed(double s) {
-        this.xSpeed = s;
-    }
-
-    public double getXSpeed() {
-        return this.xSpeed;
-    }
-
-    public void setYSpeed(double s) {
-        this.ySpeed = s;
-    }
-
-    public double getYSpeed() {
-        return this.ySpeed;
-    }
-
-    public void setBoundBox(Rectangle2D.Double b) {
-        this.boundBox = b;
-    }
-
-    public Rectangle2D.Double getBoundBox() {
+    public RectangularShape getBoundBox() {
         return this.boundBox;
     }
 
@@ -156,7 +109,7 @@ public class ObjectBox {
 
     // generates object's hashcode for equality check
     public int hashcode() {
-        return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed, this.boundBox);
+        return Objects.hash(super.hashcode(), this.boundBox);
     }
 
     // checks if two objects are the same

@@ -1,10 +1,6 @@
-/*
- * Main Author: Ashley Roesler
- */
-
 package sources;
 
-import sources.GameObject;
+import sources.objCode.GameObject;
 import java.util.Vector;
 
 public class GameRoom {

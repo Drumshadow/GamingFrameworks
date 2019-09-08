@@ -1,5 +1,8 @@
 package sources;
 
+import sources.objCode.GameObject;
+import sources.objCode.ObjectList;
+
 public class Input {
     private int key;  // 0-256? Not sure
     private int action; // 0, 1, 2

@@ -1,10 +1,5 @@
-/*
- * Main Author: Ashley Roesler
- */
+package sources.objCode;
 
-package sources;
-
-import sources.GameObject;
 import java.util.Vector;
 
 // list of all created objects
