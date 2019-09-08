@@ -72,8 +72,6 @@ abstract public class ObjectBox {
         this.y += ySpeed;
     }
 
-    // TODO: add value validation + update all attrib affected by changes
-
     public void setX(double x) {
         this.x = x;
     }

@@ -177,8 +177,6 @@ public class GameObject {
                    Setters and Getters
     ==================================================*/
 
-    // TODO: add value validation + update all attrib affected by changes
-
     public void setObjName(String o) {
         this.objName = o;
     }
@@ -189,6 +187,9 @@ public class GameObject {
 
     public void setSprite(Sprite s) {
         this.sprite = s;
+
+        // update hit box
+        this.hitBox.createBoundingBox(s.getWidth(), s.getHeight());
     }
 
     public Sprite getSprite() {
@@ -221,15 +222,27 @@ public class GameObject {
 
     public void setBoxCode(int c) {
         this.boxCode = c;
+
+        // update hit box
+        if (c == 1) {
+            this.hitBox = new RoundBox(this.hitBox);
+        }
+        else {
+            this.hitBox = new BoxyBox(this.hitBox);
+        }
     }
 
     public int getBoxCode() {
         return this.boxCode;
     }
 
-    public void setXSpeed(double s) { hitBox.setXSpeed(s); }
+    public void setXSpeed(double s) {
+        this.hitBox.setXSpeed(s);
+    }
 
-    public void setYSpeed(double s) {hitBox.setYSpeed(s); }
+    public void setYSpeed(double s) {
+        this.hitBox.setYSpeed(s);
+    }
 
     /*==================================================
                       Miscellaneous

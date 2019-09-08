@@ -129,10 +129,12 @@ public class Sprite {
         }
     }
 
-    // TODO: add value validation + update all attrib affected by changes
-
     public void setSpritePath(String path) {
         this.spritePath = path;
+
+        // update sprite
+        this.sprite = this.loadSprite(path);
+        this.shrinkSprite();
     }
 
     public String getSpritePath() {
@@ -141,6 +143,9 @@ public class Sprite {
 
     public void setSprite(BufferedImage i) {
         this.sprite = i;
+
+        // shrink sprite
+        this.shrinkSprite();
     }
 
     public BufferedImage getSprite() {

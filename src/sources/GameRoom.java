@@ -67,8 +67,6 @@ public class GameRoom {
                    Setters and Getters
     ==================================================*/
 
-    // TODO: add value validation + update all attrib affected by changes
-
     public void setRoomName(String r) {
         this.roomName = r;
     }
