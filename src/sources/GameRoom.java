@@ -2,18 +2,13 @@ package sources;
 
 import sources.objCode.GameObject;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
 
 public class GameRoom {
 
     private String roomName;
 
-    private String bkgPath;
-    private BufferedImage background;
+    private Sprite background;
 
     private double roomWidth;
     private double roomHeight;
@@ -32,8 +27,6 @@ public class GameRoom {
     public GameRoom() {
 
         this.roomName = "Empty Room";
-
-        this.bkgPath = null;
         this.background = null;
 
         this.roomWidth = 0.0;
@@ -46,9 +39,7 @@ public class GameRoom {
     public GameRoom(GameRoom other) {
 
         this.roomName = other.roomName;
-
-        this.bkgPath = other.bkgPath;
-        this.background = other.background;
+        this.background = new Sprite(other.background);
 
         this.roomWidth = other.roomWidth;
         this.roomHeight = other.roomHeight;
@@ -60,27 +51,7 @@ public class GameRoom {
     public GameRoom(String name, String path, double rw, double rh) {
 
         this.roomName = name;
-        this.bkgPath = path;
-
-        // get background from file
-        this.background = this.loadSprite(path);
-    }
-
-     /*==================================================
-                        Drawing
-    ==================================================*/
-
-    // gets sprite from given path
-    public BufferedImage loadSprite(String spritePath) {
-
-        // get sprite from file
-        try {
-            return ImageIO.read(new File(this.bkgPath));
-
-        } catch (IOException e) {
-            System.out.println("ERROR: bad path to sprite image");
-            return null;
-        }
+        this.background = new Sprite(path);
     }
 
     /*==================================================
@@ -104,19 +75,11 @@ public class GameRoom {
         return this.roomName;
     }
 
-    public void setBkgPath(String bp) {
-        this.bkgPath = bp;
-    }
-
-    public String getBkgPath() {
-        return this.bkgPath;
-    }
-
-    public void setBackground(BufferedImage bk) {
+    public void setBackground(Sprite bk) {
         this.background = bk;
     }
 
-    public BufferedImage getBackground() {
+    public Sprite getBackground() {
         return this.background;
     }
 
