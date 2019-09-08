@@ -12,7 +12,7 @@ public class ObjectList {
     ==================================================*/
 
     public ObjectList() {
-        this.oList = new Vector<GameObject>();
+        this.oList = new Vector<>();
     }
 
     /*==================================================

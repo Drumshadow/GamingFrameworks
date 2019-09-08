@@ -177,9 +177,7 @@ public class GameObject {
                    Setters and Getters
     ==================================================*/
 
-    // TODO: add value validation
-    // TODO: add updates to all attrib affected by change
-    // TODO: add box type setter
+    // TODO: add value validation + update all attrib affected by changes
 
     public void setObjName(String o) {
         this.objName = o;
@@ -219,6 +217,14 @@ public class GameObject {
 
     public boolean getCanCollide() {
         return this.canCollide;
+    }
+
+    public void setBoxCode(int c) {
+        this.boxCode = c;
+    }
+
+    public int getBoxCode() {
+        return this.boxCode;
     }
 
     public void setXSpeed(double s) { hitBox.setXSpeed(s); }

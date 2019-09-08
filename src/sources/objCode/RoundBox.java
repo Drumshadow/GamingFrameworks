@@ -102,6 +102,8 @@ public class RoundBox extends ObjectBox {
                    Setters and Getters
     ==================================================*/
 
+    // TODO: add value validation + update all attrib affected by changes
+
     // updates position and bounding box
     public void updatePosition() {
 

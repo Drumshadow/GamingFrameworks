@@ -14,44 +14,48 @@ public class Sprite {
     private int width;
     private int height;
 
+    /*==================================================
+                     Initialization
+    ==================================================*/
+
     // TODO: invisible objects
     // TODO: default sprite when none is given?
+    // TODO: function that gets size of sprite
+    // TODO: stretching sprite to different size?
+    // TODO: sprite editor?
 
-    // TODO: copy constructor
+    // generic constructor
+    public Sprite() {
+        this.spritePath = null;
+        this.sprite = null;
+
+        this.width = 0;
+        this.height = 0;
+    }
+
+    // copy constructor
     public Sprite(Sprite s) {
 
+        this.spritePath = s.spritePath;
+        this.sprite = s.sprite;
+
+        this.width = s.width;
+        this.height = s.height;
     }
 
-    // TODO: value constructor
+    // value constructor (loads sprite from file)
+    // dimensions are set by shrinkSprite
     public Sprite(String path) {
-        //this.sprite = this.loadSprite(sprPath);
-        //        this.shrinkSprite();
-    }
 
-    public int getWidth() {
-        return width;
-    }
+        this.spritePath = path;
+        this.sprite = this.loadSprite(path);
 
-    public int getHeight() {
-        return height;
-    }
-
-    // gets sprite from given path
-    public BufferedImage loadSprite(String spritePath) {
-
-        // get sprite from file
-        try {
-            return ImageIO.read(new File(this.spritePath));
-
-        } catch (IOException e) {
-            System.out.println("ERROR: bad path to sprite image");
-            return null;
-        }
+        this.shrinkSprite();
     }
 
     // shrinks sprite down to smallest size (gets rid of empty space)
     // sets width and height
-    public void shrinkSprite() {
+    private void shrinkSprite() {
 
         int xMin = Integer.MAX_VALUE;
         int xMax = Integer.MIN_VALUE;
@@ -106,5 +110,56 @@ public class Sprite {
         g2d.setBackground(Color.red);
         g2d.fill(new Ellipse2D.Float(0, 0, 200, 100));*/
         //g2d.dispose();
+    }
+
+    /*==================================================
+                   Setters and Getters
+    ==================================================*/
+
+    // gets sprite from given path
+    public BufferedImage loadSprite(String spritePath) {
+
+        // get sprite from file
+        try {
+            return ImageIO.read(new File(this.spritePath));
+
+        } catch (IOException e) {
+            System.out.println("ERROR: bad path to sprite image");
+            return null;
+        }
+    }
+
+    // TODO: add value validation + update all attrib affected by changes
+
+    public void setSpritePath(String path) {
+        this.spritePath = path;
+    }
+
+    public String getSpritePath() {
+        return this.spritePath;
+    }
+
+    public void setSprite(BufferedImage i) {
+        this.sprite = i;
+    }
+
+    public BufferedImage getSprite() {
+        return this.sprite;
+    }
+
+    public void setWidth(int w) {
+        this.width = w;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public void setHeight(int h) {
+        this.height = h;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }

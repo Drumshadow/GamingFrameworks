@@ -32,7 +32,7 @@ public class GameRoom {
         this.roomWidth = 0.0;
         this.roomHeight = 0.0;
 
-        this.allObjects = new Vector<GameObject>();
+        this.allObjects = new Vector<>();
     }
 
     // copy constructor
@@ -44,7 +44,7 @@ public class GameRoom {
         this.roomWidth = other.roomWidth;
         this.roomHeight = other.roomHeight;
 
-        this.allObjects = new Vector<GameObject>(other.allObjects);
+        this.allObjects = new Vector<>(other.allObjects);
     }
 
     // value constructor (finds background via path)
@@ -66,6 +66,8 @@ public class GameRoom {
     /*==================================================
                    Setters and Getters
     ==================================================*/
+
+    // TODO: add value validation + update all attrib affected by changes
 
     public void setRoomName(String r) {
         this.roomName = r;
