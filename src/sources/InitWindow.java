@@ -6,7 +6,6 @@ import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
-import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -43,6 +42,8 @@ public class InitWindow {
             throw new RuntimeException("Failed to create the GLFW window");
 
         InputList inputs = new InputList();
+
+        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", new GameObject("Mario", "./sprites/mario.jpg", 413, 550, 9.8, true), 2));
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz

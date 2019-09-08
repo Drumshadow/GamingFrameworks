@@ -1,18 +1,6 @@
 package sources;
 
-import org.lwjgl.glfw.GLFW.*;
-import org.lwjgl.glfw.GLFWKeyCallback.*;
-import org.lwjgl.*;
-
 import java.io.File;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
-
-import static org.lwjgl.openal.AL10.*;
-import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryStack.stackPop;
-import static org.lwjgl.system.libc.LibCStdlib.free;
 
 
 public class Input {
@@ -80,7 +68,7 @@ public class Input {
         }
         else if (purpose == purpose.MoveLeft) {
             System.out.println("Moving Left!");
-            sounds.setFileName("/Users/stevie_damrel/Desktop/Fall 2019/Gaming Frameworks/GamingFrameworks/audio-files/oof.ogg");
+            sounds.setFileName("./audio-files/oof.ogg");
             sounds.loadPlaySound();
         }
         else if (purpose == purpose.MoveRight) {

@@ -5,7 +5,11 @@
 package sources;
 
 import sources.ObjectBox;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -54,6 +58,24 @@ public class GameObject {
     }
 
     // TODO: non generic constructor?
+
+    public GameObject(String objName, String spritePath, int width, int height, double gravityFactor, boolean canCollide) {
+        this.objName = objName;
+        this.spritePath = spritePath;
+        try {
+            this.sprite = ImageIO.read(new File(this.spritePath));
+        } catch (IOException e) {
+            System.out.println("ERROR: bad path to sprite image");
+            this.sprite = null;
+        }
+        this.width = width;
+        this.height = height;
+        this.gravityFactor = gravityFactor;
+        this.canCollide = canCollide;
+        this.hitBox = new ObjectBox();
+        this.hitBox.createBoundingBox(this.width, this.height);
+    }
+
 
     /*==================================================
                         Drawing
@@ -121,7 +143,7 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(Vector<GameObject> roomObjs) {
+    public void move(ObjectList roomObjs) {
 
         // check collision
         if (this.canCollide) {
