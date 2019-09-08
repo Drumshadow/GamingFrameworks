@@ -3,6 +3,21 @@ package sources;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
+class MultithreadingDemo implements Runnable
+{
+    Input.purpose x;
+    @Override
+    public void run() {
+        Audio sounds = new Audio();
+        if(x == Input.purpose.MoveLeft){
+            if(sounds.fileName == null) {
+                sounds.setFileName("./audio-files/oof.ogg");
+            }
+            sounds.loadPlaySound();
+        }
+    }
+}
+
 public class Input {
     private int key;  // 0-256? Not sure
     private int action; // 0, 1, 2
@@ -10,7 +25,9 @@ public class Input {
     private purpose purpose;
     private GameObject obj;
     private double speed;
-    Audio sounds = new Audio();
+    private String sndName;
+    private Audio sounds = new Audio();
+    private MultithreadingDemo object = new MultithreadingDemo();
 
     Input(int k, int a, GameObject o, String pur) {
         key = k;
@@ -30,6 +47,8 @@ public class Input {
         obj = o;
         if (pur.equals("Left")) {
             purpose = purpose.MoveLeft;
+            object.run();
+
         }
         else if (pur.equals("Right")) {
             purpose = purpose.MoveRight;
@@ -69,6 +88,8 @@ public class Input {
         }
         else if (purpose == purpose.MoveLeft) {
             System.out.println("Moving Left!");
+            object.x = purpose.MoveLeft;
+            object.run();
             obj.move(roomObjects);
         }
         else if (purpose == purpose.MoveRight) {
