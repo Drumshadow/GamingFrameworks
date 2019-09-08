@@ -221,55 +221,21 @@ public class GameObject {
                 }
 
                 // test future diagonal collision
+                if (this.hitBox.diagCollisionCheck(other.hitBox)) {
 
+                    // move up to object from x direction
+                    this.hitBox.xSpeed = Math.signum(
+                            this.hitBox.objDistX(other.hitBox));
 
-
-
+                    // move up to object from y direction
+                    this.hitBox.ySpeed = Math.signum(
+                            this.hitBox.objDistY(other.hitBox));
+                }
             }
         }
 
         // update position
         this.hitBox.updatePosition();
-
-
-/*
-        // check collision
-        if (this.canCollide) {
-
-            boolean xCollide;
-            boolean yCollide;
-
-            for (GameObject o : objs) {
-
-                // don't collide with self and check if can collide
-                if (this.equals(o) || !o.canCollide)
-                    continue;
-
-                // check x collision
-                xCollide = this.xCollisionCheck(o);
-
-                // check y collision
-                yCollide = this.yCollisionCheck(o);
-
-                // check both directions (ran into corner)
-                if (!xCollide && !yCollide) {
-
-                    if (this.futureCollisionCheck(o)) {
-
-                        // continue in the faster direction
-                        xCollide = ySpeed > xSpeed;
-                        yCollide = !xCollide;
-                    }
-                }
-
-                if (xCollide)
-                    xSpeed = 0;
-
-                if (yCollide)
-                    ySpeed = 0;
-
-            }
-        }*/
     }
 
     public void objectJump() {
