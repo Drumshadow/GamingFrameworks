@@ -1,15 +1,9 @@
-/*
- * Main Author: Ashley Roesler
- */
+package sources.objCode;
 
-package sources;
-
-import sources.ObjectBox;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
-import java.util.Vector;
 
-// contains info common across all instances of an object
+// represents generic object
 public class GameObject {
 
     private String objName;
@@ -30,12 +24,16 @@ public class GameObject {
 
     private boolean canCollide;
 
+    // boxCode is the type of hit box
+    // 0 = square, 1 = round
+    private int boxCode;
     private ObjectBox hitBox;
 
     /*==================================================
                      Initialization
     ==================================================*/
 
+    // generic constructor
     public GameObject() {
         this.objName = "Empty Object";
 
@@ -46,31 +44,39 @@ public class GameObject {
         this.height = 0;
 
         this.canCollide = false;
-
         this.gravityFactor = 0.0;
 
-        this.hitBox = new ObjectBox();
+        // default hit box is square
+        this.boxCode = 0;
+        this.hitBox = new BoxyBox();
         this.hitBox.createBoundingBox(this.width, this.height);
     }
 
-    GameObject(GameObject go) {
-        this.objName = go.objName;
+    // copy constructor
+    GameObject(GameObject other) {
+        this.objName = other.objName;
 
-        this.spritePath = go.spritePath;
-        this.sprite = go.sprite;
+        this.spritePath = other.spritePath;
+        this.sprite = other.sprite;
 
-        this.width = go.width;
-        this.height = go.height;
+        this.width = other.width;
+        this.height = other.height;
 
-        this.canCollide = go.canCollide;
+        this.canCollide = other.canCollide;
+        this.gravityFactor = other.gravityFactor;
 
-        this.gravityFactor = go.gravityFactor;
+        // create hit box
+        this.boxCode = other.boxCode;
 
-        this.hitBox = new ObjectBox(go.hitBox);
-        this.hitBox.createBoundingBox(go.width, go.height);
+        if (other.boxCode == 1) {
+            this.hitBox = new RoundBox(other.hitBox);
+        }
+        else {
+            this.hitBox = new BoxyBox(other.hitBox);
+        }
+
+        this.hitBox.createBoundingBox(other.width, other.height);
     }
-
-    // TODO: non generic constructor?
 
     /*==================================================
                         Drawing
@@ -197,6 +203,7 @@ public class GameObject {
 
     // TODO: add value validation
     // TODO: add updates to all attrib affected by change
+    // TODO: add box type setter
 
     public void setObjName(String o) {
         this.objName = o;
