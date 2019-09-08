@@ -1,7 +1,8 @@
 package sources.objCode;
 
-import javax.imageio.ImageIO;
+import sources.GameRoom;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class GameObject {
 
         this.canCollide = false;
         this.gravityFactor = 0.0;
+        this.terminalV = 0.0;
 
         // default hit box is square
         this.boxCode = 0;
@@ -69,6 +71,7 @@ public class GameObject {
 
         this.canCollide = other.canCollide;
         this.gravityFactor = other.gravityFactor;
+        this.terminalV = other.terminalV;
 
         // create hit box
         this.boxCode = other.boxCode;
@@ -83,23 +86,40 @@ public class GameObject {
         this.hitBox.createBoundingBox(other.width, other.height);
     }
 
-    public GameObject(String objName, String spritePath, int width, int height, double gravityFactor, boolean canCollide) {
-        this.objName = objName;
-        this.spritePath = spritePath;
+    // constructor via given values
+    public GameObject(String name, String sprPath, int w, int h,
+                      double gravity, boolean collide, double tv,
+                      int boxType) {
+
+        this.objName = name;
+        this.spritePath = sprPath;
+
+        // get sprite from file
         try {
             this.sprite = ImageIO.read(new File(this.spritePath));
         } catch (IOException e) {
             System.out.println("ERROR: bad path to sprite image");
             this.sprite = null;
         }
-        this.width = width;
-        this.height = height;
-        this.gravityFactor = gravityFactor;
-        this.canCollide = canCollide;
-        this.hitBox = new ObjectBox();
+
+        this.width = w;
+        this.height = h;
+        this.gravityFactor = gravity;
+        this.canCollide = collide;
+        this.terminalV = tv;
+
+        // create hit box
+        this.boxCode = boxType;
+
+        if (this.boxCode == 1) {
+            this.hitBox = new RoundBox();
+        }
+        else {
+            this.hitBox = new BoxyBox();
+        }
+
         this.hitBox.createBoundingBox(this.width, this.height);
     }
-
 
     /*==================================================
                         Drawing
