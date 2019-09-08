@@ -344,6 +344,10 @@ public class GameObject {
         return this.height;
     }
 
+    public void setXSpeed(double s) { hitBox.setXSpeed(s); }
+
+    public void setYSpeed(double s) {hitBox.setYSpeed(s); }
+
     /*==================================================
                       Miscellaneous
     ==================================================*/

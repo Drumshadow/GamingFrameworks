@@ -9,7 +9,7 @@ class MultithreadingDemo implements Runnable
     @Override
     public void run() {
         Audio sounds = new Audio();
-        if(x == Input.purpose.MoveLeft){
+        if(x == Input.purpose.MoveX){
             if(sounds.fileName == null) {
                 sounds.setFileName("./audio-files/oof.ogg");
             }
@@ -21,7 +21,7 @@ class MultithreadingDemo implements Runnable
 public class Input {
     private int key;  // 0-256? Not sure
     private int action; // 0, 1, 2
-    enum purpose{Create, Destroy, MoveLeft, MoveRight, MoveUp, MoveDown, PlaySound};
+    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound};
     private purpose purpose;
     private GameObject obj;
     private double speed;
@@ -45,19 +45,12 @@ public class Input {
         key = k;
         action = a;
         obj = o;
-        if (pur.equals("Left")) {
-            purpose = purpose.MoveLeft;
-            object.run();
+        if (pur.equals("MoveX")) {
+            purpose = purpose.MoveX;
 
         }
-        else if (pur.equals("Right")) {
-            purpose = purpose.MoveRight;
-        }
-        else if (pur.equals("Up")) {
-            purpose = purpose.MoveUp;
-        }
-        else if (pur.equals("Down")) {
-            purpose = purpose.MoveDown;
+        else if (pur.equals("MoveY")) {
+            purpose = purpose.MoveY;
         }
         speed = s;
     }
@@ -86,22 +79,15 @@ public class Input {
         else if (purpose == purpose.Destroy) {
             // Destroy object
         }
-        else if (purpose == purpose.MoveLeft) {
+        else if (purpose == purpose.MoveX) {
             System.out.println("Moving Left!");
-            object.x = purpose.MoveLeft;
-            object.run();
+            obj.setXSpeed(speed);
+            //object.run();
             obj.move(roomObjects);
         }
-        else if (purpose == purpose.MoveRight) {
-            // Move Right
-            obj.move(roomObjects);
-        }
-        else if (purpose == purpose.MoveUp) {
-            // Move Up
-            obj.move(roomObjects);
-        }
-        else if (purpose == purpose.MoveDown) {
+        else if (purpose == purpose.MoveY) {
             // Move Down
+            obj.setYSpeed(speed);
             obj.move(roomObjects);
         }
         else if (purpose == purpose.PlaySound) {
