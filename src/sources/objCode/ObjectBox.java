@@ -12,8 +12,6 @@ abstract public class ObjectBox {
     double xSpeed;
     double ySpeed;
 
-    // TODO: add acceleration and max speeds??
-
     /*==================================================
                      Initialization
     ==================================================*/

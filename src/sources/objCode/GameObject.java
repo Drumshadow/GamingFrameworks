@@ -100,12 +100,8 @@ public class GameObject {
         this.spritePath = sprPath;
 
         // get sprite from file
-        try {
-            this.sprite = ImageIO.read(new File(this.spritePath));
-        } catch (IOException e) {
-            System.out.println("ERROR: bad path to sprite image");
-            this.sprite = null;
-        }
+        this.sprite = this.loadSprite(sprPath);
+        this.shrinkSprite();
 
         this.width = w;
         this.height = h;
@@ -133,9 +129,18 @@ public class GameObject {
                         Drawing
     ==================================================*/
 
-    // sets object's sprite and saves to file within game engine
-    public void loadSprite(String spritePath) {
+    // gets sprite from given path
+    // can also be used to get room backgrounds
+    public BufferedImage loadSprite(String spritePath) {
 
+        // get sprite from file
+        try {
+            return ImageIO.read(new File(this.spritePath));
+
+        } catch (IOException e) {
+            System.out.println("ERROR: bad path to sprite image");
+            return null;
+        }
     }
 
     // draws object
