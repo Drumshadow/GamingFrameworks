@@ -93,7 +93,7 @@ public class GameObject {
         this.hitBox.createBoundingBox(other.width, other.height);
     }
 
-    // constructor via given values
+    // constructor via given values (finds sprite via path)
     public GameObject(String name, String sprPath, int w, int h,
                       boolean collide, double gravity, double tv,
                       double jump, int boxType) {
@@ -132,7 +132,6 @@ public class GameObject {
     ==================================================*/
 
     // gets sprite from given path
-    // can also be used to get room backgrounds
     public BufferedImage loadSprite(String spritePath) {
 
         // get sprite from file

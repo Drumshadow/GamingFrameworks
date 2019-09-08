@@ -2,7 +2,10 @@ package sources;
 
 import sources.objCode.GameObject;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 public class GameRoom {
@@ -39,7 +42,46 @@ public class GameRoom {
         this.allObjects = new Vector<GameObject>();
     }
 
-    // TODO: copy constructor, value constructor (call loadsprite and shrink sprite)
+    // copy constructor
+    public GameRoom(GameRoom other) {
+
+        this.roomName = other.roomName;
+
+        this.bkgPath = other.bkgPath;
+        this.background = other.background;
+
+        this.roomWidth = other.roomWidth;
+        this.roomHeight = other.roomHeight;
+
+        this.allObjects = new Vector<GameObject>(other.allObjects);
+    }
+
+    // value constructor (finds background via path)
+    public GameRoom(String name, String path, double rw, double rh) {
+
+        this.roomName = name;
+        this.bkgPath = path;
+
+        // get background from file
+        this.background = this.loadSprite(path);
+    }
+
+     /*==================================================
+                        Drawing
+    ==================================================*/
+
+    // gets sprite from given path
+    public BufferedImage loadSprite(String spritePath) {
+
+        // get sprite from file
+        try {
+            return ImageIO.read(new File(this.bkgPath));
+
+        } catch (IOException e) {
+            System.out.println("ERROR: bad path to sprite image");
+            return null;
+        }
+    }
 
     /*==================================================
                     Object Control
