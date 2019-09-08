@@ -11,7 +11,7 @@ public class GameRoom {
     private Vector<GameObject> allObjects;
 
     // acceleration due to gravity
-    public static final double GRAVITY = 9.8;
+    public static final double GRAVITY = 0.2;
 
     // TODO: add background
 

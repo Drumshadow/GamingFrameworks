@@ -25,6 +25,7 @@ public class GameObject {
     // no gravity is gravityFactor = 0
     // controls "weight" of object
     private double gravityFactor;
+    private double terminalV;
 
     private boolean canCollide;
 
@@ -168,16 +169,48 @@ public class GameObject {
     // moves objects and performs collision detection
     public void move(ObjectList roomObjs) {
 
+        // acceleration due to gravity
+        if (gravityFactor != 0.0 && this.hitBox.ySpeed < this.terminalV) {
+            this.hitBox.ySpeed += (GameRoom.GRAVITY * this.gravityFactor);
+        }
+
         // check collision
         if (this.canCollide) {
-            // TODO: do collision stuff
+
+            for (GameObject other : roomObjs.getOList()) {
+
+                // don't collide with self
+                if (this.equals(other))
+                    continue;
+
+                // test future horizontal collision
+                if (this.hitBox.xCollisionCheck(other.hitBox)) {
+
+                    // move up to object without actually colliding
+                    this.hitBox.xSpeed = Math.signum(
+                            this.hitBox.objDistX(other.hitBox));
+
+                }
+
+                // test future vertical collision
+                if (this.hitBox.yCollisionCheck(other.hitBox)) {
+
+                    // move up to object without actually colliding
+                    this.hitBox.ySpeed = Math.signum(
+                            this.hitBox.objDistY(other.hitBox));
+                }
+
+                // test future diagonal collision
+
+
+
+
+            }
         }
 
         // update position
         this.hitBox.updatePosition();
 
-        // TODO: jump
-        // TODO: falling
 
 /*
         // check collision
@@ -219,6 +252,13 @@ public class GameObject {
         }*/
     }
 
+    public void objectJump() {
+
+        // check if colliding on bottom
+        // set vertical speed to -jumpspeed
+        // TODO: jump
+    }
+
     /*==================================================
                    Setters and Getters
     ==================================================*/
@@ -257,6 +297,14 @@ public class GameObject {
 
     public double getGravityFactor() {
         return this.gravityFactor;
+    }
+
+    public void setTerminalV(double v) {
+        this.terminalV = v;
+    }
+
+    public double getTerminalV() {
+        return this.terminalV;
     }
 
     public void setCanCollide(boolean c) {

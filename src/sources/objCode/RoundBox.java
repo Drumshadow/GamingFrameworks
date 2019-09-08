@@ -35,7 +35,7 @@ public class RoundBox extends ObjectBox {
     ==================================================*/
 
     // checks if two bounding boxes have collided
-    public Boolean basicCollisionCheck(ObjectBox other) {
+    public boolean basicCollisionCheck(ObjectBox other) {
         return this.boundBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),
                 other.getBoundBox().getHeight());
@@ -69,7 +69,7 @@ public class RoundBox extends ObjectBox {
     }
 
     // checks future collision in both x and y directions
-    public boolean futureCollisionCheck(ObjectBox other) {
+    public boolean diagCollisionCheck(ObjectBox other) {
 
         // make temporary bounding box for future position
         Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x + this.xSpeed,
@@ -80,6 +80,22 @@ public class RoundBox extends ObjectBox {
         return futureBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),
                 other.getBoundBox().getHeight());
+    }
+
+    // checks horizontal distance between two hit boxes
+    public double objDistX(ObjectBox other) {
+
+        return Math.abs(this.boundBox.getCenterX() -
+                other.getBoundBox().getCenterX()) -
+                (this.boundBox.width + other.getBoundBox().getWidth());
+    }
+
+    // checks vertical distance between two hit boxes
+    public double objDistY(ObjectBox other) {
+
+        return Math.abs(this.boundBox.getCenterY() -
+                other.getBoundBox().getCenterY()) -
+                (this.boundBox.height + other.getBoundBox().getHeight());
     }
 
     /*==================================================

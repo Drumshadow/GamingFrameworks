@@ -45,7 +45,7 @@ abstract public class ObjectBox {
     ==================================================*/
 
     // checks if two bounding boxes have collided
-    abstract public Boolean basicCollisionCheck(ObjectBox other);
+    abstract public boolean basicCollisionCheck(ObjectBox other);
 
     // checks future collision in x direction
     abstract public boolean xCollisionCheck(ObjectBox other);
@@ -54,7 +54,13 @@ abstract public class ObjectBox {
     abstract public boolean yCollisionCheck(ObjectBox other);
 
     // checks future collision in both x and y directions
-    abstract public boolean futureCollisionCheck(ObjectBox other);
+    abstract public boolean diagCollisionCheck(ObjectBox other);
+
+    // checks horizontal distance between two hit boxes
+    abstract public double objDistX(ObjectBox other);
+
+    // checks vertical distance between two hit boxes
+    abstract public double objDistY(ObjectBox other);
 
     /*==================================================
                    Setters and Getters

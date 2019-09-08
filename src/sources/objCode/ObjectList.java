@@ -24,5 +24,13 @@ public class ObjectList {
         this.oList.add(o);
     }
 
+    /*==================================================
+                   Setters and Getters
+    ==================================================*/
+
+    public Vector<GameObject> getOList() {
+        return this.oList;
+    }
+
     // TODO: add helpful functions
 }
