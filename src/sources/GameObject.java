@@ -53,6 +53,23 @@ public class GameObject {
         this.hitBox.createBoundingBox(this.width, this.height);
     }
 
+    GameObject(GameObject go) {
+        this.objName = go.objName;
+
+        this.spritePath = go.spritePath;
+        this.sprite = go.sprite;
+
+        this.width = go.width;
+        this.height = go.height;
+
+        this.canCollide = go.canCollide;
+
+        this.gravityFactor = go.gravityFactor;
+
+        this.hitBox = new ObjectBox(go.hitBox);
+        this.hitBox.createBoundingBox(go.width, go.height);
+    }
+
     // TODO: non generic constructor?
 
     /*==================================================
@@ -121,7 +138,7 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(Vector<GameObject> roomObjs) {
+    public void move(ObjectList roomObjs) {
 
         // check collision
         if (this.canCollide) {
