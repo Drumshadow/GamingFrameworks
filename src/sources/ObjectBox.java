@@ -37,6 +37,16 @@ public class ObjectBox {
         this.boundBox = null;
     }
 
+    ObjectBox(ObjectBox ob) {
+        this.x = ob.x;
+        this.y = ob.y;
+
+        this.xSpeed = ob.xSpeed;
+        this.ySpeed = ob.ySpeed;
+
+        this.boundBox = ob.boundBox;
+    }
+
     // creates bounding box
     public void createBoundingBox(double w, double h) {
         this.boundBox = new Rectangle2D.Double(this.x, this.y, w, h);

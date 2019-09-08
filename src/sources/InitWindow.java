@@ -43,13 +43,14 @@ public class InitWindow {
             throw new RuntimeException("Failed to create the GLFW window");
 
         InputList inputs = new InputList();
+        ObjectList objects = new ObjectList();
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             for (int i = 0; i < inputs.size(); i++) {
                 if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
-                    inputs.get(i).execute();
+                    inputs.get(i).execute(objects);
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                     glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
             }
