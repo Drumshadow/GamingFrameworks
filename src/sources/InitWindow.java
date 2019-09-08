@@ -47,7 +47,9 @@ public class InitWindow {
         InputList inputs = new InputList();
         ObjectList objects = new ObjectList();
 
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", new GameObject("Mario", "./sprites/mario.jpg", 413, 550, 9.8, true), 2));
+        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", new GameObject(
+                "Mario", "./sprites/mario.jpg", 413, 550, true, 1.0, 10.0,
+                7.0, 0), 2));
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz

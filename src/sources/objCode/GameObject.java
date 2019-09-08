@@ -27,6 +27,7 @@ public class GameObject {
     // controls "weight" of object
     private double gravityFactor;
     private double terminalV;
+    private double jumpPower;
 
     private boolean canCollide;
 
@@ -49,9 +50,11 @@ public class GameObject {
         this.width = 0;
         this.height = 0;
 
-        this.canCollide = false;
         this.gravityFactor = 0.0;
         this.terminalV = 0.0;
+        this.jumpPower = 0.0;
+
+        this.canCollide = false;
 
         // default hit box is square
         this.boxCode = 0;
@@ -69,9 +72,11 @@ public class GameObject {
         this.width = other.width;
         this.height = other.height;
 
-        this.canCollide = other.canCollide;
         this.gravityFactor = other.gravityFactor;
         this.terminalV = other.terminalV;
+        this.jumpPower = other.jumpPower;
+
+        this.canCollide = other.canCollide;
 
         // create hit box
         this.boxCode = other.boxCode;
@@ -88,8 +93,8 @@ public class GameObject {
 
     // constructor via given values
     public GameObject(String name, String sprPath, int w, int h,
-                      double gravity, boolean collide, double tv,
-                      int boxType) {
+                      boolean collide, double gravity, double tv,
+                      double jump, int boxType) {
 
         this.objName = name;
         this.spritePath = sprPath;
@@ -104,40 +109,15 @@ public class GameObject {
 
         this.width = w;
         this.height = h;
+
         this.gravityFactor = gravity;
-        this.canCollide = collide;
         this.terminalV = tv;
+        this.jumpPower = jump;
+
+        this.canCollide = collide;
 
         // create hit box
         this.boxCode = boxType;
-
-        if (this.boxCode == 1) {
-            this.hitBox = new RoundBox();
-        }
-        else {
-            this.hitBox = new BoxyBox();
-        }
-
-        this.hitBox.createBoundingBox(this.width, this.height);
-    }
-
-    //TODO: Make sure this does not suck, I added this to get some other stuff working but may need to be fixed.
-    public GameObject(String name, String path, int w, int h, double gravity, boolean collide) {
-        this.objName = name;
-        this.spritePath = path;
-
-        // get sprite from file
-        try {
-            this.sprite = ImageIO.read(new File(this.spritePath));
-        } catch (IOException e) {
-            System.out.println("ERROR: bad path to sprite image");
-            this.sprite = null;
-        }
-
-        this.width = w;
-        this.height = h;
-        this.gravityFactor = gravity;
-        this.canCollide = collide;
 
         if (this.boxCode == 1) {
             this.hitBox = new RoundBox();
@@ -269,6 +249,8 @@ public class GameObject {
     public void objectJump() {
 
         // check if colliding on bottom
+
+
         // set vertical speed to -jumpspeed
         // TODO: jump
     }
