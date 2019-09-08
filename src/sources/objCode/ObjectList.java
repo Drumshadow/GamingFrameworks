@@ -2,7 +2,7 @@ package sources.objCode;
 
 import java.util.Vector;
 
-// list of all created objects
+// list of created objects
 public class ObjectList {
 
     private Vector<GameObject> oList;
@@ -28,9 +28,11 @@ public class ObjectList {
                    Setters and Getters
     ==================================================*/
 
-    public Vector<GameObject> getOList() {
-        return this.oList;
+    public void setOList(Vector<GameObject> o) {
+        this.oList = o;
     }
 
-    // TODO: add helpful functions
+    Vector<GameObject> getOList() {
+        return this.oList;
+    }
 }
