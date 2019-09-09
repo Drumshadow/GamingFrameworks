@@ -57,7 +57,7 @@ public class GameLoop {
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 0, 10, 7, 0);
         objects.addObject(mario);
         objects.getOList().get(0).getSprite().drawObject();
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "MoveX", mario, 2.0));
+        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, mario, "MoveX", 2.0));
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
