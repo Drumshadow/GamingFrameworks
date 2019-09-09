@@ -17,10 +17,11 @@ public class GameLoop {
      private InitWindow newWindow = new InitWindow();
     InputList inputs = new InputList();
     ObjectList objects = new ObjectList();
+    Audio bg = new Audio();
 
-    public void run() {
+    public void run() throws Exception {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-
+        bg.playSound("./music/MemeVapor.wav");
         newWindow.init();
 
         //mario.drawObject();
@@ -59,9 +60,16 @@ public class GameLoop {
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, -9.8, 10, 7, 0);
         objects.addObject(mario);
         objects.getOList().get(0).drawObject();
+        Audio ad = new Audio();
+        Audio ab = new Audio();
+        ad.setFileName("./audio-files/EPress.ogg");
+        ab.setFileName("./audio-files/QPress.ogg");
         FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
         inputs.add(new Input(GLFW_KEY_A, GLFW_REPEAT, mario, "MoveX", -2.0));
         inputs.add(new Input(GLFW_KEY_D, GLFW_REPEAT, mario, "MoveX", 2.0));
+        inputs.add(new Input(GLFW_KEY_Q, GLFW_PRESS, mario, "PlaySound", ad));
+        inputs.add(new Input(GLFW_KEY_E, GLFW_PRESS, mario, "PlaySound", ab));
+
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg", 413, 550, true, -9.8, 10, 7, 0);
         objects.addObject(wario);
@@ -121,7 +129,7 @@ public class GameLoop {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         new GameLoop().run();
     }
 
