@@ -81,7 +81,6 @@ public class Input {
             roomObjects.removeObject(obj);
         }
         else if (purpose == purpose.MoveX) {
-            System.out.println("Moving X!");
             obj.setXSpeed(speed);
             //object.run();
             obj.move(roomObjects);
