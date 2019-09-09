@@ -25,6 +25,8 @@ public class GameObject {
     private int boxCode;
     private ObjectBox hitBox;
 
+    // TODO: create a delete object function
+
     /*==================================================
                      Initialization
     ==================================================*/
