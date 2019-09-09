@@ -56,13 +56,17 @@ public class GameLoop {
         // bindings available for use.
         GL.createCapabilities();
 
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 0, 10, 7, 0);
+        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, -9.8, 10, 7, 0);
         objects.addObject(mario);
         objects.getOList().get(0).drawObject();
-        System.out.println(glfwJoystickPresent(GLFW_JOYSTICK_1));
         FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
         inputs.add(new Input(GLFW_KEY_A, GLFW_REPEAT, mario, "MoveX", -2.0));
         inputs.add(new Input(GLFW_KEY_D, GLFW_REPEAT, mario, "MoveX", 2.0));
+
+        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg", 413, 550, true, -9.8, 10, 7, 0);
+        objects.addObject(wario);
+        objects.getOList().get(1).setX(700);
+        objects.getOList().get(1).drawObject();
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -105,9 +109,9 @@ public class GameLoop {
                 red += 0.01;
             }
 
-            System.out.println("Marios x: " + objects.getOList().get(0).getXSpeed());
-            System.out.println("Marios y: " + objects.getOList().get(0).getYSpeed());
-            System.out.println("How many marios: " + objects.getOList().size());
+            //System.out.println("Marios x: " + objects.getOList().get(0).getXSpeed());
+            //System.out.println("Marios y: " + objects.getOList().get(0).getYSpeed());
+            //System.out.println("How many marios: " + objects.getOList().size());
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
 
