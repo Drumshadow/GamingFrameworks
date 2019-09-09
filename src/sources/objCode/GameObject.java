@@ -110,6 +110,11 @@ public class GameObject {
         // acceleration due to gravity
         if (gravityFactor != 0.0 && this.hitBox.ySpeed < this.terminalV) {
             this.hitBox.ySpeed += (GameRoom.GRAVITY * this.gravityFactor);
+
+            // don't go over terminal velocity
+            if (this.hitBox.ySpeed > this.terminalV) {
+                this.hitBox.ySpeed = this.terminalV;
+            }
         }
 
         // check collision
