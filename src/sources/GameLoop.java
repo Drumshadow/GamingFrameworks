@@ -13,6 +13,8 @@ public class GameLoop {
 
     // The window handle
      private InitWindow newWindow = new InitWindow();
+    InputList inputs = new InputList();
+    ObjectList objects = new ObjectList();
 
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -23,7 +25,10 @@ public class GameLoop {
         ObjectList objects = new ObjectList();
         //mario.drawObject();
         //inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
-
+        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 0, 10, 7, 0);
+        objects.addObject(mario);
+        objects.getOList().get(0).getSprite().drawObject();
+        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, mario, "Create"));
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz
@@ -112,6 +117,9 @@ public class GameLoop {
                 red += 0.01;
             }
 
+            System.out.println("Marios x: " + objects.getOList().get(0).getXSpeed());
+            System.out.println("Marios y: " + objects.getOList().get(0).getYSpeed());
+            System.out.println("How many marios: " + objects.getOList().size());
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
 

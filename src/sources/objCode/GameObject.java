@@ -25,6 +25,8 @@ public class GameObject {
     private int boxCode;
     private ObjectBox hitBox;
 
+    // TODO: create a delete object function
+
     /*==================================================
                      Initialization
     ==================================================*/
@@ -110,6 +112,11 @@ public class GameObject {
         // acceleration due to gravity
         if (gravityFactor != 0.0 && this.hitBox.ySpeed < this.terminalV) {
             this.hitBox.ySpeed += (GameRoom.GRAVITY * this.gravityFactor);
+
+            // don't go over terminal velocity
+            if (this.hitBox.ySpeed > this.terminalV) {
+                this.hitBox.ySpeed = this.terminalV;
+            }
         }
 
         // check collision
@@ -243,6 +250,14 @@ public class GameObject {
     public void setYSpeed(double s) {
         this.hitBox.setYSpeed(s);
     }
+
+    public double getXSpeed() { return hitBox.getXSpeed(); }
+
+    public double getYSpeed() { return hitBox.getYSpeed(); }
+
+    public double getX() { return hitBox.getX(); }
+
+    public double getY() { return hitBox.getY(); }
 
     /*==================================================
                       Miscellaneous
