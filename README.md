@@ -23,6 +23,7 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
     - Sprites can be uploaded in any form but must be associated with a game object
     - They should be added to the sprites folder
     
+    
 # User's Guide
 Here are the steps to play!
 1) If you are compiling the source code on a Mac you will need to supply a 
