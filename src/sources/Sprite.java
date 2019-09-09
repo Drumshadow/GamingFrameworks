@@ -1,9 +1,19 @@
 package sources;
 
+import org.lwjgl.glfw.GLFWImage;
+import org.lwjgl.system.MemoryStack;
+
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
+
+import static org.lwjgl.stb.STBImage.*;
+import static org.lwjgl.system.MemoryStack.*;
+
 
 public class Sprite {
 
@@ -13,6 +23,8 @@ public class Sprite {
     // dimensions of sprite
     private int width;
     private int height;
+
+    public Texture texture;
 
     // TODO: invisible objects (future optimization)
 
@@ -45,6 +57,8 @@ public class Sprite {
         this.shrinkSprite();
 
         this.isVisible = true;
+
+        this.texture = new Texture(path);
     }
 
     // shrinks sprite down to smallest size (gets rid of empty space)
@@ -100,10 +114,7 @@ public class Sprite {
 
     // draws object
     public void drawObject() {
-  /*      Graphics2D g2d = sprite.createGraphics();
-        g2d.setBackground(Color.red);
-        g2d.fill(new Ellipse2D.Float(0, 0, 200, 100));*/
-        //g2d.dispose();
+
     }
 
     /*==================================================

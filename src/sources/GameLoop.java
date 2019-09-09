@@ -21,10 +21,8 @@ public class GameLoop {
 
         InputList inputs = new InputList();
         ObjectList objects = new ObjectList();
-
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 9.8, 10, 7, 0);
-        mario.getSprite().drawObject();
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
+        //mario.drawObject();
+        //inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
 
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
@@ -57,16 +55,20 @@ public class GameLoop {
         // bindings available for use.
         GL.createCapabilities();
 
-        // Set the clear color
-        // glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-
-        float red = 1, green = 0, blue = 0;
+        Sprite tex = new Sprite("./sprites/mario.jpg");
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
+        tex.texture.bind();
+
+        float red = 1;
+        float green = 0;
+        float blue = 0;
+
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
         while ( !glfwWindowShouldClose(newWindow.window) ) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 
             glBegin(GL_QUADS);
                 glColor4f(red, green, blue, 0);
@@ -78,6 +80,26 @@ public class GameLoop {
                 glColor4f(red, green, blue, 0);
                 glVertex2f(-1f, -1f);
             glEnd();
+
+            glEnable(GL_TEXTURE_2D);
+
+            glBegin(GL_QUADS);
+            {
+                glTexCoord2f(1.0f, 0.0f);
+                glVertex2f(-0.5f, 0.5f);
+
+                glTexCoord2f(1.0f, 1.0f);
+                glVertex2f(-0.5f, -0.5f);
+
+                glTexCoord2f(0.0f, 1.0f);
+                glVertex2f(0.5f, -0.5f);
+
+                glTexCoord2f(0.0f, 0.0f);
+                glVertex2f(0.5f, 0.5f);
+            }
+            glEnd();
+
+            glDisable(GL_TEXTURE_2D);
 
             if(red > 0 && blue < 0) {
                 red -= 0.01;
