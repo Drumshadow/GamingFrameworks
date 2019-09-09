@@ -41,7 +41,7 @@ public class Input {
         }
     }
 
-    Input(int k, int a, String pur, GameObject o, double s) {
+    Input(int k, int a, GameObject o, String pur, double s) {
         key = k;
         action = a;
         obj = o;
@@ -78,6 +78,7 @@ public class Input {
         }
         else if (purpose == purpose.Destroy) {
             // Destroy object
+            roomObjects.removeObject(obj);
         }
         else if (purpose == purpose.MoveX) {
             System.out.println("Moving X!");
