@@ -6,6 +6,11 @@ import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.system.MemoryStack;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import java.io.File;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
@@ -15,18 +20,21 @@ import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_filename;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.libc.LibCStdlib.free;
 
-public class Audio {
-    String fileName;
-
-    Audio(){}
-    Audio(String file){
-        this.fileName = file;
+class MultiThread implements Runnable
+{
+    String file;
+    long device;
+    void setFileName(String fileN){
+        this.file = fileN;
     }
-
-    void loadPlaySound(){
+    void setDevice(long d){
+        this.device = d;
+    }
+    @Override
+    public void run() {
         //Initialization
         String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-        long   device            = alcOpenDevice(defaultDeviceName);
+        this.device              = alcOpenDevice(defaultDeviceName);
 
         int[] attributes = {0};
         long  context    = alcCreateContext(device, attributes);
@@ -44,8 +52,7 @@ public class Audio {
             //Allocate space to store return information from the function
             IntBuffer channelsBuffer   = stack.mallocInt(1);
             IntBuffer sampleRateBuffer = stack.mallocInt(1);
-
-            rawAudioBuffer = stb_vorbis_decode_filename(fileName, channelsBuffer, sampleRateBuffer);
+            rawAudioBuffer = stb_vorbis_decode_filename(this.file, channelsBuffer, sampleRateBuffer);
 
             //Retreive the extra information that was stored in the buffers by the function
             channels = channelsBuffer.get(0);
@@ -76,6 +83,7 @@ public class Audio {
         alSourcei(sourcePointer, AL_BUFFER, bufferPointer);
 
         //Play the sound
+        //Thread this part
         alSourcePlay(sourcePointer);
 
         while(alGetSourcei(sourcePointer, AL_SOURCE_STATE) == AL_PLAYING) {
@@ -87,10 +95,28 @@ public class Audio {
         alcDestroyContext(context);
         alcCloseDevice(device);
     }
+}
 
-    void playSound(){
 
-        //might not need this function, but im leaving it here to be safe
+public class Audio {
+    String fileName;
+    String bgMusic;
+
+    Audio(){}
+    Audio(String file){
+        this.fileName = file;
+    }
+
+    Audio(String file, String bg){
+        this.fileName = file;
+        this.bgMusic = bg;
+    }
+
+    void loadPlaySound(){
+        MultiThread obj = new MultiThread();
+        obj.setFileName(this.fileName);
+        Thread mT = new Thread(obj);
+        mT.start();
     }
 
     public String getFileName() {
@@ -100,4 +126,30 @@ public class Audio {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+    public String getBgMusic() {
+        return bgMusic;
+    }
+
+    public void setBgMusic(String bgMusic) {
+        this.bgMusic = bgMusic;
+    }
+
+    static String randomName = "BackgroundMusic";
+    public static Clip clip = null;
+    public static void playSound(String name) throws Exception{
+        if (clip != null && clip.isOpen()) clip.close();
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(name).getAbsoluteFile());
+        clip = AudioSystem.getClip();
+
+        clip.open(audioInputStream);
+        FloatControl gainControl =
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-24f);
+
+        System.out.println(clip.getFrameLength() + " | " + clip.getFramePosition());
+        clip.start();
+    }
 }
+
+

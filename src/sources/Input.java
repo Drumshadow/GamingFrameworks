@@ -91,9 +91,7 @@ public class Input {
         }
         else if (purpose == purpose.PlaySound) {
             // Play Sound
-            if(sounds.fileName == null) {
-                sounds.setFileName("./audio-files/oof.ogg");
-            }
+            //spawn thread and only call function if you're a thread?
             sounds.loadPlaySound();
         }
     }
