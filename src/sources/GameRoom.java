@@ -1,6 +1,7 @@
 package sources;
 
 import sources.objCode.GameObject;
+import sources.objCode.ObjectList;
 
 import java.util.Vector;
 
@@ -14,7 +15,7 @@ public class GameRoom {
     private double roomHeight;
 
     // collection of all objects in room
-    private Vector<GameObject> allObjects;
+    private ObjectList allObjects;
 
     // acceleration due to gravity
     public static final double GRAVITY = 0.2;
@@ -32,7 +33,7 @@ public class GameRoom {
         this.roomWidth = 0.0;
         this.roomHeight = 0.0;
 
-        this.allObjects = new Vector<>();
+        this.allObjects = new ObjectList();
     }
 
     // copy constructor
@@ -44,7 +45,7 @@ public class GameRoom {
         this.roomWidth = other.roomWidth;
         this.roomHeight = other.roomHeight;
 
-        this.allObjects = new Vector<>(other.allObjects);
+        this.allObjects = new ObjectList(other.allObjects);
     }
 
     // value constructor (finds background via path)
@@ -60,7 +61,7 @@ public class GameRoom {
 
     // adds object to room
     public void addObject(GameObject o) {
-        this.allObjects.add(o);
+        this.allObjects.addObject(o);
     }
 
     /*==================================================
@@ -99,11 +100,11 @@ public class GameRoom {
         return this.roomHeight;
     }
 
-    public void setAllObjects(Vector<GameObject> o) {
+    public void setAllObjects(ObjectList o) {
         this.allObjects = o;
     }
 
-    public Vector<GameObject> getAllObjects() {
+    public ObjectList getAllObjects() {
         return this.allObjects;
     }
 }

@@ -11,17 +11,33 @@ public class ObjectList {
                      Initialization
     ==================================================*/
 
+    // default constructor
     public ObjectList() {
         this.oList = new Vector<>();
+    }
+
+    // copy constructor
+    public ObjectList(ObjectList other) {
+        this.oList = new Vector<>(other.oList);
+    }
+
+    // value constructor
+    public ObjectList(Vector<GameObject> o) {
+        this.oList = o;
     }
 
     /*==================================================
                     Object Control
     ==================================================*/
 
-    // adds object to list
+    // adds given object to list
     public void addObject(GameObject o) {
         this.oList.add(o);
+    }
+
+    // removes given object from list
+    public void removeObject(GameObject o) {
+        this.oList.remove(o);
     }
 
     /*==================================================

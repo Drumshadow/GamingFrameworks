@@ -25,8 +25,6 @@ public class GameObject {
     private int boxCode;
     private ObjectBox hitBox;
 
-    // TODO: create a delete object function
-
     /*==================================================
                      Initialization
     ==================================================*/
@@ -105,6 +103,8 @@ public class GameObject {
     /*==================================================
                         Movement
     ==================================================*/
+
+    // TODO: hold down vs press key -> speed
 
     // moves objects and performs collision detection
     public void move(ObjectList roomObjs) {
