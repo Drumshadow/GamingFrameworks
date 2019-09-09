@@ -225,6 +225,14 @@ public class GameObject {
 
     public void setYSpeed(double s) {hitBox.setYSpeed(s); }
 
+    public double getXSpeed() { return hitBox.getXSpeed(); }
+
+    public double getYSpeed() { return hitBox.getYSpeed(); }
+
+    public double getX() { return hitBox.getX(); }
+
+    public double getY() { return hitBox.getY(); }
+
     /*==================================================
                       Miscellaneous
     ==================================================*/

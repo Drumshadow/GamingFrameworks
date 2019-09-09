@@ -86,7 +86,6 @@ public class Input {
             obj.move(roomObjects);
         }
         else if (purpose == purpose.MoveY) {
-            // Move Down
             obj.setYSpeed(speed);
             obj.move(roomObjects);
         }
