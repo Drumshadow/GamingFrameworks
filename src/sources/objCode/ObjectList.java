@@ -32,7 +32,7 @@ public class ObjectList {
         this.oList = o;
     }
 
-    Vector<GameObject> getOList() {
+    public Vector<GameObject> getOList() {
         return this.oList;
     }
 }
