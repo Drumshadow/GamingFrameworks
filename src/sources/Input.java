@@ -80,7 +80,7 @@ public class Input {
             // Destroy object
         }
         else if (purpose == purpose.MoveX) {
-            System.out.println("Moving Left!");
+            System.out.println("Moving X!");
             obj.setXSpeed(speed);
             //object.run();
             obj.move(roomObjects);

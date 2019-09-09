@@ -21,14 +21,8 @@ public class GameLoop {
 
         newWindow.init();
 
-        InputList inputs = new InputList();
-        ObjectList objects = new ObjectList();
         //mario.drawObject();
         //inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 0, 10, 7, 0);
-        objects.addObject(mario);
-        objects.getOList().get(0).getSprite().drawObject();
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, mario, "Create"));
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz
@@ -60,11 +54,14 @@ public class GameLoop {
         // bindings available for use.
         GL.createCapabilities();
 
-        Sprite tex = new Sprite("./sprites/mario.jpg");
+        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 0, 10, 7, 0);
+        objects.addObject(mario);
+        objects.getOList().get(0).getSprite().drawObject();
+        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "MoveX", mario, 2.0));
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        tex.texture.bind();
+        mario.getSprite().texture.bind();
 
         float red = 1;
         float green = 0;
