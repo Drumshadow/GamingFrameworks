@@ -5,6 +5,8 @@ import org.lwjgl.opengl.*;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
+import java.nio.FloatBuffer;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -56,8 +58,11 @@ public class GameLoop {
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, 0, 10, 7, 0);
         objects.addObject(mario);
-        objects.getOList().get(0).getSprite().drawObject();
-        inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, mario, "MoveX", 2.0));
+        objects.getOList().get(0).drawObject();
+        System.out.println(glfwJoystickPresent(GLFW_JOYSTICK_1));
+        FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+        inputs.add(new Input(GLFW_KEY_A, GLFW_REPEAT, mario, "MoveX", -2.0));
+        inputs.add(new Input(GLFW_KEY_D, GLFW_REPEAT, mario, "MoveX", 2.0));
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -73,6 +78,7 @@ public class GameLoop {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 
             glBegin(GL_QUADS);
+            {
                 glColor4f(red, green, blue, 0);
                 glVertex2f(-1f, 1f);
                 glColor4f(blue, red, green, 0);
@@ -81,27 +87,12 @@ public class GameLoop {
                 glVertex2f(1f, -1f);
                 glColor4f(red, green, blue, 0);
                 glVertex2f(-1f, -1f);
-            glEnd();
-
-            glEnable(GL_TEXTURE_2D);
-
-            glBegin(GL_QUADS);
-            {
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex2f(-0.5f, 0.5f);
-
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex2f(-0.5f, -0.5f);
-
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex2f(0.5f, -0.5f);
-
-                glTexCoord2f(0.0f, 0.0f);
-                glVertex2f(0.5f, 0.5f);
             }
             glEnd();
 
-            glDisable(GL_TEXTURE_2D);
+            for(int i = 0; i < objects.getOList().size(); i++) {
+                objects.getOList().get(i).drawObject();
+            }
 
             if(red > 0 && blue < 0) {
                 red -= 0.01;

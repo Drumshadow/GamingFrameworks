@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.system.MemoryStack.*;
 
@@ -113,8 +114,26 @@ public class Sprite {
     ==================================================*/
 
     // draws object
-    public void drawObject() {
+    public void drawObject(double x, double y) {
+        glEnable(GL_TEXTURE_2D);
 
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex2f(-0.5f + (float)(x / 600.0), 0.5f + (float)(y / 600.0));
+
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex2f(-0.5f + (float)(x / 600.0), -0.5f + (float)(y / 600.0));
+
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex2f(0.5f + (float)(x / 600.0), -0.5f + (float)(y / 600.0));
+
+            glTexCoord2f(0.0f, 0.0f);
+            glVertex2f(0.5f + (float)(x / 600.0), 0.5f + (float)(y / 600.0));
+        }
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
     }
 
     /*==================================================

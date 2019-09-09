@@ -180,6 +180,10 @@ public class GameObject {
         }
     }
 
+    public void drawObject() {
+        this.sprite.drawObject(this.hitBox.getX(), this.hitBox.getY());
+    }
+
     /*==================================================
                    Setters and Getters
     ==================================================*/
