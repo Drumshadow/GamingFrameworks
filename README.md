@@ -7,7 +7,8 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 - Drag-and-Drop Audio
 - Collision Detection and Basic Physics
 - Basic Input Handling
-- COMING SOON! Sprites!
+- Functional Game Loop
+- Sprite Drawing
 
 # Developer's Guide
 More information to come!
