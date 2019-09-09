@@ -259,6 +259,10 @@ public class GameObject {
 
     public double getY() { return hitBox.getY(); }
 
+    public void setX(double x) { this.hitBox.setX(x); }
+
+    public void setY(double y) { this.hitBox.setY(y); }
+
     /*==================================================
                       Miscellaneous
     ==================================================*/
