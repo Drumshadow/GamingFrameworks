@@ -75,6 +75,40 @@ public class Texture {
         }
     }
 
+    /** Creates a texture using a shrunken sprite */
+    public Texture(BufferedImage sprite) {
+
+        this.width = sprite.getWidth();
+        this.height = sprite.getHeight();
+
+        int[] pixels_raw;
+        pixels_raw = sprite.getRGB(0, 0, width, height, null, 0, width);
+
+        ByteBuffer pixels = BufferUtils.createByteBuffer(width * height * 4);
+
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                int pixel = pixels_raw[i * width + j];
+                pixels.put((byte) ((pixel >> 16) & 0xFF));
+                pixels.put((byte) ((pixel >> 8) & 0xFF));
+                pixels.put((byte) (pixel & 0xFF));
+                pixels.put((byte) ((pixel >> 24) & 0xFF));
+            }
+        }
+
+        pixels.flip();
+
+        id = glGenTextures();
+
+        glBindTexture(GL_TEXTURE_2D, id);
+
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+                GL_UNSIGNED_BYTE, pixels);
+    }
+
     /**
      * Binds the texture.
      */

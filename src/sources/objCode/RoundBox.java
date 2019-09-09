@@ -25,6 +25,14 @@ public class RoundBox extends ObjectBox {
                 other.getBoundBox().getWidth(), other.getBoundBox().getY());
     }
 
+    // value constructor
+    RoundBox(double x, double y, double w, double h) {
+        this.boundBox = new Ellipse2D.Double(x, y, w, h);
+
+        this.x = x;
+        this.y = y;
+    }
+
     // creates bounding box
     public void createBoundingBox(double w, double h) {
         this.boundBox = new Ellipse2D.Double(this.x, this.y, w, h);

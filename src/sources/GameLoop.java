@@ -57,7 +57,7 @@ public class GameLoop {
         // bindings available for use.
         GL.createCapabilities();
 
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", 413, 550, true, -9.8, 10, 7, 0);
+        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", true, 0.0, 10, 7, 0, 0.0, 0.0);
         objects.addObject(mario);
         objects.getOList().get(0).drawObject();
         Audio ad = new Audio();
@@ -65,15 +65,15 @@ public class GameLoop {
         ad.setFileName("./audio-files/EPress.ogg");
         ab.setFileName("./audio-files/QPress.ogg");
         FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-        inputs.add(new Input(GLFW_KEY_A, GLFW_REPEAT, mario, "MoveX", -2.0));
-        inputs.add(new Input(GLFW_KEY_D, GLFW_REPEAT, mario, "MoveX", 2.0));
+        inputs.add(new Input(GLFW_KEY_A, GLFW_REPEAT, mario, "MoveX", -6.0));
+        inputs.add(new Input(GLFW_KEY_D, GLFW_REPEAT, mario, "MoveX", 6.0));
         inputs.add(new Input(GLFW_KEY_Q, GLFW_PRESS, mario, "PlaySound", ad));
         inputs.add(new Input(GLFW_KEY_E, GLFW_PRESS, mario, "PlaySound", ab));
 
 
-        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg", 413, 550, true, -9.8, 10, 7, 0);
+        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg", true, 0.0, 10, 7, 0, 700.0, 0.0);
         objects.addObject(wario);
-        objects.getOList().get(1).setX(700);
+    //    objects.getOList().get(1).setX(700);
         objects.getOList().get(1).drawObject();
 
         // Run the rendering loop until the user has attempted to close

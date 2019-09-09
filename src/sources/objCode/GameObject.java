@@ -71,9 +71,9 @@ public class GameObject {
     }
 
     // constructor via given values (finds sprite via path)
-    public GameObject(String name, String sprPath, int w, int h,
-                      boolean collide, double gravity, double tv,
-                      double jump, int boxType) {
+    public GameObject(String name, String sprPath, boolean collide,
+                      double gravity, double tv, double jump, int boxType,
+                      double x, double y) {
 
         this.objName = name;
 
@@ -93,18 +93,14 @@ public class GameObject {
             this.hitBox = new RoundBox();
         }
         else {
-            this.hitBox = new BoxyBox();
+            this.hitBox = new BoxyBox(x, y, this.sprite.getWidth(),
+                    this.sprite.getHeight());
         }
-
-        this.hitBox.createBoundingBox(this.sprite.getWidth(),
-                this.sprite.getHeight());
     }
 
     /*==================================================
                         Movement
     ==================================================*/
-
-    // TODO: hold down vs press key -> speed
 
     // moves objects and performs collision detection
     public void move(ObjectList roomObjs) {
@@ -134,7 +130,6 @@ public class GameObject {
                     // move up to object without actually colliding
                     this.hitBox.xSpeed = Math.signum(
                             this.hitBox.objDistX(other.hitBox));
-
                 }
 
                 // test future vertical collision
@@ -255,17 +250,33 @@ public class GameObject {
         this.hitBox.setYSpeed(s);
     }
 
-    public double getXSpeed() { return hitBox.getXSpeed(); }
+    public double getXSpeed() {
+        return hitBox.getXSpeed();
+    }
 
-    public double getYSpeed() { return hitBox.getYSpeed(); }
+    public double getYSpeed() {
+        return hitBox.getYSpeed();
+    }
 
-    public double getX() { return hitBox.getX(); }
+    public double getX() {
+        return hitBox.getX();
+    }
 
-    public double getY() { return hitBox.getY(); }
+    public double getY() {
+        return hitBox.getY();
+    }
 
-    public void setX(double x) { this.hitBox.setX(x); }
+    public void setX(double x) {
+        this.hitBox.setX(x);
+    }
 
-    public void setY(double y) { this.hitBox.setY(y); }
+    public void setY(double y) {
+        this.hitBox.setY(y);
+    }
+
+    public ObjectBox getHitBox() {
+        return this.hitBox;
+    }
 
     /*==================================================
                       Miscellaneous

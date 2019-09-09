@@ -59,7 +59,7 @@ public class Sprite {
 
         this.isVisible = true;
 
-        this.texture = new Texture(path);
+        this.texture = new Texture(this.sprite);
     }
 
     // shrinks sprite down to smallest size (gets rid of empty space)
