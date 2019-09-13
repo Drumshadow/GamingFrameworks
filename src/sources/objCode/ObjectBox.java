@@ -6,8 +6,8 @@ import java.util.Objects;
 abstract public class ObjectBox {
 
     // position based on top-left corner
-    protected double x;
-    protected double y;
+    double x;
+    double y;
 
     double xSpeed;
     double ySpeed;

@@ -5,7 +5,7 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 
 # Current Features
 - Drag-and-Drop Audio
-- Collision Detection and Basic Physics
+- Partial Collision Detection and Gravity
 - Basic Input Handling
 - Functional Game Loop
 - Sprite Drawing
