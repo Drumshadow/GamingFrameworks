@@ -1,14 +1,13 @@
 package sources;
 
 import org.ini4j.Ini;
-import org.lwjgl.*;
-import org.lwjgl.opengl.*;
+import org.lwjgl.Version;
+import org.lwjgl.opengl.GL;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -17,19 +16,20 @@ import static org.lwjgl.opengl.GL11.*;
 public class GameLoop {
 
     // The window handle
-     private InitWindow newWindow = new InitWindow();
-    InputList inputs = new InputList();
-    ObjectList objects = new ObjectList();
-    Audio bg = new Audio();
+    private InitWindow newWindow = new InitWindow();
+    private InputList inputs = new InputList();
+    private ObjectList objects = new ObjectList();
+    private Audio bg = new Audio();
 
-    public void run() throws Exception {
+    private void run() throws Exception {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
         bg.playSound("./music/MemeVapor.wav");
         newWindow.init();
 
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        // Setup a key callback.
+        // It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz
-        glfwSetKeyCallback(newWindow.window, (window, key, scancode, action, mods) -> {
+        glfwSetKeyCallback(newWindow.window, (window, key, scanCode, action, mods) -> {
             for (int i = 0; i < inputs.size(); i++) {
                 if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
                     inputs.get(i).execute(objects);
@@ -50,24 +50,17 @@ public class GameLoop {
     }
   
     private void loop() throws IOException {
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
         GL.createCapabilities();
 
         Ini ini = new Ini(new File("./inputs.ini"));
 
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", true, 0.0, 10, 7, 0, 0.0, 0.0);
+        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
+                true, 0.0, 10, 7, 0, 0.0, 0.0);
         objects.addObject(mario);
-        //objects.getOList().get(0).drawObject();
 
-
-        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg", true, 0.0, 10, 7, 0, 700.0, 0.0);
+        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
+                true, 0.0, 10, 7, 0, 700.0, 0.0);
         objects.addObject(wario);
-    //    objects.getOList().get(1).setX(700);
-        //objects.getOList().get(1).drawObject();
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -150,5 +143,4 @@ public class GameLoop {
     public static void main(String[] args) throws Exception {
         new GameLoop().run();
     }
-
 }
