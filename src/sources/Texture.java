@@ -36,7 +36,7 @@ public class Texture {
      */
     private int height;
 
-    /** Creates a texture. */
+    /** Creates a texture from a file. */
     public Texture(String filename) {
         BufferedImage bi;
 

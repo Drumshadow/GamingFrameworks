@@ -14,7 +14,7 @@ public class GameObject {
 
     // no gravity is gravityFactor = 0
     // controls "weight" of object
-    private double gravityFactor;
+    private double weight;
     private double terminalV;
     private double jumpPower;
 
@@ -34,7 +34,7 @@ public class GameObject {
         this.objName = "Empty Object";
         this.sprite = null;
 
-        this.gravityFactor = 0.0;
+        this.weight = 0.0;
         this.terminalV = 0.0;
         this.jumpPower = 0.0;
 
@@ -50,7 +50,7 @@ public class GameObject {
         this.objName = other.objName;
         this.sprite = new Sprite(other.sprite);
 
-        this.gravityFactor = other.gravityFactor;
+        this.weight = other.weight;
         this.terminalV = other.terminalV;
         this.jumpPower = other.jumpPower;
 
@@ -80,7 +80,7 @@ public class GameObject {
         // get sprite from file
         this.sprite = new Sprite(sprPath);
 
-        this.gravityFactor = gravity;
+        this.weight = gravity;
         this.terminalV = tv;
         this.jumpPower = jump;
 
@@ -106,8 +106,8 @@ public class GameObject {
     public void move(ObjectList roomObjs) {
 
         // acceleration due to gravity
-        if (gravityFactor != 0.0 && this.hitBox.ySpeed < this.terminalV) {
-            this.hitBox.ySpeed += (GameRoom.GRAVITY * this.gravityFactor);
+        if (weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
+            this.hitBox.ySpeed += (GameRoom.GRAVITY * this.weight);
 
             // don't go over terminal velocity
             if (this.hitBox.ySpeed > this.terminalV) {
@@ -122,6 +122,10 @@ public class GameObject {
 
                 // don't collide with self
                 if (this.equals(other))
+                    continue;
+
+                // don't collide with objects without collision
+                if (!other.canCollide)
                     continue;
 
                 // test future horizontal collision
@@ -202,12 +206,12 @@ public class GameObject {
         return this.sprite;
     }
 
-    public void setGravityFactor(double g) {
-        this.gravityFactor = g;
+    public void setWeight(double w) {
+        this.weight = w;
     }
 
-    public double getGravityFactor() {
-        return this.gravityFactor;
+    public double getWeight() {
+        return this.weight;
     }
 
     public void setTerminalV(double v) {
@@ -284,7 +288,7 @@ public class GameObject {
 
     // generates object's hashcode for equality check
     public int hashcode() {
-        return Objects.hash(this.objName, this.sprite, this.gravityFactor,
+        return Objects.hash(this.objName, this.sprite, this.weight,
                 this.canCollide, this.hitBox);
     }
 

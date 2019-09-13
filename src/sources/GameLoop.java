@@ -1,7 +1,6 @@
 package sources;
 
 import org.ini4j.Ini;
-import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
@@ -22,7 +21,6 @@ public class GameLoop {
     private Audio bg = new Audio();
 
     private void run() throws Exception {
-        System.out.println("Hello LWJGL " + Version.getVersion() + "!");
         bg.playSound("./music/MemeVapor.wav");
         newWindow.init();
 
@@ -55,16 +53,22 @@ public class GameLoop {
         Ini ini = new Ini(new File("./inputs.ini"));
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, 0.0, 0.0);
+                true, 0.0, 10, 7, 0, 600, 0.0);
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, 700.0, 0.0);
+                true, 0.0, 10, 7, 0, -100, 0.0);
         objects.addObject(wario);
+
+        GameObject floorMario = new GameObject("floorMario", "./sprites/mario.jpg",
+                true, 0.0, 0.0, 0.0, 0, 0.0, -800.0);
+        objects.addObject(floorMario);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         mario.getSprite().texture.bind();
+        wario.getSprite().texture.bind();
+        floorMario.getSprite().texture.bind();
 
         float red = 1;
         float green = 0;
@@ -72,6 +76,7 @@ public class GameLoop {
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
+        // Game Loop
         while ( !glfwWindowShouldClose(newWindow.window) ) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 

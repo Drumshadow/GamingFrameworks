@@ -72,35 +72,35 @@ abstract public class ObjectBox {
         this.y += ySpeed;
     }
 
-    public void setX(double x) {
+    void setX(double x) {
         this.x = x;
     }
 
-    public double getX() {
+    double getX() {
         return this.x;
     }
 
-    public void setY(double y) {
+    void setY(double y) {
         this.y = y;
     }
 
-    public double getY() {
+    double getY() {
         return this.y;
     }
 
-    public void setXSpeed(double s) {
+    void setXSpeed(double s) {
         this.xSpeed = s;
     }
 
-    public double getXSpeed() {
+    double getXSpeed() {
         return this.xSpeed;
     }
 
-    public void setYSpeed(double s) {
+    void setYSpeed(double s) {
         this.ySpeed = s;
     }
 
-    public double getYSpeed() {
+    double getYSpeed() {
         return this.ySpeed;
     }
 
