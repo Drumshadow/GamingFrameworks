@@ -1,10 +1,13 @@
 package sources;
 
+import org.ini4j.Ini;
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -23,9 +26,6 @@ public class GameLoop {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
         bg.playSound("./music/MemeVapor.wav");
         newWindow.init();
-
-        //mario.drawObject();
-        //inputs.add(new Input(GLFW_KEY_A, GLFW_PRESS, "Left", mario, 2));
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         // Will use this section to handle inputs, don't delete plz
@@ -49,7 +49,7 @@ public class GameLoop {
         glfwSetErrorCallback(null).free();
     }
   
-    private void loop() {
+    private void loop() throws IOException {
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
         // LWJGL detects the context that is current in the current thread,
@@ -57,24 +57,17 @@ public class GameLoop {
         // bindings available for use.
         GL.createCapabilities();
 
+        Ini ini = new Ini(new File("./inputs.ini"));
+
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg", true, 0.0, 10, 7, 0, 0.0, 0.0);
         objects.addObject(mario);
-        objects.getOList().get(0).drawObject();
-        Audio ad = new Audio();
-        Audio ab = new Audio();
-        ad.setFileName("./audio-files/EPress.ogg");
-        ab.setFileName("./audio-files/QPress.ogg");
-        FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-        inputs.add(new Input(GLFW_KEY_A, GLFW_REPEAT, mario, "MoveX", -6.0));
-        inputs.add(new Input(GLFW_KEY_D, GLFW_REPEAT, mario, "MoveX", 6.0));
-        inputs.add(new Input(GLFW_KEY_Q, GLFW_PRESS, mario, "PlaySound", ad));
-        inputs.add(new Input(GLFW_KEY_E, GLFW_PRESS, mario, "PlaySound", ab));
+        //objects.getOList().get(0).drawObject();
 
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg", true, 0.0, 10, 7, 0, 700.0, 0.0);
         objects.addObject(wario);
     //    objects.getOList().get(1).setX(700);
-        objects.getOList().get(1).drawObject();
+        //objects.getOList().get(1).drawObject();
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -117,9 +110,34 @@ public class GameLoop {
                 red += 0.01;
             }
 
-            //System.out.println("Marios x: " + objects.getOList().get(0).getXSpeed());
-            //System.out.println("Marios y: " + objects.getOList().get(0).getYSpeed());
-            //System.out.println("How many marios: " + objects.getOList().size());
+            inputs.removeAll();
+            int inputNum = Integer.parseInt(ini.get("control", "inputs"));
+            for (int i = 0; i < inputNum; i++) {
+                if (ini.get("input" + i, "purpose").equals("Create") ||
+                        ini.get("input" + i, "purpose").equals("Destroy")) {
+                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                            Integer.parseInt(ini.get("input" + i, "action")),
+                            objects.getElement(ini.get("input" + i, "object")),
+                            ini.get("input" + i, "purpose")));
+                }
+                else if (ini.get("input" + i, "purpose").equals("MoveX") ||
+                        ini.get("input" + i, "purpose").equals("MoveY")) {
+                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                            Integer.parseInt(ini.get("input" + i, "action")),
+                            objects.getElement(ini.get("input" + i, "object")),
+                            ini.get("input" + i, "purpose"),
+                            Double.parseDouble(ini.get("input" + i, "speed"))));
+                }
+                else if (ini.get("input" + i, "purpose").equals("PlaySound")) {
+                    Audio a = new Audio();
+                    a.setFileName(ini.get("input" + i, "audio"));
+                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                            Integer.parseInt(ini.get("input" + i, "action")),
+                            objects.getElement(ini.get("input" + i, "object")),
+                            ini.get("input" + i, "purpose"),
+                            a));
+                }
+            }
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
 

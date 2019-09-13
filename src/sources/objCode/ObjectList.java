@@ -51,4 +51,13 @@ public class ObjectList {
     public Vector<GameObject> getOList() {
         return this.oList;
     }
+
+    public GameObject getElement(String oN) {
+        for (int i = 0; i < oList.size(); i++) {
+            if (oList.elementAt(i).getObjName().equals(oN)) {
+                return oList.elementAt(i);
+            }
+        }
+        return null;
+    }
 }
