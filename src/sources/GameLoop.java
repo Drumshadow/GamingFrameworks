@@ -50,8 +50,6 @@ public class GameLoop {
     private void loop() throws IOException {
         GL.createCapabilities();
 
-        Ini ini = new Ini(new File("./inputs.ini"));
-
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
                 true, 0.0, 10, 7, 0, 600, 0.0);
         objects.addObject(mario);
@@ -108,6 +106,7 @@ public class GameLoop {
                 red += 0.01;
             }
 
+            Ini ini = new Ini(new File("./inputs.ini"));
             inputs.removeAll();
             int inputNum = Integer.parseInt(ini.get("control", "inputs"));
             for (int i = 0; i < inputNum; i++) {
@@ -136,6 +135,11 @@ public class GameLoop {
                             a));
                 }
             }
+
+            /*GLFWGamepadState state = new GLFWGamepadState(ByteBuffer.allocate(40));
+            if (glfwGetGamepadState(GLFW_JOYSTICK_1, state)) {
+
+            }*/
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
 
