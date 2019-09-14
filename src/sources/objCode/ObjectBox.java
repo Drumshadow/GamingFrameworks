@@ -12,6 +12,8 @@ abstract public class ObjectBox {
     double xSpeed;
     double ySpeed;
 
+    RectangularShape boundingBox;
+
     /*==================================================
                      Initialization
     ==================================================*/
@@ -24,6 +26,8 @@ abstract public class ObjectBox {
 
         this.xSpeed = 0.0;
         this.ySpeed = 0.0;
+
+        this.boundingBox = null;
     }
 
     // copy constructor
@@ -33,17 +37,20 @@ abstract public class ObjectBox {
 
         this.xSpeed = other.xSpeed;
         this.ySpeed = other.ySpeed;
-    }
 
-    // creates bounding box
-    abstract public void createBoundingBox(double w, double h);
+        this.boundingBox = other.boundingBox;
+    }
 
     /*==================================================
                         Collision
     ==================================================*/
 
     // checks if two bounding boxes have collided
-    abstract public boolean basicCollisionCheck(ObjectBox other);
+    public boolean basicCollisionCheck(ObjectBox other) {
+        return this.boundingBox.intersects(other.x, other.y,
+                other.getBoundBox().getWidth(),
+                other.getBoundBox().getHeight());
+    }
 
     // checks future collision in x direction
     abstract public boolean xCollisionCheck(ObjectBox other);
@@ -53,12 +60,6 @@ abstract public class ObjectBox {
 
     // checks future collision in both x and y directions
     abstract public boolean diagCollisionCheck(ObjectBox other);
-
-    // checks horizontal distance between two hit boxes
-    abstract public double objDistX(ObjectBox other);
-
-    // checks vertical distance between two hit boxes
-    abstract public double objDistY(ObjectBox other);
 
     /*==================================================
                    Setters and Getters
@@ -111,9 +112,27 @@ abstract public class ObjectBox {
                       Miscellaneous
     ==================================================*/
 
+    // checks horizontal distance between two hit boxes
+    public double objDistX(ObjectBox other) {
+
+        return Math.abs(this.boundingBox.getCenterX() -
+                other.boundingBox.getCenterX()) -
+                (this.boundingBox.getWidth() + other.boundingBox.getWidth());
+
+    }
+
+    // checks vertical distance between two hit boxes
+    public double objDistY(ObjectBox other) {
+
+        return Math.abs(this.boundingBox.getCenterY() -
+                other.boundingBox.getCenterY()) -
+                (this.boundingBox.getHeight() + other.boundingBox.getHeight());
+    }
+
     // generates object's hashcode for equality check
-    public int hashcode() {
-        return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed);
+    private int hashcode() {
+        return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed,
+                this.boundingBox);
     }
 
     // checks if two objects are the same

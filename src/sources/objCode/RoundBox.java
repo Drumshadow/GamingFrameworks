@@ -2,11 +2,8 @@ package sources.objCode;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RectangularShape;
-import java.util.Objects;
 
 public class RoundBox extends ObjectBox {
-
-    private Ellipse2D.Double boundBox;
 
     /*==================================================
                      Initialization
@@ -15,46 +12,35 @@ public class RoundBox extends ObjectBox {
     // default constructor
     RoundBox() {
         super();
-        this.boundBox = null;
+        this.boundingBox = new Ellipse2D.Double();
     }
 
     // copy constructor
-    RoundBox(ObjectBox other) {
-        super(other);
-        this.boundBox = new Ellipse2D.Double(other.x, other.y,
-                other.getBoundBox().getWidth(), other.getBoundBox().getY());
+    RoundBox(ObjectBox b) {
+        super(b);
     }
 
     // value constructor
     RoundBox(double x, double y, double w, double h) {
-        this.boundBox = new Ellipse2D.Double(x, y, w, h);
+        super();
+
+        this.boundingBox = new Ellipse2D.Double(x, y, w, h);
 
         this.x = x;
         this.y = y;
-    }
-
-    // creates bounding box
-    public void createBoundingBox(double w, double h) {
-        this.boundBox = new Ellipse2D.Double(this.x, this.y, w, h);
     }
 
     /*==================================================
                         Collision
     ==================================================*/
 
-    // checks if two bounding boxes have collided
-    public boolean basicCollisionCheck(ObjectBox other) {
-        return this.boundBox.intersects(other.x, other.y,
-                other.getBoundBox().getWidth(),
-                other.getBoundBox().getHeight());
-    }
-
     // checks future collision in x direction
     public boolean xCollisionCheck(ObjectBox other) {
 
         // make temporary bounding box for future position
         Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x + this.xSpeed,
-                this.y, this.boundBox.width, this.boundBox.height);
+                this.y, this.boundingBox.getWidth(),
+                this.boundingBox.getHeight());
 
 
         return futureBox.intersects(other.x, other.y,
@@ -67,8 +53,8 @@ public class RoundBox extends ObjectBox {
 
         // make temporary bounding box for future position
         Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x,
-                this.y + this.ySpeed, this.boundBox.width,
-                this.boundBox.height);
+                this.y + this.ySpeed, this.boundingBox.getWidth(),
+                this.boundingBox.getHeight());
 
 
         return futureBox.intersects(other.x, other.y,
@@ -81,29 +67,13 @@ public class RoundBox extends ObjectBox {
 
         // make temporary bounding box for future position
         Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x + this.xSpeed,
-                this.y + this.ySpeed, this.boundBox.width,
-                this.boundBox.height);
+                this.y + this.ySpeed, this.boundingBox.getWidth(),
+                this.boundingBox.getHeight());
 
 
         return futureBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),
                 other.getBoundBox().getHeight());
-    }
-
-    // checks horizontal distance between two hit boxes
-    public double objDistX(ObjectBox other) {
-
-        return Math.abs(this.boundBox.getCenterX() -
-                other.getBoundBox().getCenterX()) -
-                (this.boundBox.width + other.getBoundBox().getWidth());
-    }
-
-    // checks vertical distance between two hit boxes
-    public double objDistY(ObjectBox other) {
-
-        return Math.abs(this.boundBox.getCenterY() -
-                other.getBoundBox().getCenterY()) -
-                (this.boundBox.height + other.getBoundBox().getHeight());
     }
 
     /*==================================================
@@ -117,39 +87,15 @@ public class RoundBox extends ObjectBox {
         super.updatePosition();
 
         // update bound box
-        this.boundBox = new Ellipse2D.Double(this.x, this.y,
-                this.boundBox.width, this.boundBox.height);
+        this.boundingBox = new Ellipse2D.Double(this.x, this.y,
+                this.boundingBox.getWidth(), this.boundingBox.getHeight());
     }
 
     public void setBoundBox(RectangularShape b) {
-        this.boundBox = (Ellipse2D.Double) b;
+        this.boundingBox = b;
     }
 
     public RectangularShape getBoundBox() {
-        return this.boundBox;
-    }
-
-    /*==================================================
-                      Miscellaneous
-    ==================================================*/
-
-    // generates object's hashcode for equality check
-    public int hashcode() {
-        return Objects.hash(super.hashcode(), this.boundBox);
-    }
-
-    // checks if two objects are the same
-    public boolean equals(Object other) {
-
-        // Check if they are the same object
-        if (this == other)
-            return true;
-
-        // Check if null or if same class
-        if (other == null || this.getClass() != other.getClass())
-            return false;
-
-        // Check class members
-        return (this.hashcode() == other.hashCode());
+        return this.boundingBox;
     }
 }

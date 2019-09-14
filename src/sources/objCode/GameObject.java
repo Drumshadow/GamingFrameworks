@@ -42,7 +42,7 @@ public class GameObject {
 
         // default hit box is square
         this.boxCode = 0;
-        this.hitBox = null;
+        this.hitBox = new BoxyBox();
     }
 
     // copy constructor
@@ -65,9 +65,6 @@ public class GameObject {
         else {
             this.hitBox = new BoxyBox(other.hitBox);
         }
-
-        this.hitBox.createBoundingBox(other.sprite.getWidth(),
-                other.sprite.getHeight());
     }
 
     // constructor via given values (finds sprite via path)
@@ -90,7 +87,8 @@ public class GameObject {
         this.boxCode = boxType;
 
         if (this.boxCode == 1) {
-            this.hitBox = new RoundBox();
+            this.hitBox = new RoundBox(x, y, this.sprite.getWidth(),
+                    this.sprite.getHeight());
         }
         else {
             this.hitBox = new BoxyBox(x, y, this.sprite.getWidth(),
@@ -199,7 +197,14 @@ public class GameObject {
         this.sprite = s;
 
         // update hit box
-        this.hitBox.createBoundingBox(s.getWidth(), s.getHeight());
+        if (this.boxCode == 1) {
+            this.hitBox = new RoundBox(this.hitBox.x, this.hitBox.y,
+                    s.getWidth(), s.getHeight());
+        }
+        else {
+            this.hitBox = new BoxyBox(this.hitBox.x, this.hitBox.y,
+                    s.getWidth(), s.getHeight());
+        }
     }
 
     public Sprite getSprite() {
@@ -287,7 +292,7 @@ public class GameObject {
     ==================================================*/
 
     // generates object's hashcode for equality check
-    public int hashcode() {
+    private int hashcode() {
         return Objects.hash(this.objName, this.sprite, this.weight,
                 this.canCollide, this.hitBox);
     }
