@@ -68,6 +68,35 @@ public class GameLoop {
         wario.getSprite().texture.bind();
         floorMario.getSprite().texture.bind();
 
+        Ini ini = new Ini(new File("./inputs/keyboard.ini"));
+        int inputNum = Integer.parseInt(ini.get("control", "inputs"));
+        for (int i = 0; i < inputNum; i++) {
+            if (ini.get("input" + i, "purpose").equals("Create") ||
+                    ini.get("input" + i, "purpose").equals("Destroy")) {
+                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                        Integer.parseInt(ini.get("input" + i, "action")),
+                        objects.getElement(ini.get("input" + i, "object")),
+                        ini.get("input" + i, "purpose")));
+            }
+            else if (ini.get("input" + i, "purpose").equals("MoveX") ||
+                    ini.get("input" + i, "purpose").equals("MoveY")) {
+                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                        Integer.parseInt(ini.get("input" + i, "action")),
+                        objects.getElement(ini.get("input" + i, "object")),
+                        ini.get("input" + i, "purpose"),
+                        Double.parseDouble(ini.get("input" + i, "speed"))));
+            }
+            else if (ini.get("input" + i, "purpose").equals("PlaySound")) {
+                Audio a = new Audio();
+                a.setFileName(ini.get("input" + i, "audio"));
+                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                        Integer.parseInt(ini.get("input" + i, "action")),
+                        objects.getElement(ini.get("input" + i, "object")),
+                        ini.get("input" + i, "purpose"),
+                        a));
+            }
+        }
+
         float red = 1;
         float green = 0;
         float blue = 0;
@@ -104,36 +133,6 @@ public class GameLoop {
             } else {
                 blue -= 0.01;
                 red += 0.01;
-            }
-
-            Ini ini = new Ini(new File("./inputs.ini"));
-            inputs.removeAll();
-            int inputNum = Integer.parseInt(ini.get("control", "inputs"));
-            for (int i = 0; i < inputNum; i++) {
-                if (ini.get("input" + i, "purpose").equals("Create") ||
-                        ini.get("input" + i, "purpose").equals("Destroy")) {
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            objects.getElement(ini.get("input" + i, "object")),
-                            ini.get("input" + i, "purpose")));
-                }
-                else if (ini.get("input" + i, "purpose").equals("MoveX") ||
-                        ini.get("input" + i, "purpose").equals("MoveY")) {
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            objects.getElement(ini.get("input" + i, "object")),
-                            ini.get("input" + i, "purpose"),
-                            Double.parseDouble(ini.get("input" + i, "speed"))));
-                }
-                else if (ini.get("input" + i, "purpose").equals("PlaySound")) {
-                    Audio a = new Audio();
-                    a.setFileName(ini.get("input" + i, "audio"));
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            objects.getElement(ini.get("input" + i, "object")),
-                            ini.get("input" + i, "purpose"),
-                            a));
-                }
             }
 
             /*GLFWGamepadState state = new GLFWGamepadState(ByteBuffer.allocate(40));
