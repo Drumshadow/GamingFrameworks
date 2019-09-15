@@ -73,9 +73,34 @@ public class GameObject {
                       double x, double y) {
 
         this.objName = name;
-
-        // get sprite from file
         this.sprite = new Sprite(sprPath);
+
+        this.weight = gravity;
+        this.terminalV = tv;
+        this.jumpPower = jump;
+
+        this.canCollide = collide;
+
+        // create hit box
+        this.boxCode = boxType;
+
+        if (this.boxCode == 1) {
+            this.hitBox = new RoundBox(x, y, this.sprite.getWidth(),
+                    this.sprite.getHeight());
+        }
+        else {
+            this.hitBox = new BoxyBox(x, y, this.sprite.getWidth(),
+                    this.sprite.getHeight());
+        }
+    }
+
+    // constructor via given values (invisible object)
+    public GameObject(String name, boolean collide, double gravity, double tv,
+                      double jump, int boxType, double x, double y, int width,
+                      int height) {
+
+        this.objName = name;
+        this.sprite = new Sprite(width, height);
 
         this.weight = gravity;
         this.terminalV = tv;
@@ -178,7 +203,10 @@ public class GameObject {
     }
 
     public void drawObject() {
-        this.sprite.drawObject(this.hitBox.getX(), this.hitBox.getY());
+
+        if (this.sprite.getVisible()) {
+            this.sprite.drawObject(this.hitBox.getX(), this.hitBox.getY());
+        }
     }
 
     /*==================================================

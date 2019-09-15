@@ -15,9 +15,7 @@ public class Sprite {
     private int width;
     private int height;
 
-    public Texture texture;
-
-    // TODO: invisible objects (future optimization)
+    Texture texture;
 
     // default is visible
     private boolean isVisible;
@@ -36,6 +34,8 @@ public class Sprite {
         this.height = s.height;
 
         this.isVisible = s.isVisible;
+
+        this.texture = s.texture;
     }
 
     // value constructor (loads sprite from file)
@@ -45,11 +45,25 @@ public class Sprite {
         this.spritePath = path;
         this.sprite = this.loadSprite(path);
 
-        this.shrinkSprite();
-
         this.isVisible = true;
 
+        this.shrinkSprite();
+
         this.texture = new Texture(this.sprite);
+    }
+
+    // value constructor for invisible sprites
+    public Sprite(int width, int height) {
+
+        this.spritePath = null;
+        this.sprite = null;
+
+        this.isVisible = false;
+
+        this.width = width;
+        this.height = height;
+
+        this.texture = null;
     }
 
     // shrinks sprite down to smallest size (gets rid of empty pixels)

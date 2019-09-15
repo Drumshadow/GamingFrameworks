@@ -58,6 +58,10 @@ public class GameLoop {
                 true, 0.0, 10, 7, 0, -100, 0.0);
         objects.addObject(wario);
 
+ /*       GameObject wario = new GameObject("Wario", true, 0.0, 0.0, 0.0,
+                0, 0.0, -800.0, 100, 100);
+        objects.addObject(wario);
+*/
         GameObject floorMario = new GameObject("floorMario", "./sprites/mario.jpg",
                 true, 0.0, 0.0, 0.0, 0, 0.0, -800.0);
         objects.addObject(floorMario);
@@ -65,7 +69,7 @@ public class GameLoop {
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         mario.getSprite().texture.bind();
-        wario.getSprite().texture.bind();
+      //  wario.getSprite().texture.bind();
         floorMario.getSprite().texture.bind();
 
         Ini ini = new Ini(new File("./inputs/keyboard.ini"));

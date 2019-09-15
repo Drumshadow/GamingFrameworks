@@ -38,10 +38,22 @@ public class RoundBox extends ObjectBox {
     public boolean xCollisionCheck(ObjectBox other) {
 
         // make temporary bounding box for future position
-        Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x + this.xSpeed,
+   /*     Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x + this.xSpeed,
                 this.y, this.boundingBox.getWidth(),
                 this.boundingBox.getHeight());
+   */
 
+        // make temporary bounding box for future position and movement path
+        Ellipse2D.Double futureBox;
+
+        if (this.xSpeed < 0) {
+            futureBox = new Ellipse2D.Double(this.x - this.xSpeed,
+                    this.y, this.xSpeed, this.boundingBox.getHeight());
+        }
+        else {
+            futureBox = new Ellipse2D.Double(this.boundingBox.getMaxX(),
+                    this.y, this.xSpeed, this.boundingBox.getHeight());
+        }
 
         return futureBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),
@@ -52,10 +64,22 @@ public class RoundBox extends ObjectBox {
     public boolean yCollisionCheck(ObjectBox other) {
 
         // make temporary bounding box for future position
-        Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x,
+  /*      Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x,
                 this.y + this.ySpeed, this.boundingBox.getWidth(),
                 this.boundingBox.getHeight());
+*/
+        // make temporary bounding box for future position and movement path
+        Ellipse2D.Double futureBox;
 
+        if (this.ySpeed < 0) {
+            futureBox = new Ellipse2D.Double(this.x,
+                    this.boundingBox.getMinY(), this.boundingBox.getWidth(),
+                    this.ySpeed);
+        }
+        else {
+            futureBox = new Ellipse2D.Double(this.x, this.y + this.ySpeed,
+                    this.boundingBox.getWidth(), this.ySpeed);
+        }
 
         return futureBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),
