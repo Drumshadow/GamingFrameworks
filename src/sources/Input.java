@@ -70,30 +70,31 @@ public class Input {
         return action;
     }
 
-    // the moves prob arent perfect yet
     public void execute(ObjectList roomObjects ) {
-        if (purpose == purpose.Create) {
-            // Create Object
-            roomObjects.addObject(new GameObject(obj));
-        }
-        else if (purpose == purpose.Destroy) {
-            // Destroy object
-            roomObjects.removeObject(obj);
-        }
-        else if (purpose == purpose.MoveX) {
-            obj.setXSpeed(speed);
-            //object.run();
-            obj.move(roomObjects);
-        }
-        else if (purpose == purpose.MoveY) {
-            obj.setYSpeed(speed);
-            obj.move(roomObjects);
-        }
-        else if (purpose == purpose.PlaySound) {
-            // Play Sound
-            //spawn thread and only call function if you're a thread?
-            sounds.loadPlaySound();
+
+        switch(purpose) {
+
+            case Create:
+                roomObjects.addObject(new GameObject(obj));
+                break;
+
+            case Destroy:
+                roomObjects.removeObject(obj);
+                break;
+
+            case MoveX:
+                obj.setXSpeed(speed);
+                obj.move(roomObjects);
+                break;
+
+            case MoveY:
+                obj.setYSpeed(speed);
+                obj.move(roomObjects);
+                break;
+
+            case PlaySound:
+                sounds.loadPlaySound();
+                break;
         }
     }
-
 }

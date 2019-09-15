@@ -1,20 +1,10 @@
 package sources;
 
-import org.lwjgl.glfw.GLFWImage;
-import org.lwjgl.system.MemoryStack;
-
 import javax.imageio.ImageIO;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
-
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.stb.STBImage.*;
-import static org.lwjgl.system.MemoryStack.*;
-
 
 public class Sprite {
 
@@ -62,7 +52,7 @@ public class Sprite {
         this.texture = new Texture(this.sprite);
     }
 
-    // shrinks sprite down to smallest size (gets rid of empty space)
+    // shrinks sprite down to smallest size (gets rid of empty pixels)
     // sets width and height
     private void shrinkSprite() {
 

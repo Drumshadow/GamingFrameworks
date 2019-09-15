@@ -14,7 +14,7 @@ public class GameObject {
 
     // no gravity is gravityFactor = 0
     // controls "weight" of object
-    private double gravityFactor;
+    private double weight;
     private double terminalV;
     private double jumpPower;
 
@@ -34,7 +34,7 @@ public class GameObject {
         this.objName = "Empty Object";
         this.sprite = null;
 
-        this.gravityFactor = 0.0;
+        this.weight = 0.0;
         this.terminalV = 0.0;
         this.jumpPower = 0.0;
 
@@ -42,7 +42,7 @@ public class GameObject {
 
         // default hit box is square
         this.boxCode = 0;
-        this.hitBox = null;
+        this.hitBox = new BoxyBox();
     }
 
     // copy constructor
@@ -50,7 +50,7 @@ public class GameObject {
         this.objName = other.objName;
         this.sprite = new Sprite(other.sprite);
 
-        this.gravityFactor = other.gravityFactor;
+        this.weight = other.weight;
         this.terminalV = other.terminalV;
         this.jumpPower = other.jumpPower;
 
@@ -65,9 +65,6 @@ public class GameObject {
         else {
             this.hitBox = new BoxyBox(other.hitBox);
         }
-
-        this.hitBox.createBoundingBox(other.sprite.getWidth(),
-                other.sprite.getHeight());
     }
 
     // constructor via given values (finds sprite via path)
@@ -80,7 +77,7 @@ public class GameObject {
         // get sprite from file
         this.sprite = new Sprite(sprPath);
 
-        this.gravityFactor = gravity;
+        this.weight = gravity;
         this.terminalV = tv;
         this.jumpPower = jump;
 
@@ -90,7 +87,8 @@ public class GameObject {
         this.boxCode = boxType;
 
         if (this.boxCode == 1) {
-            this.hitBox = new RoundBox();
+            this.hitBox = new RoundBox(x, y, this.sprite.getWidth(),
+                    this.sprite.getHeight());
         }
         else {
             this.hitBox = new BoxyBox(x, y, this.sprite.getWidth(),
@@ -106,8 +104,8 @@ public class GameObject {
     public void move(ObjectList roomObjs) {
 
         // acceleration due to gravity
-        if (gravityFactor != 0.0 && this.hitBox.ySpeed < this.terminalV) {
-            this.hitBox.ySpeed += (GameRoom.GRAVITY * this.gravityFactor);
+        if (weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
+            this.hitBox.ySpeed += (GameRoom.GRAVITY * this.weight);
 
             // don't go over terminal velocity
             if (this.hitBox.ySpeed > this.terminalV) {
@@ -122,6 +120,10 @@ public class GameObject {
 
                 // don't collide with self
                 if (this.equals(other))
+                    continue;
+
+                // don't collide with objects without collision
+                if (!other.canCollide)
                     continue;
 
                 // test future horizontal collision
@@ -195,19 +197,26 @@ public class GameObject {
         this.sprite = s;
 
         // update hit box
-        this.hitBox.createBoundingBox(s.getWidth(), s.getHeight());
+        if (this.boxCode == 1) {
+            this.hitBox = new RoundBox(this.hitBox.x, this.hitBox.y,
+                    s.getWidth(), s.getHeight());
+        }
+        else {
+            this.hitBox = new BoxyBox(this.hitBox.x, this.hitBox.y,
+                    s.getWidth(), s.getHeight());
+        }
     }
 
     public Sprite getSprite() {
         return this.sprite;
     }
 
-    public void setGravityFactor(double g) {
-        this.gravityFactor = g;
+    public void setWeight(double w) {
+        this.weight = w;
     }
 
-    public double getGravityFactor() {
-        return this.gravityFactor;
+    public double getWeight() {
+        return this.weight;
     }
 
     public void setTerminalV(double v) {
@@ -283,8 +292,8 @@ public class GameObject {
     ==================================================*/
 
     // generates object's hashcode for equality check
-    public int hashcode() {
-        return Objects.hash(this.objName, this.sprite, this.gravityFactor,
+    private int hashcode() {
+        return Objects.hash(this.objName, this.sprite, this.weight,
                 this.canCollide, this.hitBox);
     }
 
