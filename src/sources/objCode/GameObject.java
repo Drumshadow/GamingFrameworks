@@ -25,6 +25,8 @@ public class GameObject {
     private int boxCode;
     private ObjectBox hitBox;
 
+    // TODO: fix gravity (problem: change in y even if no gravity)
+
     /*==================================================
                      Initialization
     ==================================================*/
@@ -69,13 +71,13 @@ public class GameObject {
 
     // constructor via given values (finds sprite via path)
     public GameObject(String name, String sprPath, boolean collide,
-                      double gravity, double tv, double jump, int boxType,
+                      double weight, double tv, double jump, int boxType,
                       double x, double y) {
 
         this.objName = name;
         this.sprite = new Sprite(sprPath);
 
-        this.weight = gravity;
+        this.weight = weight;
         this.terminalV = tv;
         this.jumpPower = jump;
 
@@ -95,14 +97,14 @@ public class GameObject {
     }
 
     // constructor via given values (invisible object)
-    public GameObject(String name, boolean collide, double gravity, double tv,
+    public GameObject(String name, boolean collide, double weight, double tv,
                       double jump, int boxType, double x, double y, int width,
                       int height) {
 
         this.objName = name;
         this.sprite = new Sprite(width, height);
 
-        this.weight = gravity;
+        this.weight = weight;
         this.terminalV = tv;
         this.jumpPower = jump;
 
@@ -129,7 +131,7 @@ public class GameObject {
     public void move(ObjectList roomObjs) {
 
         // acceleration due to gravity
-        if (weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
+        if (this.weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
             this.hitBox.ySpeed += (GameRoom.GRAVITY * this.weight);
 
             // don't go over terminal velocity

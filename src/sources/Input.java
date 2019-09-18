@@ -20,7 +20,7 @@ class MultithreadingDemo implements Runnable
 
 public class Input {
     private int key;  // 0-256? Not sure
-    private int action; // 0, 1, 2
+    private int action; // 0: release, 1: press, 2: hold
     enum purpose{Create, Destroy, MoveX, MoveY, PlaySound};
     private purpose purpose;
     private GameObject obj;
