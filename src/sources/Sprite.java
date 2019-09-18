@@ -119,25 +119,31 @@ public class Sprite {
 
     // draws object
     public void drawObject(double x, double y) {
+        glPushMatrix();
+
         glEnable(GL_TEXTURE_2D);
+
+        glTranslated(x / 1000, y / 1000, 0);
 
         glBegin(GL_QUADS);
         {
             glTexCoord2f(1.0f, 0.0f);
-            glVertex2f(-0.5f + (float)(x / 600.0), 0.5f + (float)(y / 600.0));
+            glVertex2f(-(float)(width / 1000.0), (float)(height / 1000.0));
 
             glTexCoord2f(1.0f, 1.0f);
-            glVertex2f(-0.5f + (float)(x / 600.0), -0.5f + (float)(y / 600.0));
+            glVertex2f(-(float)(width / 1000.0), -(float)(height / 1000.0));
 
             glTexCoord2f(0.0f, 1.0f);
-            glVertex2f(0.5f + (float)(x / 600.0), -0.5f + (float)(y / 600.0));
+            glVertex2f((float)(width / 1000.0), -(float)(height / 1000.0));
 
             glTexCoord2f(0.0f, 0.0f);
-            glVertex2f(0.5f + (float)(x / 600.0), 0.5f + (float)(y / 600.0));
+            glVertex2f((float)(width / 1000.0), (float)(height / 1000.0));
         }
         glEnd();
 
         glDisable(GL_TEXTURE_2D);
+
+        glPopMatrix();
     }
 
     /*==================================================

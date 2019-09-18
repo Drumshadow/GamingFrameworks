@@ -22,7 +22,7 @@ public class GameLoop {
 
     private void run() throws Exception {
         bg.playSound("./music/MemeVapor.wav");
-        newWindow.init();
+        newWindow.init(1000, 1000);
 
         // Setup a key callback.
         // It will be called every time a key is pressed, repeated or released.
@@ -51,11 +51,11 @@ public class GameLoop {
         GL.createCapabilities();
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, 600, 0.0);
+                true, 0.0, 10, 7, 0, 0, 0);
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, -100, 0.0);
+                true, 0.0, 10, 7, 0, 200, 0);
         objects.addObject(wario);
 
  /*       GameObject wario = new GameObject("Wario", true, 0.0, 0.0, 0.0,
@@ -63,7 +63,7 @@ public class GameLoop {
         objects.addObject(wario);
 */
         GameObject floorMario = new GameObject("floorMario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 0.0, -800.0);
+                true, 0.0, 0.0, 0.0, 0, 400, 0);
         objects.addObject(floorMario);
 
         // Run the rendering loop until the user has attempted to close
