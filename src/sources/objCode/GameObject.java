@@ -191,10 +191,16 @@ public class GameObject {
                         // move up to object from x direction
                         this.hitBox.xSpeed = Math.signum(
                                 this.hitBox.objDistX(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistX(other.hitBox) < 0.0) {
+                            this.hitBox.xSpeed = 0;
+                        }
 
                         // move up to object from y direction
                         this.hitBox.ySpeed = Math.signum(
                                 this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistY(other.hitBox) < 0.0) {
+                            this.hitBox.ySpeed = 0;
+                        }
                     }
                 }
             }
