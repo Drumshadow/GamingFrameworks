@@ -52,7 +52,7 @@ public class Input {
         else if (pur.equals("MoveY")) {
             purpose = purpose.MoveY;
         }
-        speed = s;
+        speed = s / 1000.0;
     }
 
     Input(int k, int a, GameObject o, String pur, Audio snd) {

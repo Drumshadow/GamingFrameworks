@@ -87,12 +87,14 @@ public class GameObject {
         this.boxCode = boxType;
 
         if (this.boxCode == 1) {
-            this.hitBox = new RoundBox(x, y, this.sprite.getWidth(),
-                    this.sprite.getHeight());
+            this.hitBox = new RoundBox((x - 1000 + sprite.getWidth()) / 1000,
+                    (y - 1000 + sprite.getHeight())/ 1000, this.sprite.getWidth() / 1000.0,
+                    this.sprite.getHeight() / 1000.0);
         }
         else {
-            this.hitBox = new BoxyBox(x, y, this.sprite.getWidth(),
-                    this.sprite.getHeight());
+            this.hitBox = new BoxyBox((x - 1000 + sprite.getWidth()) / 1000,
+                    (y - 1000 + sprite.getHeight())/ 1000,  2* this.sprite.getWidth() / 1000.0,
+                    2 * this.sprite.getHeight() / 1000.0);
         }
     }
 
@@ -154,31 +156,46 @@ public class GameObject {
                     continue;
 
                 // test future horizontal collision
-                if (this.hitBox.xCollisionCheck(other.hitBox)) {
+                boolean xcollision = this.hitBox.xCollisionCheck(other.hitBox);
+                boolean ycollision = this.hitBox.yCollisionCheck(other.hitBox);
 
-                    // move up to object without actually colliding
-                    this.hitBox.xSpeed = Math.signum(
-                            this.hitBox.objDistX(other.hitBox));
-                }
+                if(xcollision || ycollision) {
+                    if (xcollision) {
 
-                // test future vertical collision
-                if (this.hitBox.yCollisionCheck(other.hitBox)) {
+                        // move up to object without actually colliding
+                        this.hitBox.xSpeed = Math.signum(
+                                this.hitBox.objDistX(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistX(other.hitBox) < 0.0) {
+                            this.hitBox.xSpeed = 0;
+                        }
+                    }
 
-                    // move up to object without actually colliding
-                    this.hitBox.ySpeed = Math.signum(
-                            this.hitBox.objDistY(other.hitBox));
+                    // test future vertical collision
+                    else {
+
+                        // move up to object without actually colliding
+                        this.hitBox.ySpeed = Math.signum(
+                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistY(other.hitBox) < 0.0) {
+                            this.hitBox.ySpeed = 0;
+                        }
+                    }
+
+                    // System.out.println(xcollision);
                 }
 
                 // test future diagonal collision
-                if (this.hitBox.diagCollisionCheck(other.hitBox)) {
+                if (!xcollision && !ycollision) {
+                    if(this.hitBox.diagCollisionCheck(other.hitBox)) {
 
-                    // move up to object from x direction
-                    this.hitBox.xSpeed = Math.signum(
-                            this.hitBox.objDistX(other.hitBox));
+                        // move up to object from x direction
+                        this.hitBox.xSpeed = Math.signum(
+                                this.hitBox.objDistX(other.hitBox)) / 1000.0;
 
-                    // move up to object from y direction
-                    this.hitBox.ySpeed = Math.signum(
-                            this.hitBox.objDistY(other.hitBox));
+                        // move up to object from y direction
+                        this.hitBox.ySpeed = Math.signum(
+                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                    }
                 }
             }
         }

@@ -55,11 +55,11 @@ public class GameLoop {
         GL.createCapabilities();
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 0, 0);
+                true, 0.0, 0.0, 0.0, 0, 300, 0);
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 200, 0);
+                true, 0.0, 0.0, 0.0, 0, 0, 0);
         objects.addObject(wario);
 
  /*       GameObject wario = new GameObject("Wario", true, 0.0, 0.0, 0.0,
@@ -67,7 +67,7 @@ public class GameLoop {
         objects.addObject(wario);
 */
         GameObject floorMario = new GameObject("floorMario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 400, 0);
+                true, 0.0, 0.0, 0.0, 0, 700, 0);
         objects.addObject(floorMario);
 
         // Run the rendering loop until the user has attempted to close

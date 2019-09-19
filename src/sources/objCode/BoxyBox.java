@@ -46,8 +46,8 @@ public class BoxyBox extends ObjectBox {
         Rectangle2D.Double futureBox;
 
         if (this.xSpeed < 0) {
-            futureBox = new Rectangle2D.Double(this.x - this.xSpeed,
-                    this.y, this.xSpeed, this.boundingBox.getHeight());
+            futureBox = new Rectangle2D.Double(this.x + this.xSpeed,
+                    this.y, -this.xSpeed, this.boundingBox.getHeight());
         }
         else {
             futureBox = new Rectangle2D.Double(this.boundingBox.getMaxX(),

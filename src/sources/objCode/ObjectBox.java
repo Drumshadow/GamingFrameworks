@@ -8,6 +8,8 @@ abstract public class ObjectBox {
     // position based on top-left corner
     double x;
     double y;
+    double width;
+    double height;
 
     double xSpeed;
     double ySpeed;
@@ -34,6 +36,8 @@ abstract public class ObjectBox {
     ObjectBox(ObjectBox other) {
         this.x = other.x;
         this.y = other.y;
+        this.width = other.width;
+        this.height = other.height;
 
         this.xSpeed = other.xSpeed;
         this.ySpeed = other.ySpeed;

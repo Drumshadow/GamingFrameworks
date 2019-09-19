@@ -123,7 +123,7 @@ public class Sprite {
 
         glEnable(GL_TEXTURE_2D);
 
-        glTranslated(x / 1000, y / 1000, 0);
+        glTranslated(x, y, 0);
 
         glBegin(GL_QUADS);
         {
