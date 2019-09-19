@@ -3,8 +3,6 @@ package sources;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
-import java.util.Vector;
-
 public class GameRoom {
 
     private String roomName;

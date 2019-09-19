@@ -4,6 +4,7 @@ import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 
 public class Controller {
+
     private int button; // 1 if button, 0 if axes
     private int index; // 0-5 for axes, 0-13 for buttons
     private float range; // only applicable for axes

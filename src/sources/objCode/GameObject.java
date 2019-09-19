@@ -25,8 +25,6 @@ public class GameObject {
     private int boxCode;
     private ObjectBox hitBox;
 
-    // TODO: fix gravity (problem: change in y even if no gravity)
-
     /*==================================================
                      Initialization
     ==================================================*/
@@ -156,11 +154,11 @@ public class GameObject {
                     continue;
 
                 // test future horizontal collision
-                boolean xcollision = this.hitBox.xCollisionCheck(other.hitBox);
-                boolean ycollision = this.hitBox.yCollisionCheck(other.hitBox);
+                boolean xCollision = this.hitBox.xCollisionCheck(other.hitBox);
+                boolean yCollision = this.hitBox.yCollisionCheck(other.hitBox);
 
-                if(xcollision || ycollision) {
-                    if (xcollision) {
+                if(xCollision || yCollision) {
+                    if (xCollision) {
 
                         // move up to object without actually colliding
                         this.hitBox.xSpeed = Math.signum(
@@ -180,12 +178,10 @@ public class GameObject {
                             this.hitBox.ySpeed = 0;
                         }
                     }
-
-                    // System.out.println(xcollision);
                 }
 
                 // test future diagonal collision
-                if (!xcollision && !ycollision) {
+                if (!xCollision && !yCollision) {
                     if(this.hitBox.diagCollisionCheck(other.hitBox)) {
 
                         // move up to object from x direction
@@ -228,10 +224,7 @@ public class GameObject {
     }
 
     public void drawObject() {
-
-        if (this.sprite.getVisible()) {
-            this.sprite.drawObject(this.hitBox.getX(), this.hitBox.getY());
-        }
+        this.sprite.drawObject(this.hitBox.getX(), this.hitBox.getY());
     }
 
     /*==================================================
@@ -347,7 +340,7 @@ public class GameObject {
     // generates object's hashcode for equality check
     private int hashcode() {
         return Objects.hash(this.objName, this.sprite, this.weight,
-                this.canCollide, this.hitBox);
+                this.canCollide, this.hitBox, this.terminalV, this.jumpPower);
     }
 
     // checks if two objects are the same

@@ -37,12 +37,6 @@ public class RoundBox extends ObjectBox {
     // checks future collision in x direction
     public boolean xCollisionCheck(ObjectBox other) {
 
-        // make temporary bounding box for future position
-   /*     Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x + this.xSpeed,
-                this.y, this.boundingBox.getWidth(),
-                this.boundingBox.getHeight());
-   */
-
         // make temporary bounding box for future position and movement path
         Ellipse2D.Double futureBox;
 
@@ -63,11 +57,6 @@ public class RoundBox extends ObjectBox {
     // checks future collision in y direction
     public boolean yCollisionCheck(ObjectBox other) {
 
-        // make temporary bounding box for future position
-  /*      Ellipse2D.Double futureBox = new Ellipse2D.Double(this.x,
-                this.y + this.ySpeed, this.boundingBox.getWidth(),
-                this.boundingBox.getHeight());
-*/
         // make temporary bounding box for future position and movement path
         Ellipse2D.Double futureBox;
 

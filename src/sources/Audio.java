@@ -22,22 +22,24 @@ import static org.lwjgl.system.libc.LibCStdlib.free;
 
 class MultiThread implements Runnable
 {
-    String file;
-    long device;
+    private String file;
+    private long device;
     void setFileName(String fileN){
         this.file = fileN;
     }
     void setDevice(long d){
         this.device = d;
     }
+
     @Override
     public void run() {
-        //Initialization
+
+        // initialization
         String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-        this.device              = alcOpenDevice(defaultDeviceName);
+        this.device = alcOpenDevice(defaultDeviceName);
 
         int[] attributes = {0};
-        long  context    = alcCreateContext(device, attributes);
+        long context = alcCreateContext(device, attributes);
         alcMakeContextCurrent(context);
 
         ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
@@ -49,17 +51,18 @@ class MultiThread implements Runnable
         int sampleRate;
 
         try (MemoryStack stack = stackPush()) {
-            //Allocate space to store return information from the function
+
+            // allocate space to store return information from the function
             IntBuffer channelsBuffer   = stack.mallocInt(1);
             IntBuffer sampleRateBuffer = stack.mallocInt(1);
             rawAudioBuffer = stb_vorbis_decode_filename(this.file, channelsBuffer, sampleRateBuffer);
 
-            //Retreive the extra information that was stored in the buffers by the function
+            // retrieve the extra information that was stored in the buffers by the function
             channels = channelsBuffer.get(0);
             sampleRate = sampleRateBuffer.get(0);
         }
 
-        //Find the correct OpenAL format
+        // find the correct OpenAL format
         int format = -1;
         if (channels == 1) {
             format = AL_FORMAT_MONO16;
@@ -67,29 +70,29 @@ class MultiThread implements Runnable
             format = AL_FORMAT_STEREO16;
         }
 
-        //Request space for the buffer
+        // request space for the buffer
         int bufferPointer = alGenBuffers();
 
-        //Send the data to OpenAL
+        // send the data to OpenAL
         alBufferData(bufferPointer, format, rawAudioBuffer, sampleRate);
 
-        //Free the memory allocated by STB
+        // free the memory allocated by STB
         free(rawAudioBuffer);
 
-        //Request a source
+        // request a source
         int sourcePointer = alGenSources();
 
-        //Assign the sound we just loaded to the source
+        // assign the sound we just loaded to the source
         alSourcei(sourcePointer, AL_BUFFER, bufferPointer);
 
-        //Play the sound
-        //Thread this part
+        // play the sound
+        // thread this part
         alSourcePlay(sourcePointer);
 
         while(alGetSourcei(sourcePointer, AL_SOURCE_STATE) == AL_PLAYING) {
         }
 
-        //Terminate OpenAL
+        // terminate OpenAL
         alDeleteSources(sourcePointer);
         alDeleteBuffers(bufferPointer);
         alcDestroyContext(context);
@@ -97,10 +100,13 @@ class MultiThread implements Runnable
     }
 }
 
-
 public class Audio {
+
     String fileName;
-    String bgMusic;
+    private String bgMusic;
+
+    static String randomName = "BackgroundMusic";
+    private static Clip clip = null;
 
     Audio(){}
     Audio(String file){
@@ -123,7 +129,7 @@ public class Audio {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
@@ -135,10 +141,11 @@ public class Audio {
         this.bgMusic = bgMusic;
     }
 
-    static String randomName = "BackgroundMusic";
-    public static Clip clip = null;
-    public static void playSound(String name) throws Exception{
-        if (clip != null && clip.isOpen()) clip.close();
+    static void playSound(String name) throws Exception{
+
+        if (clip != null && clip.isOpen()) {
+            clip.close();
+        }
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(name).getAbsoluteFile());
         clip = AudioSystem.getClip();
 
@@ -147,7 +154,7 @@ public class Audio {
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-24f);
 
-        System.out.println(clip.getFrameLength() + " | " + clip.getFramePosition());
+    //    System.out.println(clip.getFrameLength() + " | " + clip.getFramePosition());
         clip.start();
     }
 }

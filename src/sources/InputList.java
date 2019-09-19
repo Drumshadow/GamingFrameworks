@@ -3,26 +3,26 @@ package sources;
 import java.util.ArrayList;
 
 public class InputList {
+
     private ArrayList<Input> inputs;
+
     InputList() {
-        inputs = new ArrayList<Input>();
+        inputs = new ArrayList<>();
     }
 
-    public void add(Input i) {
+    void add(Input i) {
         inputs.add(i);
     }
 
-    public Input get(int ndx) {
+    Input get(int ndx) {
         return inputs.get(ndx);
     }
 
-    public int size() {
+    int size() {
         return inputs.size();
     }
 
     public void removeAll() {
-        for (int i = 0; i < inputs.size(); i++) {
-            inputs.remove(i);
-        }
+        inputs.clear();
     }
 }
