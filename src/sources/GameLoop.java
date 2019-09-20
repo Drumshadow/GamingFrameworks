@@ -2,6 +2,9 @@ package sources;
 
 import org.ini4j.Ini;
 import org.lwjgl.opengl.GL;
+import sources.HUDcode.HUD;
+import sources.HUDcode.HealthBar;
+import sources.HUDcode.Score;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 import org.lwjgl.glfw.GLFWGamepadState;
@@ -23,7 +26,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GameLoop {
 
-    // The window handle
+    // window handle
     private InitWindow newWindow = new InitWindow();
     private InputList inputs = new InputList();
     private ObjectList objects = new ObjectList();
@@ -37,25 +40,31 @@ public class GameLoop {
         bg.playSound("./music/PTheme.wav");
         newWindow.init();
 
-        // Setup a key callback.
-        // It will be called every time a key is pressed, repeated or released.
-        // Will use this section to handle inputs, don't delete plz
-        glfwSetKeyCallback(newWindow.window, (window, key, scanCode, action, mods) -> {
+        // setup key callback
+        // called every time a key is pressed, repeated or released
+        glfwSetKeyCallback(newWindow.window, (window, key, scanCode, action,
+                                              mods) -> {
+
             for (int i = 0; i < inputs.size(); i++) {
-                if ( key == inputs.get(i).getKey() && action == inputs.get(i).getAction() )
+                if (key == inputs.get(i).getKey() &&
+                        action == inputs.get(i).getAction()) {
+
                     inputs.get(i).execute(objects);
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                    glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+                }
+
+                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                    glfwSetWindowShouldClose(window, true);
+                }
             }
         });
 
         loop();
 
-        // Free the window callbacks and destroy the window
+        // free window callbacks and destroy window
         glfwFreeCallbacks(newWindow.window);
         glfwDestroyWindow(newWindow.window);
 
-        // Terminate GLFW and free the error callback
+        // terminate GLFW and free error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
@@ -63,29 +72,63 @@ public class GameLoop {
     private void loop() throws IOException {
         GL.createCapabilities();
 
+        /*==================================================
+                          Mario Creation
+        ==================================================*/
+
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, 600, 0.0);
+                true, 1, 10, 0.0, 0, 200.0, 1000.0);
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, 100, 0.0);
+                true, 0.0, 0.0, 0.0, 0, 0.0, 500.0);
         objects.addObject(wario);
 
-        GameObject floorMario = new GameObject("floorMario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 0.0, 800);
-        objects.addObject(floorMario);
+        GameObject floor1 = new GameObject("floor", "./sprites/mario.jpg",
+                true, 0.0, 0.0, 0.0, 0, 400.0, 500.0);
+        objects.addObject(floor1);
+
+        GameObject floor2 = new GameObject("floor", "./sprites/mario.jpg",
+                true, 0.0, 0.0, 0.0, 0, 200.0, 500.0);
+        objects.addObject(floor2);
+
+        GameObject floor3 = new GameObject("floor", "./sprites/mario.jpg",
+                true, 0.0, 0.0, 0.0, 0, 600.0, 500.0);
+        objects.addObject(floor3);
+
+        GameObject wall = new GameObject("wall", "./sprites/mario.jpg",
+                true, 0.0, 0.0, 0.0, 0, 800.0, 700.0);
+        objects.addObject(wall);
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         mario.getSprite().texture.bind();
         wario.getSprite().texture.bind();
-        floorMario.getSprite().texture.bind();
+        floor1.getSprite().texture.bind();
+        floor2.getSprite().texture.bind();
+        floor3.getSprite().texture.bind();
+        wall.getSprite().texture.bind();
+
+        /*==================================================
+                                HUD
+        ==================================================*/
+        HUD hud = new HUD();
+
+        hud.addElement(new HealthBar(true, HealthBar.healthType.BAR, 3, 3,
+                null, 0, 0, 5, 5));
+        hud.addElement(new Score(true, -100, 0, 5, 5, 0, 100));
+
+        /*==================================================
+                          Keyboard Inputs
+        ==================================================*/
 
         Ini ini = new Ini(new File("./inputs/keyboard.ini"));
         int inputNum = Integer.parseInt(ini.get("control", "inputs"));
+
         for (int i = 0; i < inputNum; i++) {
             if (ini.get("input" + i, "purpose").equals("Create") ||
                     ini.get("input" + i, "purpose").equals("Destroy")) {
+
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
                         objects.getElement(ini.get("input" + i, "object")),
@@ -93,6 +136,7 @@ public class GameLoop {
             }
             else if (ini.get("input" + i, "purpose").equals("MoveX") ||
                     ini.get("input" + i, "purpose").equals("MoveY")) {
+
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
                         objects.getElement(ini.get("input" + i, "object")),
@@ -100,21 +144,29 @@ public class GameLoop {
                         Double.parseDouble(ini.get("input" + i, "speed"))));
             }
             else if (ini.get("input" + i, "purpose").equals("PlaySound")) {
+
                 Audio a = new Audio();
                 a.setFileName(ini.get("input" + i, "audio"));
+
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                        Integer.parseInt(ini.get("input" + i, "action")),
+                        Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
                         objects.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
                         a));
             }
         }
 
+        /*==================================================
+                        Controller Inputs
+        ==================================================*/
+
         Ini iniC = new Ini(new File("./inputs/controller.ini"));
         inputNum = Integer.parseInt(iniC.get("control", "inputs"));
+
         for (int i = 0; i < inputNum; i++) {
             if (iniC.get("input" + i, "purpose").equals("Create") ||
                     iniC.get("input" + i, "purpose").equals("Destroy")) {
+
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
@@ -123,6 +175,7 @@ public class GameLoop {
             }
             else if (iniC.get("input" + i, "purpose").equals("MoveX") ||
                     iniC.get("input" + i, "purpose").equals("MoveY")) {
+
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
@@ -131,8 +184,10 @@ public class GameLoop {
                         Double.parseDouble(iniC.get("input" + i, "speed"))));
             }
             else if (iniC.get("input" + i, "purpose").equals("PlaySound")) {
+
                 Audio a = new Audio();
                 a.setFileName(iniC.get("input" + i, "audio"));
+
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
@@ -141,6 +196,10 @@ public class GameLoop {
                         a));
             }
         }
+
+        /*==================================================
+                          Game Loop
+        ==================================================*/
 
         float red = 1;
         float green = 0;
@@ -153,7 +212,6 @@ public class GameLoop {
         double time = FPS.getTime();
         double unprocesses = 0;
 
-        // Game Loop
         while ( !glfwWindowShouldClose(newWindow.window) ) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
             boolean can_render = false;
@@ -189,6 +247,7 @@ public class GameLoop {
 
             for(int i = 0; i < objects.getOList().size(); i++) {
                 objects.getOList().get(i).drawObject();
+                objects.getOList().get(i).move(objects);
             }
 
             if(red > 0 && blue < 0) {
@@ -202,25 +261,34 @@ public class GameLoop {
                 red += 0.01;
             }
 
-            /*GLFWGamepadState state = new GLFWGamepadState(ByteBuffer.allocate(40));
-            if (glfwGetGamepadState(GLFW_JOYSTICK_1, state)) {
-
-            }*/
+            // draw HUD
+            // TODO: correctly draw HUD
+           // hud.drawHUD();
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
+
                 FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
                 ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+
                 for (int i = 0; i < controls.size(); i++) {
+
                     if (controls.get(i).getButton() == 1) {
                         if (buttons.get(controls.get(i).getIndex()) == 1) {
                             controls.get(i).execute(objects);
                         }
+
                     } else if (controls.get(i).getButton() == 0) {
+
                         if (controls.get(i).getRange() < 0 &&
-                                axes.get(controls.get(i).getIndex()) < controls.get(i).getRange()) {
+                                axes.get(controls.get(i).getIndex()) <
+                                        controls.get(i).getRange()) {
+
                             controls.get(i).execute(objects);
+
                         } else if (controls.get(i).getRange() >= 0 &&
-                                axes.get(controls.get(i).getIndex()) > controls.get(i).getRange()) {
+                                axes.get(controls.get(i).getIndex()) >
+                                        controls.get(i).getRange()) {
+
                             controls.get(i).execute(objects);
                         }
                     }

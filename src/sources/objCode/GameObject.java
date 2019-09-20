@@ -75,8 +75,8 @@ public class GameObject {
         this.objName = name;
         this.sprite = new Sprite(sprPath);
 
-        this.weight = weight;
-        this.terminalV = tv;
+        this.weight = weight / 1000.0;
+        this.terminalV = tv / 1000.0;
         this.jumpPower = jump;
 
         this.canCollide = collide;
@@ -163,7 +163,7 @@ public class GameObject {
                         // move up to object without actually colliding
                         this.hitBox.xSpeed = Math.signum(
                                 this.hitBox.objDistX(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistX(other.hitBox) < 0.0) {
+                        if(this.hitBox.objDistX(other.hitBox) <= 0.001) {
                             this.hitBox.xSpeed = 0;
                         }
                     }
@@ -174,7 +174,7 @@ public class GameObject {
                         // move up to object without actually colliding
                         this.hitBox.ySpeed = Math.signum(
                                 this.hitBox.objDistY(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistY(other.hitBox) < 0.0) {
+                        if(this.hitBox.objDistY(other.hitBox) < 0.001) {
                             this.hitBox.ySpeed = 0;
                         }
                     }
@@ -187,14 +187,14 @@ public class GameObject {
                         // move up to object from x direction
                         this.hitBox.xSpeed = Math.signum(
                                 this.hitBox.objDistX(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistX(other.hitBox) < 0.0) {
+                        if(this.hitBox.objDistX(other.hitBox) <= 0.001) {
                             this.hitBox.xSpeed = 0;
                         }
 
                         // move up to object from y direction
                         this.hitBox.ySpeed = Math.signum(
                                 this.hitBox.objDistY(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistY(other.hitBox) < 0.0) {
+                        if(this.hitBox.objDistY(other.hitBox) <= 0.001) {
                             this.hitBox.ySpeed = 0;
                         }
                     }

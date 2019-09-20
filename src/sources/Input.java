@@ -88,12 +88,10 @@ public class Input {
 
             case MoveX:
                 obj.setXSpeed(speed);
-                obj.move(roomObjects);
                 break;
 
             case MoveY:
                 obj.setYSpeed(speed);
-                obj.move(roomObjects);
                 break;
 
             case PlaySound:

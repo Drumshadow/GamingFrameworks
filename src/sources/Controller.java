@@ -9,8 +9,7 @@ public class Controller {
     private int index; // 0-5 for axes, 0-13 for buttons
     private float range; // only applicable for axes
     private GameObject obj;
-    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound};
-    static private purpose purpose;
+    private String purpose;
     private double speed;
     private Audio sounds;
 
@@ -19,12 +18,7 @@ public class Controller {
         this.index = index;
         this.range = range;
         this.obj = obj;
-        if (purpose.equals("Create")) {
-            this.purpose = Controller.purpose.Create;
-        }
-        else if (purpose.equals("Destroy")) {
-            this.purpose = Controller.purpose.Destroy;
-        }
+        this.purpose = purpose;
     }
 
     public Controller(int button, int index, float range, GameObject obj, String purpose, double speed) {
@@ -33,12 +27,7 @@ public class Controller {
         this.range = range;
         this.obj = obj;
         this.speed = speed;
-        if (purpose.equals("MoveX")) {
-            this.purpose = Controller.purpose.MoveX;
-        }
-        else if (purpose.equals("MoveY")) {
-            this.purpose = Controller.purpose.MoveY;
-        }
+        this.purpose = purpose;
     }
 
     public Controller(int button, int index, float range, GameObject obj, String purpose, Audio sndName) {
@@ -47,7 +36,7 @@ public class Controller {
         this.range = range;
         this.obj = obj;
         this.sounds = sndName;
-        this.purpose = Controller.purpose.PlaySound;
+        this.purpose = purpose;
     }
 
     public int getButton() {
@@ -62,30 +51,39 @@ public class Controller {
         return range;
     }
 
-    public void execute(ObjectList roomObjects) {
+    /*public String getPurpose() {
         switch(purpose) {
-
             case Create:
-                roomObjects.addObject(new GameObject(obj));
-                break;
-
+                return "Create";
             case Destroy:
-                roomObjects.removeObject(obj);
-                break;
-
+                return "Destroy";
             case MoveX:
-                obj.setXSpeed(speed);
-                obj.move(roomObjects);
-                break;
-
+                return "MoveX";
             case MoveY:
-                obj.setYSpeed(speed);
-                obj.move(roomObjects);
-                break;
-
+                return "MoveY";
             case PlaySound:
-                sounds.loadPlaySound();
-                break;
+                return "PlaySound";
+        }
+        return null;
+    }*/
+
+    public void execute(ObjectList roomObjects) {
+        if (purpose.equals("Create")) {
+            roomObjects.addObject(new GameObject(obj));
+        }
+        if (purpose.equals("Destroy")) {
+            roomObjects.removeObject(obj);
+        }
+        if (purpose.equals("MoveX")) {
+            obj.setXSpeed(speed / 1000);
+            obj.move(roomObjects);
+        }
+        if (purpose.equals("MoveY")) {
+            obj.setYSpeed(speed / 1000);
+            obj.move(roomObjects);
+        }
+        if (purpose.equals("PlaySound")) {
+            sounds.loadPlaySound();
         }
     }
 }
