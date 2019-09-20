@@ -24,7 +24,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 
 public class GameLoop {
-
+    // Hello!!!
     // window handle
     private InitWindow newWindow = new InitWindow();
     private InputList inputs = new InputList();
