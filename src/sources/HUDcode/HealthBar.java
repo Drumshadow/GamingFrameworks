@@ -8,8 +8,8 @@ public class HealthBar extends HUDElement {
     public enum healthType {BAR, NUM, SPRITE}
     private healthType type;
 
-    private int lives;
-    private int maxLives;
+    private static int lives = 10;
+    private static int maxLives = 10;
 
     private Sprite hpSprite;
 
@@ -18,16 +18,16 @@ public class HealthBar extends HUDElement {
     ==================================================*/
 
     // value constructor
-    public HealthBar(boolean display, healthType healthType, int lives,
-                     int maxLives, Sprite hpSprite, int x, int y, int width,
-                     int height) {
+    public HealthBar(boolean display, healthType healthType, int l,
+                     int m, Sprite hpSprite, float x, float y,
+                     float width, float height) {
 
         super(display, x, y, width, height);
 
         this.type = healthType;
 
-        this.lives = lives;
-        this.maxLives = maxLives;
+        lives = l;
+        maxLives = m;
 
         this.hpSprite = hpSprite;
     }
@@ -67,14 +67,15 @@ public class HealthBar extends HUDElement {
             GL11.glVertex2f(this.getX(), this.getY() + this.getHeight());
         GL11.glEnd();
 
-    /*    this.hpBar.setColor(Color.black);
-        this.hpBar.fillRect(this.getX(), this.getY(), this.getWidth(),
-                this.getHeight());
-
         // fill hp
-        this.hpBar.setColor(Color.green);
-        this.hpBar.fillRect(this.getX(), this.getY(), this.getWidth() *
-                (this.lives / this.maxLives), this.getHeight());*/
+        GL11.glColor3f(0.058f, 0.956f, 0.027f);
+
+        GL11.glBegin(GL11.GL_QUADS);
+            GL11.glVertex2f(this.getX(), this.getY());
+            GL11.glVertex2f(this.getX() + (this.getWidth() * ((float)lives / (float)maxLives)), this.getY());
+            GL11.glVertex2f(this.getX() + (this.getWidth() * ((float)lives / (float)maxLives)), this.getY() + this.getHeight());
+            GL11.glVertex2f(this.getX(), this.getY() + this.getHeight());
+        GL11.glEnd();
     }
 
     private void numberHealth() {
@@ -89,8 +90,21 @@ public class HealthBar extends HUDElement {
                    Getters and Setters
     ==================================================*/
 
-    // TODO: increase and decrease health
     // TODO: make setters impact all related values
+
+    public void incHealth() {
+
+        if (lives < maxLives) {
+            lives++;
+        }
+    }
+
+    public void decHealth() {
+
+        if (lives > 0) {
+            lives--;
+        }
+    }
 
     public healthType getType() {
         return this.type;
@@ -101,19 +115,19 @@ public class HealthBar extends HUDElement {
     }
 
     public int getLives() {
-        return this.lives;
+        return lives;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void setLives(int l) {
+        lives = l;
     }
 
     public int getMaxLives() {
-        return this.maxLives;
+        return maxLives;
     }
 
-    public void setMaxLives(int maxLives) {
-        this.maxLives = maxLives;
+    public void setMaxLives(int m) {
+        maxLives = m;
     }
 
     public Sprite getHpSprite() {

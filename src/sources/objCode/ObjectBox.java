@@ -8,6 +8,7 @@ abstract public class ObjectBox {
     // position based on top-left corner
     double x;
     double y;
+
     private double width;
     private double height;
 
