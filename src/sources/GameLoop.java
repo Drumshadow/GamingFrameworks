@@ -69,7 +69,7 @@ public class GameLoop {
         ==================================================*/
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 200.0, 1000.0);
+                true, 1, 10, 0.0, 0, 200.0, 1000.0);
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",

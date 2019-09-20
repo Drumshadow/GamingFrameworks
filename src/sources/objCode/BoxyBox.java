@@ -45,8 +45,8 @@ public class BoxyBox extends ObjectBox {
                 this.boundingBox.getWidth(), this.boundingBox.getHeight());
 
         return futureBox.intersects(other.x, other.y,
-                other.getBoundBox().getWidth(),
-                other.getBoundBox().getHeight());
+                other.getBoundBox().getWidth() + 0.001,
+                other.getBoundBox().getHeight() + 0.001);
     }
 
     // checks future collision in y direction
@@ -59,8 +59,8 @@ public class BoxyBox extends ObjectBox {
                 this.boundingBox.getWidth(), this.boundingBox.getHeight());
 
         return futureBox.intersects(other.x, other.y,
-                other.getBoundBox().getWidth(),
-                other.getBoundBox().getHeight());
+                other.getBoundBox().getWidth() + 0.001,
+                other.getBoundBox().getHeight() + 0.001);
     }
 
     // checks future collision in both x and y directions
@@ -72,8 +72,8 @@ public class BoxyBox extends ObjectBox {
                 this.boundingBox.getWidth(), this.boundingBox.getHeight());
 
         return futureBox.intersects(other.x, other.y,
-                other.getBoundBox().getWidth(),
-                other.getBoundBox().getHeight());
+                other.getBoundBox().getWidth() + 0.0001,
+                other.getBoundBox().getHeight() + 0.0001);
     }
 
     /*==================================================
