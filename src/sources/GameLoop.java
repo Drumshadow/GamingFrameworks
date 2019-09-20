@@ -4,6 +4,9 @@ import org.ini4j.Ini;
 import org.lwjgl.opengl.GL;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
+import org.lwjgl.glfw.GLFWGamepadState;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +24,7 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private ObjectList objects = new ObjectList();
     private Audio bg = new Audio();
+    private ControllerList controls = new ControllerList();
     java.awt.Font font = new java.awt.Font(MONOSPACED, PLAIN, 16);
 
 
@@ -59,11 +63,11 @@ public class GameLoop {
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, -100, 0.0);
+                true, 0.0, 10, 7, 0, 100, 0.0);
         objects.addObject(wario);
 
         GameObject floorMario = new GameObject("floorMario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 0.0, -800.0);
+                true, 0.0, 0.0, 0.0, 0, 0.0, 800);
         objects.addObject(floorMario);
 
         // Run the rendering loop until the user has attempted to close
@@ -97,6 +101,38 @@ public class GameLoop {
                         Integer.parseInt(ini.get("input" + i, "action")),
                         objects.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
+                        a));
+            }
+        }
+
+        Ini iniC = new Ini(new File("./inputs/controller.ini"));
+        inputNum = Integer.parseInt(iniC.get("control", "inputs"));
+        for (int i = 0; i < inputNum; i++) {
+            if (iniC.get("input" + i, "purpose").equals("Create") ||
+                    iniC.get("input" + i, "purpose").equals("Destroy")) {
+                controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
+                        Integer.parseInt(iniC.get("input" + i, "index")),
+                        Float.parseFloat(iniC.get("input" + i, "range")),
+                        objects.getElement(iniC.get("input" + i, "object")),
+                        iniC.get("input" + i, "purpose")));
+            }
+            else if (iniC.get("input" + i, "purpose").equals("MoveX") ||
+                    iniC.get("input" + i, "purpose").equals("MoveY")) {
+                controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
+                        Integer.parseInt(iniC.get("input" + i, "index")),
+                        Float.parseFloat(iniC.get("input" + i, "range")),
+                        objects.getElement(iniC.get("input" + i, "object")),
+                        iniC.get("input" + i, "purpose"),
+                        Double.parseDouble(iniC.get("input" + i, "speed"))));
+            }
+            else if (iniC.get("input" + i, "purpose").equals("PlaySound")) {
+                Audio a = new Audio();
+                a.setFileName(iniC.get("input" + i, "audio"));
+                controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
+                        Integer.parseInt(iniC.get("input" + i, "index")),
+                        Float.parseFloat(iniC.get("input" + i, "range")),
+                        objects.getElement(iniC.get("input" + i, "object")),
+                        iniC.get("input" + i, "purpose"),
                         a));
             }
         }
@@ -143,6 +179,26 @@ public class GameLoop {
             if (glfwGetGamepadState(GLFW_JOYSTICK_1, state)) {
 
             }*/
+
+            if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
+                FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+                ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+                for (int i = 0; i < controls.size(); i++) {
+                    if (controls.get(i).getButton() == 1) {
+                        if (buttons.get(controls.get(i).getIndex()) == 1) {
+                            controls.get(i).execute(objects);
+                        }
+                    } else if (controls.get(i).getButton() == 0) {
+                        if (controls.get(i).getRange() < 0 &&
+                                axes.get(controls.get(i).getIndex()) < controls.get(i).getRange()) {
+                            controls.get(i).execute(objects);
+                        } else if (controls.get(i).getRange() >= 0 &&
+                                axes.get(controls.get(i).getIndex()) > controls.get(i).getRange()) {
+                            controls.get(i).execute(objects);
+                        }
+                    }
+                }
+            }
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
 
