@@ -59,7 +59,7 @@ public class GameLoop {
         GL.createCapabilities();
 
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 0.0, 10, 7, 0, 600, 0.0);
+                true, 1, 10, 7, 0, 100, 300);
         objects.addObject(mario);
 
         GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
@@ -98,7 +98,7 @@ public class GameLoop {
                 Audio a = new Audio();
                 a.setFileName(ini.get("input" + i, "audio"));
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                        Integer.parseInt(ini.get("input" + i, "action")),
+                        Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
                         objects.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
                         a));
@@ -162,6 +162,7 @@ public class GameLoop {
 
             for(int i = 0; i < objects.getOList().size(); i++) {
                 objects.getOList().get(i).drawObject();
+                objects.getOList().get(i).move(objects);
             }
 
             if(red > 0 && blue < 0) {

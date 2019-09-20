@@ -16,7 +16,7 @@ public class GameRoom {
     private ObjectList allObjects;
 
     // acceleration due to gravity
-    public static final double GRAVITY = -10.0;
+    public static final double GRAVITY = -9.8 / 100.0;
 
     /*==================================================
                      Initialization
