@@ -102,12 +102,12 @@ public class GameLoop {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        mario.getSprite().texture.bind();
-        wario.getSprite().texture.bind();
-        floor1.getSprite().texture.bind();
-        floor2.getSprite().texture.bind();
-        floor3.getSprite().texture.bind();
-        wall.getSprite().texture.bind();
+//        mario.getSprite().texture.bind();
+//        wario.getSprite().texture.bind();
+//        floor1.getSprite().texture.bind();
+//        floor2.getSprite().texture.bind();
+//        floor3.getSprite().texture.bind();
+//        wall.getSprite().texture.bind();
 
         /*==================================================
                                 HUD

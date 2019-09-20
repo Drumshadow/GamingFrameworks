@@ -123,6 +123,8 @@ public class Sprite {
 
         glEnable(GL_TEXTURE_2D);
 
+        glBindTexture(GL_TEXTURE_2D, this.texture.id);
+
         glTranslated(x, y, 0);
 
         glBegin(GL_QUADS);

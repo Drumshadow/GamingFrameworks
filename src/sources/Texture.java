@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Texture {
 
     // stores texture handle
-    private int id;
+    public int id;
 
     private int width;
     private int height;
