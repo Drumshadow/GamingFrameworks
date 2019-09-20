@@ -3,8 +3,6 @@ package sources;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
-import sources.objCode.GameObject;
-import sources.objCode.ObjectList;
 
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -13,34 +11,35 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
-public class InitWindow {
-    public long window;
+class InitWindow {
 
-    public void init() {
+    long window;
+
+    void init() {
         init(600, 600);
     }
 
-    public void init(int width, int height) {
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
+    void init(int width, int height) {
+
+        // setup error callback
         GLFWErrorCallback.createPrint(System.err).set();
 
-        // Initialize GLFW. Most GLFW functions will not work before doing this.
+        // initialize GLFW
         if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        // Configure GLFW
+        // configure GLFW
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
-        // Full screen handling of game window, if needed
+        // full screen handling of game window, if needed
 //        GLFWVidMode mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 //        int window_width = mode.width();
 //        int window_height = mode.height();
 
-        // Create the window
-        window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
+        // create window
+        window = glfwCreateWindow(width, height, "Game!", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 

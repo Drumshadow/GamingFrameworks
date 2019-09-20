@@ -69,15 +69,42 @@ public class GameObject {
 
     // constructor via given values (finds sprite via path)
     public GameObject(String name, String sprPath, boolean collide,
-                      double gravity, double tv, double jump, int boxType,
+                      double weight, double tv, double jump, int boxType,
                       double x, double y) {
 
         this.objName = name;
-
-        // get sprite from file
         this.sprite = new Sprite(sprPath);
 
-        this.weight = gravity;
+        this.weight = weight;
+        this.terminalV = tv;
+        this.jumpPower = jump;
+
+        this.canCollide = collide;
+
+        // create hit box
+        this.boxCode = boxType;
+
+        if (this.boxCode == 1) {
+            this.hitBox = new RoundBox((x - 1000 + sprite.getWidth()) / 1000,
+                    (y - 1000 + sprite.getHeight())/ 1000, this.sprite.getWidth() / 1000.0,
+                    this.sprite.getHeight() / 1000.0);
+        }
+        else {
+            this.hitBox = new BoxyBox((x - 1000 + sprite.getWidth()) / 1000,
+                    (y - 1000 + sprite.getHeight())/ 1000,  2* this.sprite.getWidth() / 1000.0,
+                    2 * this.sprite.getHeight() / 1000.0);
+        }
+    }
+
+    // constructor via given values (invisible object)
+    public GameObject(String name, boolean collide, double weight, double tv,
+                      double jump, int boxType, double x, double y, int width,
+                      int height) {
+
+        this.objName = name;
+        this.sprite = new Sprite(width, height);
+
+        this.weight = weight;
         this.terminalV = tv;
         this.jumpPower = jump;
 
@@ -104,7 +131,7 @@ public class GameObject {
     public void move(ObjectList roomObjs) {
 
         // acceleration due to gravity
-        if (weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
+        if (this.weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
             this.hitBox.ySpeed += (GameRoom.GRAVITY * this.weight);
 
             // don't go over terminal velocity
@@ -127,31 +154,50 @@ public class GameObject {
                     continue;
 
                 // test future horizontal collision
-                if (this.hitBox.xCollisionCheck(other.hitBox)) {
+                boolean xCollision = this.hitBox.xCollisionCheck(other.hitBox);
+                boolean yCollision = this.hitBox.yCollisionCheck(other.hitBox);
 
-                    // move up to object without actually colliding
-                    this.hitBox.xSpeed = Math.signum(
-                            this.hitBox.objDistX(other.hitBox));
-                }
+                if(xCollision || yCollision) {
+                    if (xCollision) {
 
-                // test future vertical collision
-                if (this.hitBox.yCollisionCheck(other.hitBox)) {
+                        // move up to object without actually colliding
+                        this.hitBox.xSpeed = Math.signum(
+                                this.hitBox.objDistX(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistX(other.hitBox) < 0.0) {
+                            this.hitBox.xSpeed = 0;
+                        }
+                    }
 
-                    // move up to object without actually colliding
-                    this.hitBox.ySpeed = Math.signum(
-                            this.hitBox.objDistY(other.hitBox));
+                    // test future vertical collision
+                    else {
+
+                        // move up to object without actually colliding
+                        this.hitBox.ySpeed = Math.signum(
+                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistY(other.hitBox) < 0.0) {
+                            this.hitBox.ySpeed = 0;
+                        }
+                    }
                 }
 
                 // test future diagonal collision
-                if (this.hitBox.diagCollisionCheck(other.hitBox)) {
+                if (!xCollision && !yCollision) {
+                    if(this.hitBox.diagCollisionCheck(other.hitBox)) {
 
-                    // move up to object from x direction
-                    this.hitBox.xSpeed = Math.signum(
-                            this.hitBox.objDistX(other.hitBox));
+                        // move up to object from x direction
+                        this.hitBox.xSpeed = Math.signum(
+                                this.hitBox.objDistX(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistX(other.hitBox) < 0.0) {
+                            this.hitBox.xSpeed = 0;
+                        }
 
-                    // move up to object from y direction
-                    this.hitBox.ySpeed = Math.signum(
-                            this.hitBox.objDistY(other.hitBox));
+                        // move up to object from y direction
+                        this.hitBox.ySpeed = Math.signum(
+                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                        if(this.hitBox.objDistY(other.hitBox) < 0.0) {
+                            this.hitBox.ySpeed = 0;
+                        }
+                    }
                 }
             }
         }
@@ -294,7 +340,7 @@ public class GameObject {
     // generates object's hashcode for equality check
     private int hashcode() {
         return Objects.hash(this.objName, this.sprite, this.weight,
-                this.canCollide, this.hitBox);
+                this.canCollide, this.hitBox, this.terminalV, this.jumpPower);
     }
 
     // checks if two objects are the same

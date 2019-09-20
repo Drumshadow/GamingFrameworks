@@ -8,6 +8,8 @@ abstract public class ObjectBox {
     // position based on top-left corner
     double x;
     double y;
+    private double width;
+    private double height;
 
     double xSpeed;
     double ySpeed;
@@ -34,6 +36,8 @@ abstract public class ObjectBox {
     ObjectBox(ObjectBox other) {
         this.x = other.x;
         this.y = other.y;
+        this.width = other.width;
+        this.height = other.height;
 
         this.xSpeed = other.xSpeed;
         this.ySpeed = other.ySpeed;
@@ -113,7 +117,7 @@ abstract public class ObjectBox {
     ==================================================*/
 
     // checks horizontal distance between two hit boxes
-    public double objDistX(ObjectBox other) {
+    double objDistX(ObjectBox other) {
 
         return Math.abs(this.boundingBox.getCenterX() -
                 other.boundingBox.getCenterX()) -
@@ -122,7 +126,7 @@ abstract public class ObjectBox {
     }
 
     // checks vertical distance between two hit boxes
-    public double objDistY(ObjectBox other) {
+    double objDistY(ObjectBox other) {
 
         return Math.abs(this.boundingBox.getCenterY() -
                 other.boundingBox.getCenterY()) -
@@ -132,7 +136,7 @@ abstract public class ObjectBox {
     // generates object's hashcode for equality check
     private int hashcode() {
         return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed,
-                this.boundingBox);
+                this.width, this.height, this.boundingBox);
     }
 
     // checks if two objects are the same

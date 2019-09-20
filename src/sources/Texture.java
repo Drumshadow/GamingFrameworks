@@ -4,39 +4,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryStack;
 
 import javax.imageio.ImageIO;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
-import static org.lwjgl.stb.STBImage.*;
 
-/**
- * This class represents a texture.
- *
- * @author Heiko Brumme
- */
 public class Texture {
 
-    /**
-     * Stores the handle of the texture.
-     */
+    // stores texture handle
     private int id;
 
-    /**
-     * Width of the texture.
-     */
     private int width;
-    /**
-     * Height of the texture.
-     */
     private int height;
 
-    /** Creates a texture from a file. */
+    // creates texture from file
     public Texture(String filename) {
         BufferedImage bi;
 
@@ -69,13 +52,15 @@ public class Texture {
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+                    GL_UNSIGNED_BYTE, pixels);
+
         }catch(IOException e) {
-            e.printStackTrace();
+            System.err.println("Cannot find texture");
         }
     }
 
-    /** Creates a texture using a shrunken sprite */
+    // creates texture from shrunken sprite
     public Texture(BufferedImage sprite) {
 
         this.width = sprite.getWidth();
@@ -109,11 +94,8 @@ public class Texture {
                 GL_UNSIGNED_BYTE, pixels);
     }
 
-    /**
-     * Binds the texture.
-     */
+    // binds texture
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
     }
-
 }

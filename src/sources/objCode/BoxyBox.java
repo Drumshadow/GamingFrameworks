@@ -37,10 +37,17 @@ public class BoxyBox extends ObjectBox {
     // checks future collision in x direction
     public boolean xCollisionCheck(ObjectBox other) {
 
-        // make temporary bounding box for future position
-        Rectangle2D.Double futureBox = new Rectangle2D.Double(
-                this.x + this.xSpeed, this.y, this.boundingBox.getWidth(),
-                this.boundingBox.getHeight());
+        // make temporary bounding box for future position and movement path
+        Rectangle2D.Double futureBox;
+
+        if (this.xSpeed < 0) {
+            futureBox = new Rectangle2D.Double(this.x + this.xSpeed,
+                    this.y, -this.xSpeed, this.boundingBox.getHeight());
+        }
+        else {
+            futureBox = new Rectangle2D.Double(this.boundingBox.getMaxX(),
+                    this.y, this.xSpeed, this.boundingBox.getHeight());
+        }
 
         return futureBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),
@@ -50,10 +57,18 @@ public class BoxyBox extends ObjectBox {
     // checks future collision in y direction
     public boolean yCollisionCheck(ObjectBox other) {
 
-        // make temporary bounding box for future position
-        Rectangle2D.Double futureBox = new Rectangle2D.Double(this.x,
-                this.y + this.ySpeed, this.boundingBox.getWidth(),
-                this.boundingBox.getHeight());
+        // make temporary bounding box for future position and movement path
+        Rectangle2D.Double futureBox;
+
+        if (this.ySpeed < 0) {
+            futureBox = new Rectangle2D.Double(this.x,
+                    this.boundingBox.getMinY(), this.boundingBox.getWidth(),
+                    this.ySpeed);
+        }
+        else {
+            futureBox = new Rectangle2D.Double(this.x, this.y + this.ySpeed,
+                    this.boundingBox.getWidth(), this.ySpeed);
+        }
 
         return futureBox.intersects(other.x, other.y,
                 other.getBoundBox().getWidth(),

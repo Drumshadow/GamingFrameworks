@@ -2,19 +2,18 @@ package sources;
 
 import java.util.ArrayList;
 
-public class InputList {
+public class ControllerList {
 
-    private ArrayList<Input> inputs;
-
-    InputList() {
+    private ArrayList<Controller> inputs;
+    ControllerList() {
         inputs = new ArrayList<>();
     }
 
-    void add(Input i) {
+    void add(Controller i) {
         inputs.add(i);
     }
 
-    Input get(int ndx) {
+    Controller get(int ndx) {
         return inputs.get(ndx);
     }
 

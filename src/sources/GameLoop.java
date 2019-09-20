@@ -4,7 +4,6 @@ import org.ini4j.Ini;
 import org.lwjgl.opengl.GL;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
-import sources.FPS;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,6 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private ObjectList objects = new ObjectList();
     private Audio bg = new Audio();
-
 
     private void run() throws Exception {
         bg.playSound("./music/MemeVapor.wav");
@@ -51,6 +49,7 @@ public class GameLoop {
   
     private void loop() throws IOException {
         GL.createCapabilities();
+
         GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
                 true, 0.0, 10, 7, 0, 600, 0.0);
         objects.addObject(mario);
@@ -103,75 +102,49 @@ public class GameLoop {
         float blue = 0;
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        double frame_cap = 1.0/60.0;
-        double frame_time = 0;
-        int frames = 0;
-        double time = FPS.getTime();
-        double unprocesses = 0;
 
         // Game Loop
         while ( !glfwWindowShouldClose(newWindow.window) ) {
-            boolean can_render = false;
-            double time_2 = FPS.getTime();
-            double passed = time_2 - time;
-            unprocesses+=passed;
-            frame_time += passed;
+            glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 
-            time = time_2;
+            glBegin(GL_QUADS);
+            {
+                glColor4f(red, green, blue, 0);
+                glVertex2f(-1f, 1f);
+                glColor4f(blue, red, green, 0);
+                glVertex2f(1f, 1f);
+                glColor4f(green, blue, red, 0);
+                glVertex2f(1f, -1f);
+                glColor4f(red, green, blue, 0);
+                glVertex2f(-1f, -1f);
+            }
+            glEnd();
 
-            while(unprocesses >= frame_cap){
-                unprocesses-=frame_cap;
-                can_render = true;
-                glfwPollEvents();
-                if(frame_time >= 1.0){
-                    frame_time = 0;
-                    System.out.println("FPS: " + frames);
-                    frames = 0;
-                }
+            for(int i = 0; i < objects.getOList().size(); i++) {
+                objects.getOList().get(i).drawObject();
             }
 
-            if(can_render){
-                glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
-
-                glBegin(GL_QUADS);
-                {
-                    glColor4f(red, green, blue, 0);
-                    glVertex2f(-1f, 1f);
-                    glColor4f(blue, red, green, 0);
-                    glVertex2f(1f, 1f);
-                    glColor4f(green, blue, red, 0);
-                    glVertex2f(1f, -1f);
-                    glColor4f(red, green, blue, 0);
-                    glVertex2f(-1f, -1f);
-                }
-                glEnd();
-
-                for(int i = 0; i < objects.getOList().size(); i++) {
-                    objects.getOList().get(i).drawObject();
-                }
-
-                if(red > 0 && blue < 0) {
-                    red -= 0.01;
-                    green += 0.01;
-                } else if (green > 0) {
-                    green -= 0.01;
-                    blue += 0.01;
-                } else {
-                    blue -= 0.01;
-                    red += 0.01;
-                }
+            if(red > 0 && blue < 0) {
+                red -= 0.01;
+                green += 0.01;
+            } else if (green > 0) {
+                green -= 0.01;
+                blue += 0.01;
+            } else {
+                blue -= 0.01;
+                red += 0.01;
+            }
 
             /*GLFWGamepadState state = new GLFWGamepadState(ByteBuffer.allocate(40));
             if (glfwGetGamepadState(GLFW_JOYSTICK_1, state)) {
 
             }*/
 
-                glfwSwapBuffers(newWindow.window); // swap the color buffers
-                frames++;
+            glfwSwapBuffers(newWindow.window); // swap the color buffers
 
-                // Poll for window events. The key callback above will only be
-                // invoked during this call.
-            }
+            // Poll for window events. The key callback above will only be
+            // invoked during this call.
+            glfwPollEvents();
         }
     }
 
