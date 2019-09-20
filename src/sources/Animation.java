@@ -22,6 +22,10 @@ public class Animation {
         }
     }
 
+    public void bind() {
+        bind(0);
+    }
+
     public void bind(int sampler) {
         this.currentTime = FPS.getTime();
         this.elapsedTime += currentTime - lastTime;
@@ -37,6 +41,6 @@ public class Animation {
 
         this.lastTime = currentTime;
 
-        //frames[pointer].bind(sampler);
+      //  frames[pointer].bind(sampler);
     }
 }

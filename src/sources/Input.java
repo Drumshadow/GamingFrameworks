@@ -25,7 +25,7 @@ public class Input {
 
     private int key;  // 0-256? Not sure
     private int action; // 0: release, 1: press, 2: hold
-    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound};
+    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound, Jump};
     private purpose purpose;
     private GameObject obj;
     private double speed;
@@ -49,13 +49,29 @@ public class Input {
         key = k;
         action = a;
         obj = o;
+
+        switch(pur) {
+
+            case "MoveX":
+                purpose = purpose.MoveX;
+                break;
+
+            case "MoveY":
+                purpose = purpose.MoveY;
+                break;
+
+            case "Jump":
+                purpose = purpose.Jump;
+                break;
+        }
+/*
         if (pur.equals("MoveX")) {
             purpose = purpose.MoveX;
 
         }
         else if (pur.equals("MoveY")) {
             purpose = purpose.MoveY;
-        }
+        }*/
         speed = s / 1000.0;
     }
 
@@ -74,7 +90,7 @@ public class Input {
         return action;
     }
 
-    public void execute(ObjectList roomObjects ) {
+    public void execute(ObjectList roomObjects) {
 
         switch(purpose) {
 
@@ -96,6 +112,10 @@ public class Input {
 
             case PlaySound:
                 sounds.loadPlaySound();
+                break;
+
+            case Jump:
+                obj.objectJump(roomObjects);
                 break;
         }
     }

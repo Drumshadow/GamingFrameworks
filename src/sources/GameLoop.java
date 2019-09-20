@@ -133,7 +133,8 @@ public class GameLoop {
                         ini.get("input" + i, "purpose")));
             }
             else if (ini.get("input" + i, "purpose").equals("MoveX") ||
-                    ini.get("input" + i, "purpose").equals("MoveY")) {
+                    ini.get("input" + i, "purpose").equals("MoveY") ||
+                    ini.get("input" + i, "purpose").equals("Jump")) {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
