@@ -8,6 +8,8 @@ import sources.objCode.ObjectList;
 import java.io.File;
 import java.io.IOException;
 
+import static java.awt.Font.MONOSPACED;
+import static java.awt.Font.PLAIN;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -19,6 +21,8 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private ObjectList objects = new ObjectList();
     private Audio bg = new Audio();
+    java.awt.Font font = new java.awt.Font(MONOSPACED, PLAIN, 16);
+
 
     private void run() throws Exception {
         bg.playSound("./music/MemeVapor.wav");
