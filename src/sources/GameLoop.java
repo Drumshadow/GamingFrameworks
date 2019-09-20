@@ -2,6 +2,7 @@ package sources;
 
 import org.ini4j.Ini;
 import org.lwjgl.opengl.GL;
+import sources.HUDcode.HUD;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 import org.lwjgl.glfw.GLFWGamepadState;
@@ -104,7 +105,7 @@ public class GameLoop {
         /*==================================================
                                 HUD
         ==================================================*/
-
+        HUD hud = new HUD();
 
         /*==================================================
                           Keyboard Inputs

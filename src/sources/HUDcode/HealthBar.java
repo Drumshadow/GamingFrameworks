@@ -5,11 +5,9 @@ import sources.Sprite;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class HealthBar {
+public class HealthBar extends HUDElement {
 
-    private boolean display;
-
-    public enum healthType {NUM, BAR, SPRITE}
+    public enum healthType {BAR, NUM, SPRITE}
     private healthType type;
 
     private int lives;
@@ -17,17 +15,6 @@ public class HealthBar {
 
     private Sprite hpSprite;
     private Graphics2D hpBar;
-
-    private int x;
-    private int y;
-
-    private int width;
-    private int height;
-
-    // TODO: number form
-    // TODO: sprite form
-    // TODO: increase and decrease hp
-    // TODO: make setters impact all related values
 
     /*==================================================
                      Initialization
@@ -38,55 +25,66 @@ public class HealthBar {
                      int maxLives, Sprite hpSprite, int x, int y, int width,
                      int height) {
 
-        this.display = display;
+        super(display, x, y, width, height);
+
         this.type = healthType;
 
         this.lives = lives;
         this.maxLives = maxLives;
 
         this.hpSprite = hpSprite;
-
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
     }
 
     /*==================================================
                          Drawing
     ==================================================*/
 
-    public void numberHealth() {
+    @Override
+    public void drawElement() {
 
+        switch (this.type) {
+
+            case BAR:
+                this.barHealth();
+                break;
+
+            case NUM:
+                this.numberHealth();
+                break;
+
+            case SPRITE:
+                this.spriteHealth();
+                break;
+        }
     }
 
-    public void barHealth() {
+    private void barHealth() {
 
         // create empty hp bar
         this.hpBar.setColor(Color.black);
-        this.hpBar.fillRect(this.x, this.y, this.width, this.height);
+        this.hpBar.fillRect(this.getX(), this.getY(), this.getWidth(),
+                this.getHeight());
 
         // fill hp
         this.hpBar.setColor(Color.green);
-        this.hpBar.fillRect(this.x, this.y, this.width *
-                (this.lives / this.maxLives), this.height);
+        this.hpBar.fillRect(this.getX(), this.getY(), this.getWidth() *
+                (this.lives / this.maxLives), this.getHeight());
     }
 
-    public void spriteHealth() {
+    private void numberHealth() {
+        // TODO: number form
+    }
 
+    private void spriteHealth() {
+        // TODO: sprite form
     }
 
     /*==================================================
                    Getters and Setters
     ==================================================*/
 
-    public boolean isDisplay() {
-        return this.display;
-    }
-
-    public void setDisplay(boolean display) {
-        this.display = display;
-    }
+    // TODO: increase and decrease health
+    // TODO: make setters impact all related values
 
     public healthType getType() {
         return this.type;
@@ -126,37 +124,5 @@ public class HealthBar {
 
     public void setHpBar(Graphics2D hpBar) {
         this.hpBar = hpBar;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 }

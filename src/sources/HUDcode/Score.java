@@ -1,18 +1,19 @@
 package sources.HUDcode;
 
-import sources.Sprite;
-
-public class Score {
-
-    public boolean display;
-    public boolean isBar;
+public class Score extends HUDElement {
 
     public int score;
     public int maxScore;
 
-    public Sprite xpBar;
+    public Score(boolean display, int x, int y, int width, int height) {
+        super(display, x, y, width, height);
+    }
 
-    // TODO: bar form
+    @Override
+    public void drawElement() {
+
+    }
+
     // TODO: number form
     // TODO: increase and decrease score
 }
