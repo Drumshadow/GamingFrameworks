@@ -25,7 +25,7 @@ public class GameLoop {
 
 
     private void run() throws Exception {
-        bg.playSound("./music/MemeVapor.wav");
+        bg.playSound("./music/PTheme.wav");
         newWindow.init();
 
         // Setup a key callback.
