@@ -8,14 +8,18 @@ import org.lwjgl.glfw.GLFWGamepadState;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import sources.FPS;
 
 import static java.awt.Font.MONOSPACED;
 import static java.awt.Font.PLAIN;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+
 
 public class GameLoop {
 
@@ -26,6 +30,7 @@ public class GameLoop {
     private Audio bg = new Audio();
     private ControllerList controls = new ControllerList();
     java.awt.Font font = new java.awt.Font(MONOSPACED, PLAIN, 16);
+
 
 
     private void run() throws Exception {
@@ -142,11 +147,33 @@ public class GameLoop {
         float blue = 0;
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        double frame_cap = 1.0/60.0;
+        double frame_time = 0;
+        int frames = 0;
+        double time = FPS.getTime();
+        double unprocesses = 0;
 
         // Game Loop
         while ( !glfwWindowShouldClose(newWindow.window) ) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
+            boolean can_render = false;
+            double time_2 = FPS.getTime();
+            double passed = time_2 - time;
+            unprocesses+=passed;
+            frame_time += passed;
 
+            time = time_2;
+
+            while(unprocesses >= frame_cap){
+                unprocesses-=frame_cap;
+                can_render = true;
+                glfwPollEvents();
+                if(frame_time >= 1.0){
+                    frame_time = 0;
+                    System.out.println("FPS: " + frames);
+                    frames = 0;
+                }
+            }
             glBegin(GL_QUADS);
             {
                 glColor4f(red, green, blue, 0);
@@ -201,6 +228,7 @@ public class GameLoop {
             }
 
             glfwSwapBuffers(newWindow.window); // swap the color buffers
+            frames++;
 
             // Poll for window events. The key callback above will only be
             // invoked during this call.
