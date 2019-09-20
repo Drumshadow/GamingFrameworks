@@ -94,7 +94,7 @@ abstract public class ObjectBox {
     }
 
     void setXSpeed(double s) {
-        this.xSpeed = s / 1000;
+        this.xSpeed = s;
     }
 
     double getXSpeed() {
@@ -102,7 +102,7 @@ abstract public class ObjectBox {
     }
 
     void setYSpeed(double s) {
-        this.ySpeed = s / 1000;
+        this.ySpeed = s;
     }
 
     double getYSpeed() {

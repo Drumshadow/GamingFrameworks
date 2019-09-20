@@ -74,12 +74,12 @@ public class Controller {
                 break;
 
             case MoveX:
-                obj.setXSpeed(speed);
+                obj.setXSpeed(speed / 1000);
                 obj.move(roomObjects);
                 break;
 
             case MoveY:
-                obj.setYSpeed(speed);
+                obj.setYSpeed(speed / 1000);
                 obj.move(roomObjects);
                 break;
 
