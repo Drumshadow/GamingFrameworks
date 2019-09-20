@@ -31,7 +31,17 @@ public class Score extends HUDElement {
     /*==================================================
                    Getters and Setters
     ==================================================*/
-    // TODO: increase and decrease score
+
+    public void incScore() {
+
+        if (this.score < this.maxScore) {
+            this.score++;
+        }
+    }
+
+    public void decScore() {
+        this.score--;
+    }
 
     public int getScore() {
         return this.score;

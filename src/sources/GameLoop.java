@@ -7,7 +7,6 @@ import sources.HUDcode.HealthBar;
 import sources.HUDcode.Score;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
-import org.lwjgl.glfw.GLFWGamepadState;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -23,9 +22,8 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-
 public class GameLoop {
-
+    // Hello!!!
     // window handle
     private InitWindow newWindow = new InitWindow();
     private InputList inputs = new InputList();
@@ -115,7 +113,7 @@ public class GameLoop {
         HUD hud = new HUD();
 
         hud.addElement(new HealthBar(true, HealthBar.healthType.BAR, 3, 3,
-                null, 0, 0, 5, 5));
+                null, -0.9f, 0.85f, 0.5f, 0.05f));
         hud.addElement(new Score(true, -100, 0, 5, 5, 0, 100));
 
         /*==================================================
@@ -135,7 +133,8 @@ public class GameLoop {
                         ini.get("input" + i, "purpose")));
             }
             else if (ini.get("input" + i, "purpose").equals("MoveX") ||
-                    ini.get("input" + i, "purpose").equals("MoveY")) {
+                    ini.get("input" + i, "purpose").equals("MoveY") ||
+                    ini.get("input" + i, "purpose").equals("Jump")) {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
@@ -245,6 +244,14 @@ public class GameLoop {
             }
             glEnd();
 
+            // draw HUD
+            hud.drawHUD();
+
+            // demonstrate hp bar
+            if (mario.getHitBox().xCollisionCheck(wall.getHitBox())) {
+                ((HealthBar)hud.getElements().get(0)).decHealth();
+            }
+
             for(int i = 0; i < objects.getOList().size(); i++) {
                 objects.getOList().get(i).drawObject();
                 objects.getOList().get(i).move(objects);
@@ -260,10 +267,6 @@ public class GameLoop {
                 blue -= 0.01;
                 red += 0.01;
             }
-
-            // draw HUD
-            // TODO: correctly draw HUD
-           // hud.drawHUD();
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
