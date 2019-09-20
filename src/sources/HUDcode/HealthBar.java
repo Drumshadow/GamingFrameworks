@@ -1,9 +1,7 @@
 package sources.HUDcode;
 
+import org.lwjgl.opengl.GL11;
 import sources.Sprite;
-
-import java.awt.Graphics2D;
-import java.awt.Color;
 
 public class HealthBar extends HUDElement {
 
@@ -14,7 +12,6 @@ public class HealthBar extends HUDElement {
     private int maxLives;
 
     private Sprite hpSprite;
-    private Graphics2D hpBar;
 
     /*==================================================
                      Initialization
@@ -61,14 +58,23 @@ public class HealthBar extends HUDElement {
     private void barHealth() {
 
         // create empty hp bar
-        this.hpBar.setColor(Color.black);
+        GL11.glColor3f(0.0f, 0.0f, 0.0f);
+
+        GL11.glBegin(GL11.GL_QUADS);
+            GL11.glVertex2f(this.getX(), this.getY());
+            GL11.glVertex2f(this.getX() + this.getWidth(), this.getY());
+            GL11.glVertex2f(this.getX() + this.getWidth(), this.getY() + this.getHeight());
+            GL11.glVertex2f(this.getX(), this.getY() + this.getHeight());
+        GL11.glEnd();
+
+    /*    this.hpBar.setColor(Color.black);
         this.hpBar.fillRect(this.getX(), this.getY(), this.getWidth(),
                 this.getHeight());
 
         // fill hp
         this.hpBar.setColor(Color.green);
         this.hpBar.fillRect(this.getX(), this.getY(), this.getWidth() *
-                (this.lives / this.maxLives), this.getHeight());
+                (this.lives / this.maxLives), this.getHeight());*/
     }
 
     private void numberHealth() {
@@ -116,13 +122,5 @@ public class HealthBar extends HUDElement {
 
     public void setHpSprite(Sprite hpSprite) {
         this.hpSprite = hpSprite;
-    }
-
-    public Graphics2D getHpBar() {
-        return this.hpBar;
-    }
-
-    public void setHpBar(Graphics2D hpBar) {
-        this.hpBar = hpBar;
     }
 }

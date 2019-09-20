@@ -3,6 +3,8 @@ package sources;
 import org.ini4j.Ini;
 import org.lwjgl.opengl.GL;
 import sources.HUDcode.HUD;
+import sources.HUDcode.HealthBar;
+import sources.HUDcode.Score;
 import sources.objCode.GameObject;
 import sources.objCode.ObjectList;
 import org.lwjgl.glfw.GLFWGamepadState;
@@ -106,6 +108,10 @@ public class GameLoop {
                                 HUD
         ==================================================*/
         HUD hud = new HUD();
+
+        hud.addElement(new HealthBar(true, HealthBar.healthType.BAR, 3, 3,
+                null, 0, 0, 5, 5));
+        hud.addElement(new Score(true, -100, 0, 5, 5, 0, 100));
 
         /*==================================================
                           Keyboard Inputs
@@ -227,6 +233,10 @@ public class GameLoop {
                 blue -= 0.01;
                 red += 0.01;
             }
+
+            // draw HUD
+            // TODO: correctly draw HUD
+           // hud.drawHUD();
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
