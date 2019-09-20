@@ -221,11 +221,6 @@ public class GameLoop {
                 red += 0.01;
             }
 
-            /*GLFWGamepadState state = new GLFWGamepadState(ByteBuffer.allocate(40));
-            if (glfwGetGamepadState(GLFW_JOYSTICK_1, state)) {
-
-            }*/
-
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
                 FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
