@@ -5,10 +5,11 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 
 # Current Features
 - Drag-and-Drop Audio
-- Partial Collision Detection and Gravity
-- Basic Input Handling
+- Accurate Collision Detection and Gravity
+- Input Handling for Keyboard and Controllers 
 - Functional Game Loop
 - Sprite Drawing
+- Basic HUD Drawing
 
 # Developer's Guide
     Adding/Changing Audio
@@ -30,5 +31,6 @@ Here are the steps to play!
 JVM argument, -XstartOnFirstThread. This is because of how Mac and Windows
 both handle threading in different ways.
 2) Once the code is compiled and loaded feel free to move Mario around
-to your favorite vapor wave music all while enjoying some timeless
-meme sound effect classics.
+to your favorite music all while enjoying some timeless
+meme sound effect classics. Move with WASD.
+3) Run into the right-most Mario and watch your HP drain from the bar in the top left of your screen.
