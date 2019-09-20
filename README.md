@@ -24,6 +24,28 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
     - Sprites can be uploaded in any form but must be associated with a game object
     - They should be added to the sprites folder
     
+    Adding Inputs
+    - Input handling is supported for the keyboard and the controller
+    - Inputs can be added, edited or removed by using controller.ini or keyboard.ini
+    - As of right now, 5 input actions are supported: Creating, Destroying, Move along the X axis,
+    Move along the Y axis, and Play a Sound
+    - For both files, you must declare the correct amount of inputs in the 'input' field of the 
+    'control' section
+    - All keyboard inputs must have:
+        - A key to be pressed
+        - An action for the key (pressing, releasing or holding down)
+        - An object the input is bound to
+        - The purpose of the input
+        - If the purpose is to move, the speed you want the object to move at
+        - If the purpose is to play sound, the file path of the sound file you wish to play
+    - All controller inputs must have:
+        - A bool declaring whether input is for button or not (1 for button, 0 for axes)
+        - The index for the button or axes to be added
+        - The range that the axes will activate in (if button, value does not matter)
+        - An object the input is bound to
+        - The purpose of the input
+        - If the purpose is to move, the speed you want the object to move at
+        - If the purpose is to play sound, the file path of the sound file you wish to play
     
 # User's Guide
 Here are the steps to play!
