@@ -1,5 +1,7 @@
 package sources.objCode;
 
+import sources.GameRoom;
+
 import java.util.Vector;
 
 // list of created objects
@@ -52,6 +54,10 @@ public class ObjectList {
         return this.oList;
     }
 
+    public int getSize() {
+        return this.oList.size();
+    }
+
     public GameObject getElement(String oN) {
         for (int i = 0; i < oList.size(); i++) {
             if (oList.elementAt(i).getObjName().equals(oN)) {
@@ -59,5 +65,9 @@ public class ObjectList {
             }
         }
         return null;
+    }
+
+    public GameObject getElement(int i) {
+        return this.oList.get(i);
     }
 }

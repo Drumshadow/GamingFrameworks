@@ -19,6 +19,7 @@ public class GameObject {
     private double jumpPower;
 
     private boolean canCollide;
+    private boolean fearLedge;
 
     // boxCode is the type of hit box
     // 0 = square, 1 = round
@@ -39,6 +40,7 @@ public class GameObject {
         this.jumpPower = 0.0;
 
         this.canCollide = false;
+        this.fearLedge = false;
 
         // default hit box is square
         this.boxCode = 0;
@@ -55,6 +57,7 @@ public class GameObject {
         this.jumpPower = other.jumpPower;
 
         this.canCollide = other.canCollide;
+        this.fearLedge = other.fearLedge;
 
         // create hit box
         this.boxCode = other.boxCode;
@@ -68,7 +71,7 @@ public class GameObject {
     }
 
     // constructor via given values (finds sprite via path)
-    public GameObject(String name, String sprPath, boolean collide,
+    public GameObject(String name, String sprPath, boolean collide, boolean fear,
                       double weight, double tv, double jump, int boxType,
                       double x, double y) {
 
@@ -80,6 +83,7 @@ public class GameObject {
         this.jumpPower = jump;
 
         this.canCollide = collide;
+        this.fearLedge = fear;
 
         // create hit box
         this.boxCode = boxType;
