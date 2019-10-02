@@ -193,6 +193,7 @@ public class GameLoop {
         /*==================================================
                           Game Loop
         ==================================================*/
+        int invincibilityCounter = 0;
 
         float red = 1;
         float green = 0;
@@ -243,7 +244,14 @@ public class GameLoop {
 
             // demonstrate hp bar
             if (mario.getHitBox().xCollisionCheck(wall.getHitBox())) {
-                ((HealthBar)hud.getElements().get(0)).decHealth();
+
+                if (invincibilityCounter == 0) {
+                    ((HealthBar) hud.getElements().get(0)).decHealth();
+                    invincibilityCounter = 4;
+                }
+                else {
+                    invincibilityCounter--;
+                }
             }
 
             for(int i = 0; i < room.getAllObjects().getSize(); i++) {

@@ -157,7 +157,7 @@ public class GameObject {
                 if (!other.canCollide)
                     continue;
 
-                // test future horizontal collision
+                // test future collision
                 boolean xCollision = this.hitBox.xCollisionCheck(other.hitBox);
                 boolean yCollision = this.hitBox.yCollisionCheck(other.hitBox);
 
@@ -171,8 +171,6 @@ public class GameObject {
                             this.hitBox.xSpeed = 0;
                         }
                     }
-
-                    // test future vertical collision
                     else {
 
                         // move up to object without actually colliding
@@ -181,6 +179,9 @@ public class GameObject {
                         if(this.hitBox.objDistY(other.hitBox) < 0.001) {
                             this.hitBox.ySpeed = 0;
                         }
+
+                        // perform ledge detection
+                      //  if (this.fearLedge && )
                     }
                 }
 
