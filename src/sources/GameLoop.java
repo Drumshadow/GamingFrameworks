@@ -235,8 +235,9 @@ public class GameLoop {
             }
 
             // draw background (scale to fit window)
+            // I don't know why the scale factor is 1.25
             glPushMatrix();
-                glScaled(1.256, 1.256, 1.0);
+                glScaled(1.25, 1.25, 1.0);
                 room.getBackground().drawObject(0.0, 0.0);
             glPopMatrix();
 
