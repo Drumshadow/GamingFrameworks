@@ -29,7 +29,7 @@ public class GameLoop {
     private GameRoom room = new GameRoom();
 
     private void run() throws Exception {
-        bg.playSound("./music/PTheme.wav");
+        bg.playSound("./music/omae_wa_mou.wav");
         newWindow.init();
 
         // setup key callback
