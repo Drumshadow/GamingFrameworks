@@ -1,5 +1,7 @@
 package sources;
 
+import java.io.IOException;
+
 public class Animation {
     private Texture[] frames;
     private int pointer;
@@ -18,7 +20,11 @@ public class Animation {
 
         this.frames = new Texture[amount];
         for(int i = 0; i < amount; i++) {
-            this.frames[i] = new Texture("anim/" + filename + "_" + i + ".png");
+            try {
+                this.frames[i] = new Texture("anim/" + filename + "_" + i + ".png");
+            } catch (IOException e) {
+                System.out.println("Bad file path");
+            }
         }
     }
 

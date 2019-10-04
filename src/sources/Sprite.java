@@ -15,7 +15,7 @@ public class Sprite {
     private int width;
     private int height;
 
-    Texture texture;
+    private Texture texture;
 
     // default is visible
     private boolean isVisible;
@@ -48,6 +48,10 @@ public class Sprite {
         this.isVisible = true;
 
         this.shrinkSprite();
+
+        if (path.equals(".\\sprites\\grass.png")) {
+            this.isVisible = true;
+        }
 
         this.texture = new Texture(this.sprite);
     }

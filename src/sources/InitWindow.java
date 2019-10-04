@@ -16,7 +16,7 @@ class InitWindow {
     long window;
 
     void init() {
-        init(600, 600);
+        init(800, 800);
     }
 
     void init(int width, int height) {
@@ -39,7 +39,7 @@ class InitWindow {
 //        int window_height = mode.height();
 
         // create window
-        window = glfwCreateWindow(width, height, "Ledge of Marios", NULL, NULL);
+        window = glfwCreateWindow(width, height, "The Best Game Ever", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 

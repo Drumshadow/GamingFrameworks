@@ -11,6 +11,9 @@ public class HealthBar extends HUDElement {
     private static int lives = 10;
     private static int maxLives = 10;
 
+    private static int invincibilityCounter = 0;
+    private static final int INVTIME = 4;
+
     private Sprite hpSprite;
 
     /*==================================================
@@ -101,8 +104,16 @@ public class HealthBar extends HUDElement {
 
     public void decHealth() {
 
-        if (lives > 0) {
-            lives--;
+        // make sure there is time between damage taken
+        if (invincibilityCounter == 0) {
+
+            if (lives > 0) {
+                lives--;
+            }
+            invincibilityCounter = 4;
+        }
+        else {
+            invincibilityCounter--;
         }
     }
 

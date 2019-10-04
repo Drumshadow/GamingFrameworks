@@ -65,41 +65,49 @@ public class GameLoop {
         GL.createCapabilities();
 
         /*==================================================
-                          Mario Creation
+                          Object Creation
         ==================================================*/
 
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
+        // player
+        GameObject player = new GameObject("player", "./sprites/friend.png",
                 true, false, 1, 10, 0.0, 0, 200.0, 1000.0);
-        room.addObject(mario);
+        room.addObject(player);
 
-        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
+        // grass platforms
+        GameObject grass1 = new GameObject("grass", "./sprites/grass.png",
                 true, false, 0.0, 0.0, 0.0, 0, 0.0, 500.0);
-        room.addObject(wario);
+        room.addObject(grass1);
 
-        GameObject floor1 = new GameObject("floor", "./sprites/mario.jpg",
+        GameObject grass2 = new GameObject("grass", "./sprites/grass.png",
                 true, false, 0.0, 0.0, 0.0, 0, 400.0, 500.0);
-        room.addObject(floor1);
+        room.addObject(grass2);
 
-        GameObject floor2 = new GameObject("floor", "./sprites/mario.jpg",
-                true, false, 0.0, 0.0, 0.0, 0, 200.0, 500.0);
-        room.addObject(floor2);
+        GameObject grass3 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 800.0, 660.0);
+        room.addObject(grass3);
 
-        GameObject floor3 = new GameObject("floor", "./sprites/mario.jpg",
-                true, false, 0.0, 0.0, 0.0, 0, 600.0, 500.0);
-        room.addObject(floor3);
+        GameObject grass4 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1200.0, 660.0);
+        room.addObject(grass4);
 
-        GameObject wall = new GameObject("wall", "./sprites/mario.jpg",
-                true, false, 0.0, 0.0, 0.0, 0, 800.0, 700.0);
+        GameObject grass5 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1600.0, 660.0);
+        room.addObject(grass5);
+
+        // stone wall
+        GameObject wall = new GameObject("wall", "./sprites/wall.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1400.0, 820.0);
         room.addObject(wall);
 
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
-//        mario.getSprite().texture.bind();
-//        wario.getSprite().texture.bind();
-//        floor1.getSprite().texture.bind();
-//        floor2.getSprite().texture.bind();
-//        floor3.getSprite().texture.bind();
-//        wall.getSprite().texture.bind();
+        // foe
+        GameObject foe = new GameObject("foe", "./sprites/foe.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1000.0, 820.0);
+        room.addObject(foe);
+
+        // flower
+        GameObject flower = new GameObject("flower", "./sprites/flower.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1700.0, 820.0);
+        room.addObject(flower);
 
         /*==================================================
                                 HUD
@@ -193,7 +201,6 @@ public class GameLoop {
         /*==================================================
                           Game Loop
         ==================================================*/
-        int invincibilityCounter = 0;
 
         float red = 1;
         float green = 0;
@@ -243,15 +250,9 @@ public class GameLoop {
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (mario.getHitBox().xCollisionCheck(wall.getHitBox())) {
+            if (player.getHitBox().xCollisionCheck(wall.getHitBox())) {
 
-                if (invincibilityCounter == 0) {
-                    ((HealthBar) hud.getElements().get(0)).decHealth();
-                    invincibilityCounter = 4;
-                }
-                else {
-                    invincibilityCounter--;
-                }
+                ((HealthBar) hud.getElements().get(0)).decHealth();
             }
 
             for(int i = 0; i < room.getAllObjects().getSize(); i++) {
