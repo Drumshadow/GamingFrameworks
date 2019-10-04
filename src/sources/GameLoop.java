@@ -26,6 +26,7 @@ public class GameLoop {
     private ControllerList controls = new ControllerList();
     java.awt.Font font = new java.awt.Font(MONOSPACED, PLAIN, 16);
 
+    //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
     private GameRoom room = new GameRoom();
 
     private void run() throws Exception {
@@ -64,13 +65,16 @@ public class GameLoop {
     private void loop() throws IOException {
         GL.createCapabilities();
 
+        // set background
+        room.setBackground(new Sprite("./sprites/clouds_bkg.png"));
+
         /*==================================================
                           Object Creation
         ==================================================*/
 
         // player
         GameObject player = new GameObject("player", "./sprites/friend.png",
-                true, false, 1, 10, 0.0, 0, 200.0, 1000.0);
+                true, false, 1.0, 10, 0.0, 0, 200.0, 1000.0);
         room.addObject(player);
 
         // grass platforms
@@ -101,7 +105,7 @@ public class GameLoop {
 
         // foe
         GameObject foe = new GameObject("foe", "./sprites/foe.png",
-                true, false, 0.0, 0.0, 0.0, 0, 1000.0, 820.0);
+                true, false, 1.0, 0.0, 0.0, 0, 1000.0, 830.0);
         room.addObject(foe);
 
         // flower
@@ -202,10 +206,6 @@ public class GameLoop {
                           Game Loop
         ==================================================*/
 
-        float red = 1;
-        float green = 0;
-        float blue = 0;
-
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         double frame_cap = 1.0/60.0;
         double frame_time = 0;
@@ -233,43 +233,27 @@ public class GameLoop {
                     frames = 0;
                 }
             }
-            glBegin(GL_QUADS);
-            {
-                glColor4f(red, green, blue, 0);
-                glVertex2f(-1f, 1f);
-                glColor4f(blue, red, green, 0);
-                glVertex2f(1f, 1f);
-                glColor4f(green, blue, red, 0);
-                glVertex2f(1f, -1f);
-                glColor4f(red, green, blue, 0);
-                glVertex2f(-1f, -1f);
-            }
-            glEnd();
+
+            // draw background (scale to fit window)
+            glPushMatrix();
+                glScaled(1.256, 1.256, 1.0);
+                room.getBackground().drawObject(0.0, 0.0);
+            glPopMatrix();
 
             // draw HUD
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (player.getHitBox().xCollisionCheck(wall.getHitBox())) {
+            if (player.getHitBox().xCollisionCheck(foe.getHitBox())) {
 
                 ((HealthBar) hud.getElements().get(0)).decHealth();
             }
 
+            // draw objects
             for(int i = 0; i < room.objectCount(); i++) {
 
                 room.getElement(i).drawObject();
                 room.getElement(i).move(room.getAllObjects());
-            }
-
-            if(red > 0 && blue < 0) {
-                red -= 0.01;
-                green += 0.01;
-            } else if (green > 0) {
-                green -= 0.01;
-                blue += 0.01;
-            } else {
-                blue -= 0.01;
-                red += 0.01;
             }
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {

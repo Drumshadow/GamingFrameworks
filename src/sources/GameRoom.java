@@ -48,13 +48,15 @@ public class GameRoom {
     }
 
     // value constructor (finds background via path)
-    GameRoom(String name, String path, double rw, double rh) {
+    GameRoom(String name, String path) {
 
         this.roomName = name;
         this.background = new Sprite(path);
 
-        this.roomWidth = rw;
-        this.roomHeight = rh;
+        this.roomWidth = this.background.getWidth();
+        this.roomHeight = this.background.getHeight();
+
+        this.allObjects = new Vector<>();
     }
 
     /*==================================================
@@ -84,7 +86,10 @@ public class GameRoom {
     }
 
     public void setBackground(Sprite bk) {
-        this.background = bk;
+        this.background = new Sprite(bk);
+
+        this.roomWidth = this.background.getWidth();
+        this.roomHeight = this.background.getHeight();
     }
 
     public Sprite getBackground() {
