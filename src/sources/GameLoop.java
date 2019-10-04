@@ -41,7 +41,7 @@ public class GameLoop {
                 if (key == inputs.get(i).getKey() &&
                         action == inputs.get(i).getAction()) {
 
-                    inputs.get(i).execute(room.getAllObjects());
+                    inputs.get(i).execute(room);
                 }
 
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
@@ -131,7 +131,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
-                        room.getAllObjects().getElement(ini.get("input" + i, "object")),
+                        room.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose")));
             }
             else if (ini.get("input" + i, "purpose").equals("MoveX") ||
@@ -140,7 +140,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
-                        room.getAllObjects().getElement(ini.get("input" + i, "object")),
+                        room.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
                         Double.parseDouble(ini.get("input" + i, "speed"))));
             }
@@ -151,7 +151,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
-                        room.getAllObjects().getElement(ini.get("input" + i, "object")),
+                        room.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
                         a));
             }
@@ -171,7 +171,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        room.getAllObjects().getElement(iniC.get("input" + i, "object")),
+                        room.getElement(iniC.get("input" + i, "object")),
                         iniC.get("input" + i, "purpose")));
             }
             else if (iniC.get("input" + i, "purpose").equals("MoveX") ||
@@ -180,7 +180,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        room.getAllObjects().getElement(iniC.get("input" + i, "object")),
+                        room.getElement(iniC.get("input" + i, "object")),
                         iniC.get("input" + i, "purpose"),
                         Double.parseDouble(iniC.get("input" + i, "speed"))));
             }
@@ -192,7 +192,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        room.getAllObjects().getElement(iniC.get("input" + i, "object")),
+                        room.getElement(iniC.get("input" + i, "object")),
                         iniC.get("input" + i, "purpose"),
                         a));
             }
@@ -255,10 +255,10 @@ public class GameLoop {
                 ((HealthBar) hud.getElements().get(0)).decHealth();
             }
 
-            for(int i = 0; i < room.getAllObjects().getSize(); i++) {
+            for(int i = 0; i < room.objectCount(); i++) {
 
-                room.getAllObjects().getElement(i).drawObject();
-                room.getAllObjects().getElement(i).move(room.getAllObjects());
+                room.getElement(i).drawObject();
+                room.getElement(i).move(room.getAllObjects());
             }
 
             if(red > 0 && blue < 0) {
@@ -281,7 +281,7 @@ public class GameLoop {
 
                     if (controls.get(i).getButton() == 1) {
                         if (buttons.get(controls.get(i).getIndex()) == 1) {
-                            controls.get(i).execute(room.getAllObjects());
+                            controls.get(i).execute(room);
                         }
 
                     } else if (controls.get(i).getButton() == 0) {
@@ -290,13 +290,13 @@ public class GameLoop {
                                 axes.get(controls.get(i).getIndex()) <
                                         controls.get(i).getRange()) {
 
-                            controls.get(i).execute(room.getAllObjects());
+                            controls.get(i).execute(room);
 
                         } else if (controls.get(i).getRange() >= 0 &&
                                 axes.get(controls.get(i).getIndex()) >
                                         controls.get(i).getRange()) {
 
-                            controls.get(i).execute(room.getAllObjects());
+                            controls.get(i).execute(room);
                         }
                     }
                 }

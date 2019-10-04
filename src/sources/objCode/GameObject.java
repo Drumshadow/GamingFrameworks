@@ -4,6 +4,7 @@ import sources.GameRoom;
 import sources.Sprite;
 
 import java.util.Objects;
+import java.util.Vector;
 
 // represents generic object
 public class GameObject {
@@ -132,7 +133,7 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(ObjectList roomObjs) {
+    public void move(Vector<GameObject> roomObjects) {
 
         // acceleration due to gravity
         if (this.weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
@@ -147,7 +148,7 @@ public class GameObject {
         // check collision
         if (this.canCollide) {
 
-            for (GameObject other : roomObjs.getOList()) {
+            for (GameObject other : roomObjects) {
 
                 // don't collide with self
                 if (this.equals(other))
@@ -211,12 +212,12 @@ public class GameObject {
         this.hitBox.updatePosition();
     }
 
-    public void objectJump(ObjectList roomObjs) {
+    public void objectJump(Vector<GameObject> roomObjects) {
 
         // check if colliding on bottom
         if (this.canCollide) {
 
-            for (GameObject other : roomObjs.getOList()) {
+            for (GameObject other : roomObjects) {
 
                 if (this.hitBox.yCollisionCheck(other.hitBox) &&
                         other.hitBox.y > this.hitBox.y) {

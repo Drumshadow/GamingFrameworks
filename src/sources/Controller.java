@@ -1,7 +1,7 @@
 package sources;
 
 import sources.objCode.GameObject;
-import sources.objCode.ObjectList;
+import sources.GameRoom;
 
 public class Controller {
 
@@ -67,20 +67,20 @@ public class Controller {
         return null;
     }*/
 
-    public void execute(ObjectList roomObjects) {
+    public void execute(GameRoom room) {
         if (purpose.equals("Create")) {
-            roomObjects.addObject(new GameObject(obj));
+            room.addObject(new GameObject(this.obj));
         }
         if (purpose.equals("Destroy")) {
-            roomObjects.removeObject(obj);
+            room.removeObject(this.obj);
         }
         if (purpose.equals("MoveX")) {
             obj.setXSpeed(speed / 1000);
-            obj.move(roomObjects);
+            obj.move(room.getAllObjects());
         }
         if (purpose.equals("MoveY")) {
             obj.setYSpeed(speed / 1000);
-            obj.move(roomObjects);
+            obj.move(room.getAllObjects());
         }
         if (purpose.equals("PlaySound")) {
             sounds.loadPlaySound();
