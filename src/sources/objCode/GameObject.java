@@ -4,6 +4,7 @@ import sources.GameRoom;
 import sources.Sprite;
 
 import java.util.Objects;
+import java.util.Vector;
 
 // represents generic object
 public class GameObject {
@@ -19,6 +20,7 @@ public class GameObject {
     private double jumpPower;
 
     private boolean canCollide;
+    private boolean fearLedge;
 
     // boxCode is the type of hit box
     // 0 = square, 1 = round
@@ -39,6 +41,7 @@ public class GameObject {
         this.jumpPower = 0.0;
 
         this.canCollide = false;
+        this.fearLedge = false;
 
         // default hit box is square
         this.boxCode = 0;
@@ -55,6 +58,7 @@ public class GameObject {
         this.jumpPower = other.jumpPower;
 
         this.canCollide = other.canCollide;
+        this.fearLedge = other.fearLedge;
 
         // create hit box
         this.boxCode = other.boxCode;
@@ -68,7 +72,7 @@ public class GameObject {
     }
 
     // constructor via given values (finds sprite via path)
-    public GameObject(String name, String sprPath, boolean collide,
+    public GameObject(String name, String sprPath, boolean collide, boolean fear,
                       double weight, double tv, double jump, int boxType,
                       double x, double y) {
 
@@ -80,6 +84,7 @@ public class GameObject {
         this.jumpPower = jump;
 
         this.canCollide = collide;
+        this.fearLedge = fear;
 
         // create hit box
         this.boxCode = boxType;
@@ -128,7 +133,7 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(ObjectList roomObjs) {
+    public void move(Vector<GameObject> roomObjects) {
 
         // acceleration due to gravity
         if (this.weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
@@ -143,7 +148,7 @@ public class GameObject {
         // check collision
         if (this.canCollide) {
 
-            for (GameObject other : roomObjs.getOList()) {
+            for (GameObject other : roomObjects) {
 
                 // don't collide with self
                 if (this.equals(other))
@@ -153,7 +158,7 @@ public class GameObject {
                 if (!other.canCollide)
                     continue;
 
-                // test future horizontal collision
+                // test future collision
                 boolean xCollision = this.hitBox.xCollisionCheck(other.hitBox);
                 boolean yCollision = this.hitBox.yCollisionCheck(other.hitBox);
 
@@ -167,8 +172,6 @@ public class GameObject {
                             this.hitBox.xSpeed = 0;
                         }
                     }
-
-                    // test future vertical collision
                     else {
 
                         // move up to object without actually colliding
@@ -177,6 +180,9 @@ public class GameObject {
                         if(this.hitBox.objDistY(other.hitBox) < 0.001) {
                             this.hitBox.ySpeed = 0;
                         }
+
+                        // perform ledge detection
+                      //  if (this.fearLedge && )
                     }
                 }
 
@@ -206,12 +212,12 @@ public class GameObject {
         this.hitBox.updatePosition();
     }
 
-    public void objectJump(ObjectList roomObjs) {
+    public void objectJump(Vector<GameObject> roomObjects) {
 
         // check if colliding on bottom
         if (this.canCollide) {
 
-            for (GameObject other : roomObjs.getOList()) {
+            for (GameObject other : roomObjects) {
 
                 if (this.hitBox.yCollisionCheck(other.hitBox) &&
                         other.hitBox.y > this.hitBox.y) {

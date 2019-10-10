@@ -6,15 +6,11 @@ import sources.HUDcode.HUD;
 import sources.HUDcode.HealthBar;
 import sources.HUDcode.Score;
 import sources.objCode.GameObject;
-import sources.objCode.ObjectList;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import sources.FPS;
 
 import static java.awt.Font.MONOSPACED;
 import static java.awt.Font.PLAIN;
@@ -23,19 +19,18 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GameLoop {
-    // Hello!!!
-    // window handle
+
     private InitWindow newWindow = new InitWindow();
     private InputList inputs = new InputList();
-    private ObjectList objects = new ObjectList();
     private Audio bg = new Audio();
     private ControllerList controls = new ControllerList();
     java.awt.Font font = new java.awt.Font(MONOSPACED, PLAIN, 16);
 
-
+    //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
+    private GameRoom room = new GameRoom();
 
     private void run() throws Exception {
-        bg.playSound("./music/PTheme.wav");
+        bg.playSound("./music/omae_wa_mou.wav");
         newWindow.init();
 
         // setup key callback
@@ -47,7 +42,7 @@ public class GameLoop {
                 if (key == inputs.get(i).getKey() &&
                         action == inputs.get(i).getAction()) {
 
-                    inputs.get(i).execute(objects);
+                    inputs.get(i).execute(room);
                 }
 
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
@@ -70,42 +65,53 @@ public class GameLoop {
     private void loop() throws IOException {
         GL.createCapabilities();
 
+        // set background
+        room.setBackground(new Sprite("./sprites/clouds_bkg.png"));
+
         /*==================================================
-                          Mario Creation
+                          Object Creation
         ==================================================*/
 
-        GameObject mario = new GameObject("Mario", "./sprites/mario.jpg",
-                true, 1, 10, 0.0, 0, 200.0, 1000.0);
-        objects.addObject(mario);
+        // player
+        GameObject player = new GameObject("player", "./sprites/friend.png",
+                true, false, 1.0, 10, 0.0, 0, 200.0, 1000.0);
+        room.addObject(player);
 
-        GameObject wario = new GameObject("Wario", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 0.0, 500.0);
-        objects.addObject(wario);
+        // grass platforms
+        GameObject grass1 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 0.0, 500.0);
+        room.addObject(grass1);
 
-        GameObject floor1 = new GameObject("floor", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 400.0, 500.0);
-        objects.addObject(floor1);
+        GameObject grass2 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 400.0, 500.0);
+        room.addObject(grass2);
 
-        GameObject floor2 = new GameObject("floor", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 200.0, 500.0);
-        objects.addObject(floor2);
+        GameObject grass3 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 800.0, 660.0);
+        room.addObject(grass3);
 
-        GameObject floor3 = new GameObject("floor", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 600.0, 500.0);
-        objects.addObject(floor3);
+        GameObject grass4 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1200.0, 660.0);
+        room.addObject(grass4);
 
-        GameObject wall = new GameObject("wall", "./sprites/mario.jpg",
-                true, 0.0, 0.0, 0.0, 0, 800.0, 700.0);
-        objects.addObject(wall);
+        GameObject grass5 = new GameObject("grass", "./sprites/grass.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1600.0, 660.0);
+        room.addObject(grass5);
 
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
-//        mario.getSprite().texture.bind();
-//        wario.getSprite().texture.bind();
-//        floor1.getSprite().texture.bind();
-//        floor2.getSprite().texture.bind();
-//        floor3.getSprite().texture.bind();
-//        wall.getSprite().texture.bind();
+        // stone wall
+        GameObject wall = new GameObject("wall", "./sprites/wall.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1400.0, 820.0);
+        room.addObject(wall);
+
+        // foe
+        GameObject foe = new GameObject("foe", "./sprites/foe.png",
+                true, false, 1.0, 0.0, 0.0, 0, 1000.0, 830.0);
+        room.addObject(foe);
+
+        // flower
+        GameObject flower = new GameObject("flower", "./sprites/flower.png",
+                true, false, 0.0, 0.0, 0.0, 0, 1700.0, 820.0);
+        room.addObject(flower);
 
         /*==================================================
                                 HUD
@@ -129,7 +135,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
-                        objects.getElement(ini.get("input" + i, "object")),
+                        room.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose")));
             }
             else if (ini.get("input" + i, "purpose").equals("MoveX") ||
@@ -138,7 +144,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
-                        objects.getElement(ini.get("input" + i, "object")),
+                        room.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
                         Double.parseDouble(ini.get("input" + i, "speed"))));
             }
@@ -149,7 +155,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
-                        objects.getElement(ini.get("input" + i, "object")),
+                        room.getElement(ini.get("input" + i, "object")),
                         ini.get("input" + i, "purpose"),
                         a));
             }
@@ -169,7 +175,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        objects.getElement(iniC.get("input" + i, "object")),
+                        room.getElement(iniC.get("input" + i, "object")),
                         iniC.get("input" + i, "purpose")));
             }
             else if (iniC.get("input" + i, "purpose").equals("MoveX") ||
@@ -178,7 +184,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        objects.getElement(iniC.get("input" + i, "object")),
+                        room.getElement(iniC.get("input" + i, "object")),
                         iniC.get("input" + i, "purpose"),
                         Double.parseDouble(iniC.get("input" + i, "speed"))));
             }
@@ -190,7 +196,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        objects.getElement(iniC.get("input" + i, "object")),
+                        room.getElement(iniC.get("input" + i, "object")),
                         iniC.get("input" + i, "purpose"),
                         a));
             }
@@ -199,10 +205,6 @@ public class GameLoop {
         /*==================================================
                           Game Loop
         ==================================================*/
-
-        float red = 1;
-        float green = 0;
-        float blue = 0;
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         double frame_cap = 1.0/60.0;
@@ -231,41 +233,28 @@ public class GameLoop {
                     frames = 0;
                 }
             }
-            glBegin(GL_QUADS);
-            {
-                glColor4f(red, green, blue, 0);
-                glVertex2f(-1f, 1f);
-                glColor4f(blue, red, green, 0);
-                glVertex2f(1f, 1f);
-                glColor4f(green, blue, red, 0);
-                glVertex2f(1f, -1f);
-                glColor4f(red, green, blue, 0);
-                glVertex2f(-1f, -1f);
-            }
-            glEnd();
+
+            // draw background (scale to fit window)
+            // I don't know why the scale factor is 1.25
+            glPushMatrix();
+                glScaled(1.25, 1.25, 1.0);
+                room.getBackground().drawObject(0.0, 0.0);
+            glPopMatrix();
 
             // draw HUD
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (mario.getHitBox().xCollisionCheck(wall.getHitBox())) {
-                ((HealthBar)hud.getElements().get(0)).decHealth();
+            if (player.getHitBox().xCollisionCheck(foe.getHitBox())) {
+
+                ((HealthBar) hud.getElements().get(0)).decHealth();
             }
 
-            for(int i = 0; i < objects.getOList().size(); i++) {
-                objects.getOList().get(i).drawObject();
-                objects.getOList().get(i).move(objects);
-            }
+            // draw objects
+            for(int i = 0; i < room.objectCount(); i++) {
 
-            if(red > 0 && blue < 0) {
-                red -= 0.01;
-                green += 0.01;
-            } else if (green > 0) {
-                green -= 0.01;
-                blue += 0.01;
-            } else {
-                blue -= 0.01;
-                red += 0.01;
+                room.getElement(i).drawObject();
+                room.getElement(i).move(room.getAllObjects());
             }
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
@@ -277,7 +266,7 @@ public class GameLoop {
 
                     if (controls.get(i).getButton() == 1) {
                         if (buttons.get(controls.get(i).getIndex()) == 1) {
-                            controls.get(i).execute(objects);
+                            controls.get(i).execute(room);
                         }
 
                     } else if (controls.get(i).getButton() == 0) {
@@ -286,13 +275,13 @@ public class GameLoop {
                                 axes.get(controls.get(i).getIndex()) <
                                         controls.get(i).getRange()) {
 
-                            controls.get(i).execute(objects);
+                            controls.get(i).execute(room);
 
                         } else if (controls.get(i).getRange() >= 0 &&
                                 axes.get(controls.get(i).getIndex()) >
                                         controls.get(i).getRange()) {
 
-                            controls.get(i).execute(objects);
+                            controls.get(i).execute(room);
                         }
                     }
                 }

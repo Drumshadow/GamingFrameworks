@@ -40,7 +40,6 @@ public class BoxyBox extends ObjectBox {
         // make temporary bounding box for future position and movement path
         Rectangle2D.Double futureBox;
 
-
         futureBox = new Rectangle2D.Double(this.x + this.xSpeed, this.y,
                 this.boundingBox.getWidth(), this.boundingBox.getHeight());
 

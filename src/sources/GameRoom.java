@@ -1,7 +1,8 @@
 package sources;
 
 import sources.objCode.GameObject;
-import sources.objCode.ObjectList;
+
+import java.util.Vector;
 
 public class GameRoom {
 
@@ -13,7 +14,7 @@ public class GameRoom {
     private double roomHeight;
 
     // collection of all objects in room
-    private ObjectList allObjects;
+    private Vector<GameObject> allObjects;
 
     // acceleration due to gravity
     public static final double GRAVITY = -9.8 / 100.0;
@@ -23,7 +24,7 @@ public class GameRoom {
     ==================================================*/
 
     // default constructor
-    public GameRoom() {
+    GameRoom() {
 
         this.roomName = "Empty Room";
         this.background = null;
@@ -31,11 +32,11 @@ public class GameRoom {
         this.roomWidth = 0.0;
         this.roomHeight = 0.0;
 
-        this.allObjects = new ObjectList();
+        this.allObjects = new Vector<>();
     }
 
     // copy constructor
-    public GameRoom(GameRoom other) {
+    GameRoom(GameRoom other) {
 
         this.roomName = other.roomName;
         this.background = new Sprite(other.background);
@@ -43,14 +44,19 @@ public class GameRoom {
         this.roomWidth = other.roomWidth;
         this.roomHeight = other.roomHeight;
 
-        this.allObjects = new ObjectList(other.allObjects);
+        this.allObjects = new Vector<>(other.allObjects);
     }
 
     // value constructor (finds background via path)
-    public GameRoom(String name, String path, double rw, double rh) {
+    GameRoom(String name, String path) {
 
         this.roomName = name;
         this.background = new Sprite(path);
+
+        this.roomWidth = this.background.getWidth();
+        this.roomHeight = this.background.getHeight();
+
+        this.allObjects = new Vector<>();
     }
 
     /*==================================================
@@ -58,8 +64,13 @@ public class GameRoom {
     ==================================================*/
 
     // adds object to room
-    public void addObject(GameObject o) {
-        this.allObjects.addObject(o);
+    void addObject(GameObject o) {
+        this.allObjects.add(o);
+    }
+
+    // removes object from room
+    void removeObject(GameObject o) {
+        this.allObjects.remove(o);
     }
 
     /*==================================================
@@ -75,7 +86,10 @@ public class GameRoom {
     }
 
     public void setBackground(Sprite bk) {
-        this.background = bk;
+        this.background = new Sprite(bk);
+
+        this.roomWidth = this.background.getWidth();
+        this.roomHeight = this.background.getHeight();
     }
 
     public Sprite getBackground() {
@@ -98,11 +112,29 @@ public class GameRoom {
         return this.roomHeight;
     }
 
-    public void setAllObjects(ObjectList o) {
+    public void setAllObjects(Vector<GameObject> o) {
         this.allObjects = o;
     }
 
-    public ObjectList getAllObjects() {
+    Vector<GameObject> getAllObjects() {
         return this.allObjects;
+    }
+
+    int objectCount() {
+        return this.allObjects.size();
+    }
+
+    GameObject getElement(String oN) {
+        for (int i = 0; i < this.allObjects.size(); i++) {
+
+            if (this.allObjects.elementAt(i).getObjName().equals(oN)) {
+                return this.allObjects.elementAt(i);
+            }
+        }
+        return null;
+    }
+
+    GameObject getElement(int i) {
+        return this.allObjects.get(i);
     }
 }

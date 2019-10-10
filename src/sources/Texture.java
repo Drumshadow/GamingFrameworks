@@ -11,91 +11,47 @@ import javax.imageio.ImageIO;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Texture {
+class Texture {
 
-    // stores texture handle
-    public int id;
-
-    private int width;
-    private int height;
-
-    // creates texture from file
-    public Texture(String filename) {
-        BufferedImage bi;
-
-        try {
-            bi = ImageIO.read(new File(filename));
-            width = bi.getWidth();
-            height = bi.getHeight();
-
-            int[] pixels_raw;
-            pixels_raw = bi.getRGB(0, 0, width, height, null, 0, width);
-
-            ByteBuffer pixels = BufferUtils.createByteBuffer(width * height * 4);
-
-            for(int i = 0; i < width; i++) {
-                for(int j = 0; j < height; j++) {
-                    int pixel = pixels_raw[i * width + j];
-                    pixels.put((byte) ((pixel >> 16) & 0xFF));
-                    pixels.put((byte) ((pixel >> 8) & 0xFF));
-                    pixels.put((byte) (pixel & 0xFF));
-                    pixels.put((byte) ((pixel >> 24) & 0xFF));
-                }
-            }
-
-            pixels.flip();
-
-            id = glGenTextures();
-
-            glBindTexture(GL_TEXTURE_2D, id);
-
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
-                    GL_UNSIGNED_BYTE, pixels);
-
-        }catch(IOException e) {
-            System.err.println("Cannot find texture");
-        }
-    }
+    int id;
 
     // creates texture from shrunken sprite
-    public Texture(BufferedImage sprite) {
+    Texture(BufferedImage sprite) {
 
-        this.width = sprite.getWidth();
-        this.height = sprite.getHeight();
-
+        // get RGB values from buffered image
         int[] pixels_raw;
-        pixels_raw = sprite.getRGB(0, 0, width, height, null, 0, width);
+        pixels_raw = sprite.getRGB(0, 0, sprite.getWidth(),
+                sprite.getHeight(), null, 0, sprite.getWidth());
 
-        ByteBuffer pixels = BufferUtils.createByteBuffer(width * height * 4);
+        ByteBuffer pixels = BufferUtils.createByteBuffer(
+                sprite.getWidth() * sprite.getHeight() * 4);
 
-        for(int i = 0; i < width; i++) {
-            for(int j = 0; j < height; j++) {
-                int pixel = pixels_raw[i * width + j];
-                pixels.put((byte) ((pixel >> 16) & 0xFF));
-                pixels.put((byte) ((pixel >> 8) & 0xFF));
-                pixels.put((byte) (pixel & 0xFF));
-                pixels.put((byte) ((pixel >> 24) & 0xFF));
-            }
+        // convert int RGB values to byte values
+        for (int i : pixels_raw) {
+
+            pixels.put((byte) ((i >> 16) & 0xFF));
+            pixels.put((byte) ((i >> 8) & 0xFF));
+            pixels.put((byte) (i & 0xFF));
+            pixels.put((byte) ((i >> 24) & 0xFF));
         }
 
+        // invert values to stay unsigned
         pixels.flip();
 
-        id = glGenTextures();
+        this.id = glGenTextures();
 
         glBindTexture(GL_TEXTURE_2D, id);
 
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
-                GL_UNSIGNED_BYTE, pixels);
+        // create texture image
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite.getWidth(),
+                sprite.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     }
 
-    // binds texture
-    public void bind() {
-        glBindTexture(GL_TEXTURE_2D, id);
+    // creates texture from filePath
+    Texture(String filePath) throws IOException {
+        this(ImageIO.read(new File(filePath)));
     }
 }

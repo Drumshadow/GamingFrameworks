@@ -1,7 +1,7 @@
 package sources;
 
 import sources.objCode.GameObject;
-import sources.objCode.ObjectList;
+import sources.GameRoom;
 
 class MultithreadingDemo implements Runnable
 {
@@ -90,16 +90,16 @@ public class Input {
         return action;
     }
 
-    public void execute(ObjectList roomObjects) {
+    public void execute(GameRoom room) {
 
         switch(purpose) {
 
             case Create:
-                roomObjects.addObject(new GameObject(obj));
+                room.addObject(new GameObject(obj));
                 break;
 
             case Destroy:
-                roomObjects.removeObject(obj);
+                room.removeObject(obj);
                 break;
 
             case MoveX:
@@ -115,7 +115,7 @@ public class Input {
                 break;
 
             case Jump:
-                obj.objectJump(roomObjects);
+                obj.objectJump(room.getAllObjects());
                 break;
         }
     }

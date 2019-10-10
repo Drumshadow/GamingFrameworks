@@ -15,7 +15,7 @@ public class Sprite {
     private int width;
     private int height;
 
-    Texture texture;
+    private Texture texture;
 
     // default is visible
     private boolean isVisible;
@@ -48,6 +48,10 @@ public class Sprite {
         this.isVisible = true;
 
         this.shrinkSprite();
+
+        if (path.equals(".\\sprites\\grass.png")) {
+            this.isVisible = true;
+        }
 
         this.texture = new Texture(this.sprite);
     }
@@ -130,16 +134,16 @@ public class Sprite {
         glBegin(GL_QUADS);
         {
             glTexCoord2f(1.0f, 0.0f);
-            glVertex2f(-(float)(width / 1000.0), (float)(height / 1000.0));
+            glVertex2f((float)(width / 1000.0), (float)(height / 1000.0));
 
             glTexCoord2f(1.0f, 1.0f);
-            glVertex2f(-(float)(width / 1000.0), -(float)(height / 1000.0));
-
-            glTexCoord2f(0.0f, 1.0f);
             glVertex2f((float)(width / 1000.0), -(float)(height / 1000.0));
 
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex2f(-(float)(width / 1000.0), -(float)(height / 1000.0));
+
             glTexCoord2f(0.0f, 0.0f);
-            glVertex2f((float)(width / 1000.0), (float)(height / 1000.0));
+            glVertex2f(-(float)(width / 1000.0), (float)(height / 1000.0));
         }
         glEnd();
 
