@@ -27,17 +27,17 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private Audio bg = new Audio();
     private ControllerList controls = new ControllerList();
+    INI pivotalMoment = new INI();
 
     //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
     private GameRoom room = new GameRoom();
     private boolean isPaused = false;
 
 
-    public void paused(int key){
+    public void paused(int key, int action){
+        int newState;
+        int oldState;
         glfwWaitEvents();
-        while(isPaused){
-            glfwPollEvents();
-        }
     }
 
     private void run() throws Exception {
@@ -48,8 +48,24 @@ public class GameLoop {
         // called every time a key is pressed, repeated or released
         glfwSetKeyCallback(newWindow.window, (window, key, scanCode, action,
                                               mods) -> {
-
+            if(key == GLFW_KEY_O && action == GLFW_PRESS && isPaused){
+                inputs.removeAll();
+                controls.removeAll();
+                room.getAllObjects().removeAllElements();
+                System.out.println("O");
+                isPaused = false;
+                try {
+                    pivotalMoment.renderObjects(room);
+                    pivotalMoment.setControls(controls);
+                    pivotalMoment.setKeyboardControls(inputs);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                key = GLFW_KEY_X;
+                //TODO: Render everything back
+            }
             for (int i = 0; i < inputs.size(); i++) {
+
                 if (key == inputs.get(i).getKey() &&
                         action == inputs.get(i).getAction()) {
 
@@ -60,15 +76,10 @@ public class GameLoop {
                     glfwSetWindowShouldClose(window, true);
                 }
 
-                else if(key == GLFW_KEY_O && action == GLFW_PRESS && isPaused){
-                    System.out.println("O");
-                    isPaused = false;
-                }
-
                 else if(key == GLFW_KEY_P && action == GLFW_PRESS && !isPaused){
                     isPaused = true;
                     System.out.println("P");
-                    paused(key);
+                    paused(key, action);
                 }
             }
         });
@@ -102,101 +113,17 @@ public class GameLoop {
         /*==================================================
                           Keyboard Inputs
         ==================================================*/
-
-        Ini ini = new Ini(new File("./inputs/keyboard.ini"));
-        int inputNum = Integer.parseInt(ini.get("control", "inputs"));
-
-        for (int i = 0; i < inputNum; i++) {
-            if (ini.get("input" + i, "purpose").equals("Create") ||
-                    ini.get("input" + i, "purpose").equals("Destroy")) {
-
-                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                        Integer.parseInt(ini.get("input" + i, "action")),
-                        ini.get("input" + i, "object"),
-                        ini.get("input" + i, "purpose")));
-            }
-            else if (ini.get("input" + i, "purpose").equals("MoveX") ||
-                    ini.get("input" + i, "purpose").equals("MoveY") ||
-                    ini.get("input" + i, "purpose").equals("Jump")) {
-
-                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                        Integer.parseInt(ini.get("input" + i, "action")),
-                        ini.get("input" + i, "object"),
-                        ini.get("input" + i, "purpose"),
-                        Double.parseDouble(ini.get("input" + i, "speed"))));
-            }
-            else if (ini.get("input" + i, "purpose").equals("PlaySound")) {
-
-                Audio a = new Audio();
-                a.setFileName(ini.get("input" + i, "audio"));
-
-                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                        Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
-                        ini.get("input" + i, "object"),
-                        ini.get("input" + i, "purpose"),
-                        a));
-            }
-        }
+        pivotalMoment.setKeyboardControls(inputs);
 
         /*==================================================
                         Controller Inputs
         ==================================================*/
-
-        Ini iniC = new Ini(new File("./inputs/controller.ini"));
-        inputNum = Integer.parseInt(iniC.get("control", "inputs"));
-
-        for (int i = 0; i < inputNum; i++) {
-            if (iniC.get("input" + i, "purpose").equals("Create") ||
-                    iniC.get("input" + i, "purpose").equals("Destroy")) {
-
-                controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                        Integer.parseInt(iniC.get("input" + i, "index")),
-                        Float.parseFloat(iniC.get("input" + i, "range")),
-                        iniC.get("input" + i, "object"),
-                        iniC.get("input" + i, "purpose")));
-            }
-            else if (iniC.get("input" + i, "purpose").equals("MoveX") ||
-                    iniC.get("input" + i, "purpose").equals("MoveY")) {
-
-                controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                        Integer.parseInt(iniC.get("input" + i, "index")),
-                        Float.parseFloat(iniC.get("input" + i, "range")),
-                        iniC.get("input" + i, "object"),
-                        iniC.get("input" + i, "purpose"),
-                        Double.parseDouble(iniC.get("input" + i, "speed"))));
-            }
-            else if (iniC.get("input" + i, "purpose").equals("PlaySound")) {
-
-                Audio a = new Audio();
-                a.setFileName(iniC.get("input" + i, "audio"));
-
-                controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                        Integer.parseInt(iniC.get("input" + i, "index")),
-                        Float.parseFloat(iniC.get("input" + i, "range")),
-                        iniC.get("input" + i, "object"),
-                        iniC.get("input" + i, "purpose"),
-                        a));
-            }
-        }
+        pivotalMoment.setControls(controls);
 
         /*==================================================
                           Object Creation
         ==================================================*/
-
-        Ini iniO = new Ini(new File("./objects/objects.ini"));
-        inputNum = Integer.parseInt(iniO.get("control", "objects"));
-        for (int i = 0; i < inputNum; i++) {
-            room.addObject(new GameObject(iniO.get("object" + i, "name"),
-                    iniO.get("object" + i, "sprPath"),
-                    Boolean.parseBoolean(iniO.get("object" + i, "collide")),
-                    Boolean.parseBoolean(iniO.get("object" + i, "fear")),
-                    Double.parseDouble(iniO.get("object" + i, "weight")),
-                    Double.parseDouble(iniO.get("object" + i, "tv")),
-                    Double.parseDouble(iniO.get("object" + i, "jump")),
-                    Integer.parseInt(iniO.get("object" + i, "boxType")),
-                    Double.parseDouble(iniO.get("object" + i, "x")),
-                    Double.parseDouble(iniO.get("object" + i, "y"))));
-        }
+        pivotalMoment.renderObjects(room);
 
         /*==================================================
                           Game Loop
