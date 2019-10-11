@@ -1,11 +1,14 @@
 package sources;
 
 import org.ini4j.Ini;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 import sources.HUDcode.HUD;
 import sources.HUDcode.HealthBar;
 import sources.HUDcode.Score;
 import sources.objCode.GameObject;
+
+import java.awt.*;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -24,10 +27,18 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private Audio bg = new Audio();
     private ControllerList controls = new ControllerList();
-    java.awt.Font font = new java.awt.Font(MONOSPACED, PLAIN, 16);
 
     //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
     private GameRoom room = new GameRoom();
+    private boolean isPaused = false;
+
+
+    public void paused(int key){
+        glfwWaitEvents();
+        while(isPaused){
+            glfwPollEvents();
+        }
+    }
 
     private void run() throws Exception {
         bg.playSound("./music/omae_wa_mou.wav");
@@ -45,8 +56,19 @@ public class GameLoop {
                     inputs.get(i).execute(room);
                 }
 
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                     glfwSetWindowShouldClose(window, true);
+                }
+
+                else if(key == GLFW_KEY_O && action == GLFW_PRESS && isPaused){
+                    System.out.println("O");
+                    isPaused = false;
+                }
+
+                else if(key == GLFW_KEY_P && action == GLFW_PRESS && !isPaused){
+                    isPaused = true;
+                    System.out.println("P");
+                    paused(key);
                 }
             }
         });
@@ -187,7 +209,7 @@ public class GameLoop {
         double time = FPS.getTime();
         double unprocesses = 0;
 
-        while ( !glfwWindowShouldClose(newWindow.window) ) {
+        while ( !glfwWindowShouldClose(newWindow.window)) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
             boolean can_render = false;
             double time_2 = FPS.getTime();
@@ -197,13 +219,14 @@ public class GameLoop {
 
             time = time_2;
 
+
             while(unprocesses >= frame_cap){
                 unprocesses-=frame_cap;
                 can_render = true;
                 glfwPollEvents();
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    System.out.println("FPS: " + frames);
+                    //System.out.println("FPS: " + frames);
                     frames = 0;
                 }
             }
