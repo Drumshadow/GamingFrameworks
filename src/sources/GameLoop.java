@@ -136,12 +136,13 @@ public class GameLoop {
         int frames = 0;
         double time = FPS.getTime();
         double unprocesses = 0;
+        double time_2 = FPS.getTime();
+        double passed = time_2 - time;
 
         while ( !glfwWindowShouldClose(newWindow.window)) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
-            boolean can_render = false;
-            double time_2 = FPS.getTime();
-            double passed = time_2 - time;
+            time_2 = FPS.getTime();
+            passed = time_2 - time;
             unprocesses+=passed;
             frame_time += passed;
 
@@ -150,11 +151,10 @@ public class GameLoop {
 
             while(unprocesses >= frame_cap){
                 unprocesses-=frame_cap;
-                can_render = true;
                 glfwPollEvents();
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    //System.out.println("FPS: " + frames);
+                    System.out.println("FPS: " + frames);
                     frames = 0;
                 }
             }
