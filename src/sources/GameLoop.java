@@ -1,22 +1,15 @@
 package sources;
 
-import org.ini4j.Ini;
-import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 import sources.HUDcode.HUD;
 import sources.HUDcode.HealthBar;
 import sources.HUDcode.Score;
-import sources.objCode.GameObject;
 
-import java.awt.*;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import java.io.File;
 import java.io.IOException;
 
-import static java.awt.Font.MONOSPACED;
-import static java.awt.Font.PLAIN;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -27,14 +20,14 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private Audio bg = new Audio();
     private ControllerList controls = new ControllerList();
-    INI pivotalMoment = new INI();
+    private INI pivotalMoment = new INI();
 
     //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
     private GameRoom room = new GameRoom();
     private boolean isPaused = false;
 
 
-    public void paused(int key, int action){
+    private void paused(int key, int action){
         int newState;
         int oldState;
         glfwWaitEvents();
@@ -183,6 +176,9 @@ public class GameLoop {
 
                 // TODO: consume flower after use
             }
+
+            // allow foe to auto-move
+			room.getElement("foe").setXSpeed(-10.0/1000.0);
 
             // draw objects
             for(int i = 0; i < room.objectCount(); i++) {
