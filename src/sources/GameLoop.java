@@ -35,8 +35,6 @@ public class GameLoop {
 
 
     public void paused(int key, int action){
-        int newState;
-        int oldState;
         glfwWaitEvents();
     }
 
