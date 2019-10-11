@@ -3,6 +3,7 @@ package sources;
 import java.io.IOException;
 
 public class Animation {
+
     private Texture[] frames;
     private int pointer;
 
