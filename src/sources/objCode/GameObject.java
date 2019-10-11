@@ -3,6 +3,7 @@ package sources.objCode;
 import sources.GameRoom;
 import sources.Sprite;
 
+import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -182,7 +183,24 @@ public class GameObject {
                         }
 
                         // perform ledge detection
-                      //  if (this.fearLedge && )
+                        if (this.fearLedge) {
+
+                            // create temporary testing rectangle
+                            BoxyBox temp = new BoxyBox();
+                            Rectangle2D.Double tempHitBox = new Rectangle2D.Double(
+                                    this.getX() + (this.sprite.getWidth() / 2.0) *
+                                            (int)Math.signum(this.getXSpeed()),
+                                    this.getY() + (this.sprite.getHeight() / 2.0)
+                                            + 8.0, this.sprite.getWidth(),
+                                    this.sprite.getHeight());
+
+                            temp.setBoundBox(tempHitBox);
+
+                            // test collision
+                            if (!this.hitBox.basicCollisionCheck(temp)) {
+                                this.setXSpeed(this.getXSpeed() * -1.0);
+                            }
+                        }
                     }
                 }
 
@@ -297,10 +315,6 @@ public class GameObject {
         else {
             this.hitBox = new BoxyBox(this.hitBox);
         }
-    }
-
-    public int getBoxCode() {
-        return this.boxCode;
     }
 
     public void setXSpeed(double s) {

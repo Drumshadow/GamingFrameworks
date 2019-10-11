@@ -72,6 +72,10 @@ public class GameLoop {
                           Object Creation
         ==================================================*/
 
+        // TODO: create gui and allow for adding objects
+            // save objects in current room
+        // TODO: allow for multiple rooms, have gui tabs for each?
+
         // player
         GameObject player = new GameObject("player", "./sprites/friend.png",
                 true, false, 1.0, 10, 0.0, 0, 200.0, 1000.0);
@@ -105,7 +109,13 @@ public class GameLoop {
 
         // foe
         GameObject foe = new GameObject("foe", "./sprites/foe.png",
-                true, false, 1.0, 0.0, 0.0, 0, 1000.0, 830.0);
+                true, true, 1.0, 0.0, 0.0, 0, 1000.0, 830.0);
+
+        // set foe's speed
+        // TODO: set up auto-moving
+        // TODO: make them turn around when they hit a wall
+        foe.setXSpeed(2.0);
+
         room.addObject(foe);
 
         // flower
