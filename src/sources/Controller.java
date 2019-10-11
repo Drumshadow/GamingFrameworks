@@ -8,12 +8,12 @@ public class Controller {
     private int button; // 1 if button, 0 if axes
     private int index; // 0-5 for axes, 0-13 for buttons
     private float range; // only applicable for axes
-    private GameObject obj;
+    private String obj;
     private String purpose;
     private double speed;
     private Audio sounds;
 
-    public Controller(int button, int index, float range, GameObject obj, String purpose) {
+    public Controller(int button, int index, float range, String obj, String purpose) {
         this.button = button;
         this.index = index;
         this.range = range;
@@ -21,7 +21,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
-    public Controller(int button, int index, float range, GameObject obj, String purpose, double speed) {
+    public Controller(int button, int index, float range, String obj, String purpose, double speed) {
         this.button = button;
         this.index = index;
         this.range = range;
@@ -30,7 +30,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
-    public Controller(int button, int index, float range, GameObject obj, String purpose, Audio sndName) {
+    public Controller(int button, int index, float range, String obj, String purpose, Audio sndName) {
         this.button = button;
         this.index = index;
         this.range = range;
@@ -69,18 +69,32 @@ public class Controller {
 
     public void execute(GameRoom room) {
         if (purpose.equals("Create")) {
-            room.addObject(new GameObject(this.obj));
+            for (int i = 0; i < room.getAllObjects().size(); i++) {
+                if (room.getElement(i).getObjName().equals(obj)) {
+                    room.addObject(room.getElement(i));
+                }
+            }
         }
         if (purpose.equals("Destroy")) {
-            room.removeObject(this.obj);
+            for (int i = 0; i < room.getAllObjects().size(); i++) {
+                if (room.getElement(i).getObjName().equals(obj)) {
+                    room.removeObject(room.getElement(i));
+                }
+            }
         }
         if (purpose.equals("MoveX")) {
-            obj.setXSpeed(speed / 1000);
-            obj.move(room.getAllObjects());
+            for (int i = 0; i < room.getAllObjects().size(); i++) {
+                if (room.getElement(i).getObjName().equals(obj)) {
+                    room.getElement(i).setXSpeed(speed / 1000);
+                }
+            }
         }
         if (purpose.equals("MoveY")) {
-            obj.setYSpeed(speed / 1000);
-            obj.move(room.getAllObjects());
+            for (int i = 0; i < room.getAllObjects().size(); i++) {
+                if (room.getElement(i).getObjName().equals(obj)) {
+                    room.getElement(i).setYSpeed(speed / 1000);
+                }
+            }
         }
         if (purpose.equals("PlaySound")) {
             sounds.loadPlaySound();

@@ -69,61 +69,6 @@ public class GameLoop {
         room.setBackground(new Sprite("./sprites/clouds_bkg.png"));
 
         /*==================================================
-                          Object Creation
-        ==================================================*/
-
-        // TODO: create gui and allow for adding objects
-            // save objects in current room
-        // TODO: allow for multiple rooms, have gui tabs for each?
-
-        // player
-        GameObject player = new GameObject("player", "./sprites/friend.png",
-                true, false, 1.0, 10, 0.0, 0, 200.0, 1000.0);
-        room.addObject(player);
-
-        // grass platforms
-        GameObject grass1 = new GameObject("grass", "./sprites/grass.png",
-                true, false, 0.0, 0.0, 0.0, 0, 0.0, 500.0);
-        room.addObject(grass1);
-
-        GameObject grass2 = new GameObject("grass", "./sprites/grass.png",
-                true, false, 0.0, 0.0, 0.0, 0, 400.0, 500.0);
-        room.addObject(grass2);
-
-        GameObject grass3 = new GameObject("grass", "./sprites/grass.png",
-                true, false, 0.0, 0.0, 0.0, 0, 800.0, 660.0);
-        room.addObject(grass3);
-
-        GameObject grass4 = new GameObject("grass", "./sprites/grass.png",
-                true, false, 0.0, 0.0, 0.0, 0, 1200.0, 660.0);
-        room.addObject(grass4);
-
-        GameObject grass5 = new GameObject("grass", "./sprites/grass.png",
-                true, false, 0.0, 0.0, 0.0, 0, 1600.0, 660.0);
-        room.addObject(grass5);
-
-        // stone wall
-        GameObject wall = new GameObject("wall", "./sprites/wall.png",
-                true, false, 0.0, 0.0, 0.0, 0, 1400.0, 820.0);
-        room.addObject(wall);
-
-        // foe
-        GameObject foe = new GameObject("foe", "./sprites/foe.png",
-                true, true, 1.0, 0.0, 0.0, 0, 1000.0, 830.0);
-
-        // set foe's speed
-        // TODO: set up auto-moving
-        // TODO: make them turn around when they hit a wall
-        foe.setXSpeed(2.0);
-
-        room.addObject(foe);
-
-        // flower
-        GameObject flower = new GameObject("flower", "./sprites/flower.png",
-                true, false, 0.0, 0.0, 0.0, 0, 1700.0, 820.0);
-        room.addObject(flower);
-
-        /*==================================================
                                 HUD
         ==================================================*/
         HUD hud = new HUD();
@@ -145,7 +90,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
-                        room.getElement(ini.get("input" + i, "object")),
+                        ini.get("input" + i, "object"),
                         ini.get("input" + i, "purpose")));
             }
             else if (ini.get("input" + i, "purpose").equals("MoveX") ||
@@ -154,7 +99,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")),
-                        room.getElement(ini.get("input" + i, "object")),
+                        ini.get("input" + i, "object"),
                         ini.get("input" + i, "purpose"),
                         Double.parseDouble(ini.get("input" + i, "speed"))));
             }
@@ -165,7 +110,7 @@ public class GameLoop {
 
                 inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                         Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
-                        room.getElement(ini.get("input" + i, "object")),
+                        ini.get("input" + i, "object"),
                         ini.get("input" + i, "purpose"),
                         a));
             }
@@ -185,7 +130,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        room.getElement(iniC.get("input" + i, "object")),
+                        iniC.get("input" + i, "object"),
                         iniC.get("input" + i, "purpose")));
             }
             else if (iniC.get("input" + i, "purpose").equals("MoveX") ||
@@ -194,7 +139,7 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        room.getElement(iniC.get("input" + i, "object")),
+                        iniC.get("input" + i, "object"),
                         iniC.get("input" + i, "purpose"),
                         Double.parseDouble(iniC.get("input" + i, "speed"))));
             }
@@ -206,10 +151,29 @@ public class GameLoop {
                 controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
                         Integer.parseInt(iniC.get("input" + i, "index")),
                         Float.parseFloat(iniC.get("input" + i, "range")),
-                        room.getElement(iniC.get("input" + i, "object")),
+                        iniC.get("input" + i, "object"),
                         iniC.get("input" + i, "purpose"),
                         a));
             }
+        }
+
+        /*==================================================
+                          Object Creation
+        ==================================================*/
+
+        Ini iniO = new Ini(new File("./objects/objects.ini"));
+        inputNum = Integer.parseInt(iniO.get("control", "objects"));
+        for (int i = 0; i < inputNum; i++) {
+            room.addObject(new GameObject(iniO.get("object" + i, "name"),
+                    iniO.get("object" + i, "sprPath"),
+                    Boolean.parseBoolean(iniO.get("object" + i, "collide")),
+                    Boolean.parseBoolean(iniO.get("object" + i, "fear")),
+                    Double.parseDouble(iniO.get("object" + i, "weight")),
+                    Double.parseDouble(iniO.get("object" + i, "tv")),
+                    Double.parseDouble(iniO.get("object" + i, "jump")),
+                    Integer.parseInt(iniO.get("object" + i, "boxType")),
+                    Double.parseDouble(iniO.get("object" + i, "x")),
+                    Double.parseDouble(iniO.get("object" + i, "y"))));
         }
 
         /*==================================================
@@ -255,7 +219,7 @@ public class GameLoop {
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (player.getHitBox().xCollisionCheck(foe.getHitBox())) {
+            if (room.getElement("player").getHitBox().xCollisionCheck(room.getElement("foe").getHitBox())) {
 
                 ((HealthBar) hud.getElements().get(0)).decHealth();
             }

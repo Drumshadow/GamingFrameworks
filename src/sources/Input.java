@@ -27,13 +27,13 @@ public class Input {
     private int action; // 0: release, 1: press, 2: hold
     enum purpose{Create, Destroy, MoveX, MoveY, PlaySound, Jump};
     private purpose purpose;
-    private GameObject obj;
+    private String obj;
     private double speed;
     private String sndName;
     private Audio sounds = new Audio();
     private MultithreadingDemo object = new MultithreadingDemo();
 
-    Input(int k, int a, GameObject o, String pur) {
+    Input(int k, int a, String o, String pur) {
         key = k;
         action = a;
         obj = o;
@@ -45,7 +45,7 @@ public class Input {
         }
     }
 
-    Input(int k, int a, GameObject o, String pur, double s) {
+    Input(int k, int a, String o, String pur, double s) {
         key = k;
         action = a;
         obj = o;
@@ -75,7 +75,7 @@ public class Input {
         speed = s / 1000.0;
     }
 
-    Input(int k, int a, GameObject o, String pur, Audio snd) {
+    Input(int k, int a, String o, String pur, Audio snd) {
         key = k;
         action = a;
         obj = o;
@@ -95,19 +95,37 @@ public class Input {
         switch(purpose) {
 
             case Create:
-                room.addObject(new GameObject(obj));
+                for (int i = 0; i < room.getAllObjects().size(); i++) {
+                    if (room.getElement(i).getObjName().equals(obj)) {
+                        room.addObject(room.getElement(i));
+                        break;
+                    }
+                }
                 break;
 
             case Destroy:
-                room.removeObject(obj);
+                for (int i = 0; i < room.getAllObjects().size(); i++) {
+                    if (room.getElement(i).getObjName().equals(obj)) {
+                        room.removeObject(room.getElement(i));
+                        break;
+                    }
+                }
                 break;
 
             case MoveX:
-                obj.setXSpeed(speed);
+                for (int i = 0; i < room.getAllObjects().size(); i++) {
+                    if (room.getElement(i).getObjName().equals(obj)) {
+                        room.getElement(i).setXSpeed(speed);
+                    }
+                }
                 break;
 
             case MoveY:
-                obj.setYSpeed(speed);
+                for (int i = 0; i < room.getAllObjects().size(); i++) {
+                    if (room.getElement(i).getObjName().equals(obj)) {
+                        room.getElement(i).setYSpeed(speed);
+                    }
+                }
                 break;
 
             case PlaySound:
@@ -115,7 +133,11 @@ public class Input {
                 break;
 
             case Jump:
-                obj.objectJump(room.getAllObjects());
+                for (int i = 0; i < room.getAllObjects().size(); i++) {
+                    if (room.getElement(i).getObjName().equals(obj)) {
+                        room.getElement(i).objectJump(room.getAllObjects());
+                    }
+                }
                 break;
         }
     }
