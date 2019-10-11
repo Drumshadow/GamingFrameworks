@@ -8,8 +8,11 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 - Accurate Collision Detection and Gravity
 - Input Handling for Keyboard and Controllers 
 - Functional Game Loop
-- Sprite Drawing
+- Sprite Drawing (Now with transparency!)
 - Basic HUD Drawing
+- Basic AI for "foe" Object
+- Functional Pause Button
+- In-Game Editing of Objects
 
 # Developer's Guide
     Adding/Changing Audio
