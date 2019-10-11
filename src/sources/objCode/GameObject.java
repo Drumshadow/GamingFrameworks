@@ -184,22 +184,7 @@ public class GameObject {
 
                         // perform ledge detection
                         if (this.fearLedge) {
-
-                            // create temporary testing rectangle
-                            BoxyBox temp = new BoxyBox();
-                            Rectangle2D.Double tempHitBox = new Rectangle2D.Double(
-                                    this.getX() + (this.sprite.getWidth() / 2.0) *
-                                            (int)Math.signum(this.getXSpeed()),
-                                    this.getY() + (this.sprite.getHeight() / 2.0)
-                                            + 8.0, this.sprite.getWidth(),
-                                    this.sprite.getHeight());
-
-                            temp.setBoundBox(tempHitBox);
-
-                            // test collision
-                            if (!this.hitBox.basicCollision(temp)) {
-                                this.setXSpeed(this.getXSpeed() * -1.0);
-                            }
+                            this.reactToLedge(roomObjects);
                         }
                     }
                 }
@@ -228,6 +213,38 @@ public class GameObject {
 
         // update position
         this.hitBox.updatePosition();
+    }
+
+    // allows for ledge-detection
+    private void reactToLedge(Vector<GameObject> os) {
+
+        // TODO: fix ledge detection
+
+        // create temporary testing rectangle
+        BoxyBox tempBox = new BoxyBox();
+
+        Rectangle2D.Double temp = new Rectangle2D.Double(
+                (this.sprite.getWidth() / 2.0) * Math.signum(this.getXSpeed()),
+                this.getY() - this.sprite.getHeight(),
+                this.sprite.getWidth() / 2.0,
+                8.0);
+        tempBox.setBoundBox(temp);
+
+        // check if temp rectangle intersects with an object
+        boolean hasLedge = true;
+
+        for (GameObject go : os) {
+
+            if (go.canCollide && tempBox.basicCollision(go.getHitBox())) {
+                hasLedge = false;
+                break;
+            }
+        }
+
+        // adjust speed if there is a ledge
+        if (hasLedge) {
+            this.setXSpeed(this.getXSpeed() * -1.0);
+        }
     }
 
     public void objectJump(Vector<GameObject> roomObjects) {

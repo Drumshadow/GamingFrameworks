@@ -116,6 +116,9 @@ public class GameLoop {
         ==================================================*/
         pivotalMoment.renderObjects(room);
 
+        // allow foe to auto-move
+        room.getElement("foe").setXSpeed(5.0/1000.0);
+
         /*==================================================
                           Game Loop
         ==================================================*/
@@ -162,7 +165,8 @@ public class GameLoop {
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox())) {
+            if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox()) ||
+                    room.getElement("foe").getHitBox().basicCollision(room.getElement("player").getHitBox())) {
 
                 ((HealthBar) hud.getElements().get(0)).decHealth();
             }
@@ -175,8 +179,10 @@ public class GameLoop {
                 // TODO: consume flower after use
             }
 
-            // allow foe to auto-move
-			room.getElement("foe").setXSpeed(-10.0/1000.0);
+            // demonstrate basic AI
+            if (room.getElement("foe").getHitBox().basicCollision(room.getElement("wall").getHitBox())) {
+                room.getElement("foe").setXSpeed(room.getElement("foe").getXSpeed() * -1.0);
+            }
 
             // draw objects
             for(int i = 0; i < room.objectCount(); i++) {
