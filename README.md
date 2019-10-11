@@ -49,6 +49,29 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
         - The purpose of the input
         - If the purpose is to move, the speed you want the object to move at
         - If the purpose is to play sound, the file path of the sound file you wish to play
+    Edit/Add/Remove Objects
+        - The game will look in a .ini file called objects.ini, this is where it is looking for everything from how 
+        inputs are done to what objects, wven where they are.
+        - To add an object simply type in everything need for the object, here is an example below 
+        [object0]
+        name=player
+        sprPath=./sprites/friend.png
+        collide=true
+        fear=false
+        weight=1.0
+        tv=10
+        jump=0.0
+        boxType=0
+        x=200.0
+        y=1000.0
+        - To edit an object you just edit the information important to it within the .ini file
+        - To remove an object just delete the information for it from the .ini
+    Exmaple on how to edit the player object
+    1) Step one is to run the game.
+    2) Step two is to then press "P"
+        - Once "P" is pressed the geame will be ready to update upon pressing "O"
+    3) Go into the .ini file and find the line that says "sprPath=./sprites/friend.png" and change it to the following
+    "sprPath=./sprites/foe.png". Now your sprite will be changed!
     
 # User's Guide
 Here are the steps to play!
