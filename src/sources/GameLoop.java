@@ -167,7 +167,8 @@ public class GameLoop {
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox())) {
+            if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox()) ||
+                    room.getElement("foe").getHitBox().basicCollision(room.getElement("player").getHitBox())) {
 
                 ((HealthBar) hud.getElements().get(0)).decHealth();
             }
