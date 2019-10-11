@@ -95,7 +95,7 @@ public class GameLoop {
         ==================================================*/
         HUD hud = new HUD();
 
-        hud.addElement(new HealthBar(true, HealthBar.healthType.BAR, 3, 3,
+        hud.addElement(new HealthBar(true, HealthBar.healthType.BAR, 10, 10,
                 null, -0.9f, 0.85f, 0.5f, 0.05f));
         hud.addElement(new Score(true, -100, 0, 5, 5, 0, 100));
 
@@ -232,7 +232,6 @@ public class GameLoop {
             }
 
             // draw background (scale to fit window)
-            // I don't know why the scale factor is 1.25
             glPushMatrix();
                 glScaled(1.25, 1.25, 1.0);
                 room.getBackground().drawObject(0.0, 0.0);
@@ -242,9 +241,17 @@ public class GameLoop {
             hud.drawHUD();
 
             // demonstrate hp bar
-            if (room.getElement("player").getHitBox().xCollisionCheck(room.getElement("foe").getHitBox())) {
+            if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox())) {
 
                 ((HealthBar) hud.getElements().get(0)).decHealth();
+            }
+
+            // demonstrate flower healing power
+            if (room.getElement("player").getHitBox().basicCollision(room.getElement("flower").getHitBox())) {
+
+                ((HealthBar) hud.getElements().get(0)).incHealth(5);
+
+                // TODO: consume flower after use
             }
 
             // draw objects

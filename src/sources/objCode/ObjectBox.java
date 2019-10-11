@@ -51,10 +51,8 @@ abstract public class ObjectBox {
     ==================================================*/
 
     // checks if two bounding boxes have collided
-    public boolean basicCollisionCheck(ObjectBox other) {
-        return this.boundingBox.intersects(other.x, other.y,
-                other.getBoundBox().getWidth(),
-                other.getBoundBox().getHeight());
+    public boolean basicCollision(ObjectBox other) {
+        return this.xCollisionCheck(other) || this.yCollisionCheck(other);
     }
 
     // checks future collision in x direction

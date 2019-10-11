@@ -197,7 +197,7 @@ public class GameObject {
                             temp.setBoundBox(tempHitBox);
 
                             // test collision
-                            if (!this.hitBox.basicCollisionCheck(temp)) {
+                            if (!this.hitBox.basicCollision(temp)) {
                                 this.setXSpeed(this.getXSpeed() * -1.0);
                             }
                         }
