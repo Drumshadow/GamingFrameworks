@@ -130,6 +130,9 @@ public class GameLoop {
         ==================================================*/
 
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         double frame_cap = 1.0/60.0;
         double frame_time = 0;
         int frames = 0;
@@ -161,7 +164,7 @@ public class GameLoop {
             // draw background (scale to fit window)
             glPushMatrix();
                 glScaled(1.25, 1.25, 1.0);
-                room.getBackground().drawObject(0.0, 0.0);
+                room.getBackground().drawObject(-0.8, -0.8);
             glPopMatrix();
 
             // draw HUD

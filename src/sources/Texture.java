@@ -10,6 +10,8 @@ import org.lwjgl.BufferUtils;
 import javax.imageio.ImageIO;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.GL_BGRA;
+import static org.lwjgl.opengl.GL12.GL_UNSIGNED_INT_8_8_8_8_REV;
 
 class Texture {
 
@@ -22,21 +24,21 @@ class Texture {
         int[] pixels_raw;
         pixels_raw = sprite.getRGB(0, 0, sprite.getWidth(),
                 sprite.getHeight(), null, 0, sprite.getWidth());
-
-        ByteBuffer pixels = BufferUtils.createByteBuffer(
-                sprite.getWidth() * sprite.getHeight() * 4);
-
-        // convert int RGB values to byte values
-        for (int i : pixels_raw) {
-
-            pixels.put((byte) ((i >> 16) & 0xFF));
-            pixels.put((byte) ((i >> 8) & 0xFF));
-            pixels.put((byte) (i & 0xFF));
-            pixels.put((byte) ((i >> 24) & 0xFF));
-        }
-
-        // invert values to stay unsigned
-        pixels.flip();
+//
+//        ByteBuffer pixels = BufferUtils.createByteBuffer(
+//                sprite.getWidth() * sprite.getHeight() * 4);
+//
+//        // convert int RGB values to byte values
+//        for (int i : pixels_raw) {
+//
+//            pixels.put((byte) ((i >> 16) & 0xFF));
+//            pixels.put((byte) ((i >> 8) & 0xFF));
+//            pixels.put((byte) (i & 0xFF));
+//            pixels.put((byte) ((i >> 24) & 0xFF));
+//        }
+//
+//        // invert values to stay unsigned
+//        pixels.flip();
 
         this.id = glGenTextures();
 
@@ -47,7 +49,7 @@ class Texture {
 
         // create texture image
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite.getWidth(),
-                sprite.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+                sprite.getHeight(), 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixels_raw);
     }
 
     // creates texture from filePath

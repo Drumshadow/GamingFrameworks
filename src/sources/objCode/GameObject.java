@@ -91,14 +91,14 @@ public class GameObject {
         this.boxCode = boxType;
 
         if (this.boxCode == 1) {
-            this.hitBox = new RoundBox((x - 1000 + sprite.getWidth()) / 1000,
-                    (y - 1000 + sprite.getHeight())/ 1000, this.sprite.getWidth() / 1000.0,
-                    this.sprite.getHeight() / 1000.0);
+            this.hitBox = new RoundBox((x - 1000) / 1000,
+                    (y - 1000) / 1000, this.sprite.getWidth() / 500.0,
+                    this.sprite.getHeight() / 500.0);
         }
         else {
-            this.hitBox = new BoxyBox((x - 1000 + sprite.getWidth()) / 1000,
-                    (y - 1000 + sprite.getHeight())/ 1000,  2* this.sprite.getWidth() / 1000.0,
-                    2 * this.sprite.getHeight() / 1000.0);
+            this.hitBox = new BoxyBox((x - 1000) / 1000,
+                    (y - 1000) / 1000,  this.sprite.getWidth() / 500.0,
+                    this.sprite.getHeight() / 500.0);
         }
     }
 
