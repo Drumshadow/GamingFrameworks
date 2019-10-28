@@ -1,5 +1,9 @@
 package sources;
 
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALCCapabilities;
+import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import sources.HUDcode.HUD;
 import sources.HUDcode.HealthBar;
@@ -9,9 +13,11 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import java.io.IOException;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GameLoop {
@@ -34,6 +40,14 @@ public class GameLoop {
     private void run() throws Exception {
         bg.playSound("./music/omae_wa_mou.wav");
         newWindow.init();
+
+        // initialization
+        String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
+        long device = alcOpenDevice(defaultDeviceName);
+        ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
+        long context = alcCreateContext(device, (IntBuffer)null);
+        alcMakeContextCurrent(context);
+        ALCapabilities alCapabilities  = AL.createCapabilities(alcCapabilities);
 
         // setup key callback
         // called every time a key is pressed, repeated or released
@@ -76,6 +90,9 @@ public class GameLoop {
         });
 
         loop();
+
+        alcDestroyContext(context);
+        alcCloseDevice(device);
 
         // free window callbacks and destroy window
         glfwFreeCallbacks(newWindow.window);

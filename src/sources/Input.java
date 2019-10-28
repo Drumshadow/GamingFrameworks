@@ -1,5 +1,7 @@
 package sources;
 
+import org.lwjgl.openal.ALUtil;
+import org.lwjgl.openal.*;
 import sources.objCode.GameObject;
 import sources.GameRoom;
 
