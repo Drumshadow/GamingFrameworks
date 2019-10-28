@@ -11,6 +11,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
@@ -23,27 +24,12 @@ import static org.lwjgl.system.libc.LibCStdlib.free;
 class MultiThread implements Runnable
 {
     private String file;
-    private long device;
     void setFileName(String fileN){
         this.file = fileN;
-    }
-    void setDevice(long d){
-        this.device = d;
     }
 
     @Override
     public void run() {
-
-        // initialization
-        String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-        this.device = alcOpenDevice(defaultDeviceName);
-
-        int[] attributes = {0};
-        long context = alcCreateContext(device, attributes);
-        alcMakeContextCurrent(context);
-
-        ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
-        ALCapabilities alCapabilities  = AL.createCapabilities(alcCapabilities);
 
         ShortBuffer rawAudioBuffer;
 
@@ -95,8 +81,6 @@ class MultiThread implements Runnable
         // terminate OpenAL
         alDeleteSources(sourcePointer);
         alDeleteBuffers(bufferPointer);
-        alcDestroyContext(context);
-        alcCloseDevice(device);
     }
 }
 
@@ -133,15 +117,7 @@ public class Audio {
         this.fileName = fileName;
     }
 
-    public String getBgMusic() {
-        return bgMusic;
-    }
-
-    public void setBgMusic(String bgMusic) {
-        this.bgMusic = bgMusic;
-    }
-
-    static void playSound(String name) throws Exception{
+    void playSound(String name) throws Exception{
 
         if (clip != null && clip.isOpen()) {
             clip.close();
@@ -150,6 +126,7 @@ public class Audio {
         clip = AudioSystem.getClip();
 
         clip.open(audioInputStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
         FloatControl gainControl =
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-24f);
