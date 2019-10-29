@@ -5,10 +5,18 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import sources.HUDcode.HUD;
 import sources.HUDcode.HealthBar;
 import sources.HUDcode.Score;
 
+import javax.swing.text.Position;
+import java.awt.*;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -19,6 +27,7 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 
 public class GameLoop {
 
@@ -103,7 +112,7 @@ public class GameLoop {
         glfwSetErrorCallback(null).free();
     }
   
-    private void loop() throws IOException {
+    private void loop() throws IOException, SlickException {
         GL.createCapabilities();
 
         // set background
@@ -140,10 +149,25 @@ public class GameLoop {
                           Game Loop
         ==================================================*/
 
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_BLEND);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glClearDepth(1);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL11.glViewport(0,0,1000,1000);
+        //GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        //GL11.glMatrixMode(GL_PROJECTION);
+        //GL11.glLoadIdentity();
+        //GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
+        //GL11.glMatrixMode(GL_MODELVIEW);
         double frame_cap = 1.0/60.0;
         double frame_time = 0;
         int frames = 0;
@@ -151,6 +175,14 @@ public class GameLoop {
         double unprocesses = 0;
         double time_2 = FPS.getTime();
         double passed = time_2 - time;
+        int displayFrames = 0;
+
+        UnicodeFont font;
+        Font awtFont = new Font(Font.DIALOG, Font.PLAIN, 48);
+        font = new UnicodeFont(awtFont);
+        font.addAsciiGlyphs();
+        font.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
+        font.loadGlyphs();
 
         while ( !glfwWindowShouldClose(newWindow.window)) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
@@ -161,13 +193,13 @@ public class GameLoop {
 
             time = time_2;
 
-
             while(unprocesses >= frame_cap){
                 unprocesses-=frame_cap;
                 glfwPollEvents();
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    System.out.println("FPS: " + frames);
+                    //System.out.println("FPS: " + frames);
+                    displayFrames = frames;
                     frames = 0;
                 }
             }
@@ -207,6 +239,11 @@ public class GameLoop {
                 room.getElement(i).drawObject();
                 room.getElement(i).move(room.getAllObjects());
             }
+
+            glPushMatrix();
+            GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
+            font.drawString(400, 200, "Frames: " + displayFrames);
+            glPopMatrix();
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
