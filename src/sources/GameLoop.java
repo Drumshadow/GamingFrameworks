@@ -210,9 +210,6 @@ public class GameLoop {
                 room.getBackground().drawObject(-0.8, -0.8);
             glPopMatrix();
 
-            // draw HUD
-            hud.drawHUD();
-
             // demonstrate hp bar
             if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox()) ||
                     room.getElement("foe").getHitBox().basicCollision(room.getElement("player").getHitBox())) {
@@ -239,6 +236,9 @@ public class GameLoop {
                 room.getElement(i).drawObject();
                 room.getElement(i).move(room.getAllObjects());
             }
+
+            // draw HUD
+            hud.drawHUD();
 
             glPushMatrix();
             GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
