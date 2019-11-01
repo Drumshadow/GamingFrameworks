@@ -11,8 +11,9 @@ public class HealthBar extends HUDElement {
     private static int lives;
     private static int maxLives;
 
+    // To be used if health depletes too quickly
     private static int invincibilityCounter = 0;
-    private static final int INVINT = 4;
+    private static final int INVINT = 0;
 
     private Sprite hpSprite;
 

@@ -178,7 +178,8 @@ public class GameLoop {
         int displayFrames = 0;
 
         UnicodeFont font;
-        Font awtFont = new Font(Font.DIALOG, Font.PLAIN, 48);
+       // Font awtFont = new Font(Font.DIALOG, Font.PLAIN, 48);
+        Font awtFont = new Font("Fonts/VCR_OSD_MONO_1.001.ttf", Font.PLAIN, 48);
         font = new UnicodeFont(awtFont);
         font.addAsciiGlyphs();
         font.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
@@ -240,6 +241,7 @@ public class GameLoop {
             // draw HUD
             hud.drawHUD();
 
+            // TODO: add to hud
             glPushMatrix();
             GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
             font.drawString(400, 200, "Frames: " + displayFrames);
