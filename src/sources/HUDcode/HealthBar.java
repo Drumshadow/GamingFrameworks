@@ -3,6 +3,9 @@ package sources.HUDcode;
 import org.lwjgl.opengl.GL11;
 import sources.Sprite;
 
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+
 public class HealthBar extends HUDElement {
 
     public enum healthType {BAR, NUM, SPRITE}
@@ -22,11 +25,11 @@ public class HealthBar extends HUDElement {
     ==================================================*/
 
     // value constructor
-    public HealthBar(boolean display, healthType healthType, int l,
+    public HealthBar(healthType healthType, int l,
                      int m, Sprite hpSprite, float x, float y,
                      float width, float height) {
 
-        super(display, x, y, width, height);
+        super(x, y, width, height);
 
         this.type = healthType;
 
@@ -65,25 +68,29 @@ public class HealthBar extends HUDElement {
         GL11.glColor3f(0.0f, 0.0f, 0.0f);
 
         GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2f(this.getX(), this.getY());
-            GL11.glVertex2f(this.getX() + this.getWidth(), this.getY());
-            GL11.glVertex2f(this.getX() + this.getWidth(), this.getY() + this.getHeight());
-            GL11.glVertex2f(this.getX(), this.getY() + this.getHeight());
+            GL11.glVertex2f(this.x, this.y);
+            GL11.glVertex2f(this.x + this.width, this.y);
+            GL11.glVertex2f(this.x + this.width, this.y + this.height);
+            GL11.glVertex2f(this.x, this.y + this.height);
         GL11.glEnd();
 
         // fill hp
         GL11.glColor3f(0.058f, 0.956f, 0.027f);
 
         GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2f(this.getX(), this.getY());
-            GL11.glVertex2f(this.getX() + (this.getWidth() * ((float)lives / (float)maxLives)), this.getY());
-            GL11.glVertex2f(this.getX() + (this.getWidth() * ((float)lives / (float)maxLives)), this.getY() + this.getHeight());
-            GL11.glVertex2f(this.getX(), this.getY() + this.getHeight());
+            GL11.glVertex2f(this.x, this.y);
+            GL11.glVertex2f(this.x + (this.width * ((float)lives / (float)maxLives)), this.y);
+            GL11.glVertex2f(this.x + (this.width * ((float)lives / (float)maxLives)), this.y + this.height);
+            GL11.glVertex2f(this.x, this.y + this.height);
         GL11.glEnd();
     }
 
     private void numberHealth() {
-        // TODO: number form
+
+        glPushMatrix();
+            GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
+            HUD.hudFont.drawString(this.x, this.y, "Score: " + lives);
+        glPopMatrix();
     }
 
     private void spriteHealth() {
@@ -95,13 +102,6 @@ public class HealthBar extends HUDElement {
     ==================================================*/
 
     // TODO: make setters impact all related values
-
-    public void incHealth() {
-
-        if (lives < maxLives) {
-            lives++;
-        }
-    }
 
     public void incHealth(int healing) {
 

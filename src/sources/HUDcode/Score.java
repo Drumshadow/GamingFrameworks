@@ -1,5 +1,10 @@
 package sources.HUDcode;
 
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+
 public class Score extends HUDElement {
 
     private int score;
@@ -9,10 +14,9 @@ public class Score extends HUDElement {
                      Initialization
     ==================================================*/
 
-    public Score(boolean display, int x, int y, int width, int height,
-                 int score, int maxScore) {
+    public Score(int x, int y, int score, int maxScore) {
 
-        super(display, x, y, width, height);
+        super(x, y);
 
         this.score = score;
         this.maxScore = maxScore;
@@ -25,7 +29,10 @@ public class Score extends HUDElement {
     @Override
     public void drawElement() {
 
-        // TODO: number form
+        glPushMatrix();
+            GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
+            HUD.hudFont.drawString(this.x, this.y, "Score: " + this.score);
+        glPopMatrix();
     }
 
     /*==================================================

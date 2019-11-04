@@ -2,28 +2,30 @@ package sources.HUDcode;
 
 public abstract class HUDElement {
 
-    private boolean display;
+    protected float x;
+    protected float y;
 
-    private float x;
-    private float y;
-
-    private float width;
-    private float height;
+    protected float width;
+    protected float height;
 
     /*==================================================
                      Initialization
     ==================================================*/
 
     // value constructor
-    HUDElement(boolean display, float x, float y, float width, float height) {
-
-        this.display = display;
+    HUDElement(float x, float y, float width, float height) {
 
         this.x = x;
         this.y = y;
 
         this.width = width;
         this.height = height;
+    }
+
+    // value constructor with no dimensions
+    HUDElement(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
     /*==================================================
@@ -34,14 +36,6 @@ public abstract class HUDElement {
     /*==================================================
                    Getters and Setters
     ==================================================*/
-
-    public boolean isDisplay() {
-        return this.display;
-    }
-
-    public void setDisplay(boolean display) {
-        this.display = display;
-    }
 
     public float getX() {
         return this.x;

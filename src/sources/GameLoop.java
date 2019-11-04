@@ -7,16 +7,11 @@ import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
+import sources.HUDcode.FrameDisplay;
 import sources.HUDcode.HUD;
 import sources.HUDcode.HealthBar;
 import sources.HUDcode.Score;
 
-import javax.swing.text.Position;
-import java.awt.*;
-import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -27,7 +22,6 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 
 public class GameLoop {
 
@@ -42,7 +36,7 @@ public class GameLoop {
     private boolean isPaused = false;
 
 
-    public void paused(int key, int action){
+    private void paused(int key, int action){
         glfwWaitEvents();
     }
 
@@ -122,10 +116,19 @@ public class GameLoop {
                                 HUD
         ==================================================*/
         HUD hud = new HUD();
+        hud.setHudFont("Fonts/VCR_OSD_MONO_1.001.ttf", 32);
 
-        hud.addElement(new HealthBar(true, HealthBar.healthType.BAR, 10, 10,
+        // TODO: add way to edit specific HUD element
+
+        // index 0
+        hud.addElement(new HealthBar(HealthBar.healthType.BAR, 10, 10,
                 null, -0.9f, 0.85f, 0.5f, 0.05f));
-        hud.addElement(new Score(true, -100, 0, 5, 5, 0, 100));
+
+        // index 1
+        hud.addElement(new FrameDisplay(15, 950));
+
+        // index 2
+        hud.addElement(new Score(50, 80, 0, 100));
 
         /*==================================================
                           Keyboard Inputs
@@ -162,34 +165,27 @@ public class GameLoop {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glViewport(0,0,1000,1000);
-        //GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        //GL11.glMatrixMode(GL_PROJECTION);
-        //GL11.glLoadIdentity();
-        //GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
-        //GL11.glMatrixMode(GL_MODELVIEW);
+        // initialize frame-related variables
         double frame_cap = 1.0/60.0;
         double frame_time = 0;
         int frames = 0;
         double time = FPS.getTime();
         double unprocesses = 0;
         double time_2 = FPS.getTime();
-        double passed = time_2 - time;
+        double passed;
         int displayFrames = 0;
-
-        UnicodeFont font;
-       // Font awtFont = new Font(Font.DIALOG, Font.PLAIN, 48);
-        Font awtFont = new Font("Fonts/VCR_OSD_MONO_1.001.ttf", Font.PLAIN, 48);
-        font = new UnicodeFont(awtFont);
-        font.addAsciiGlyphs();
-        font.getEffects().add(new ColorEffect(java.awt.Color.BLACK));
-        font.loadGlyphs();
 
         while ( !glfwWindowShouldClose(newWindow.window)) {
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
+
+            /*==================================================
+                                 Frames
+            ==================================================*/
+
             time_2 = FPS.getTime();
             passed = time_2 - time;
-            unprocesses+=passed;
+            unprocesses += passed;
             frame_time += passed;
 
             time = time_2;
@@ -199,7 +195,6 @@ public class GameLoop {
                 glfwPollEvents();
                 if(frame_time >= 1.0){
                     frame_time = 0;
-                    //System.out.println("FPS: " + frames);
                     displayFrames = frames;
                     frames = 0;
                 }
@@ -238,14 +233,14 @@ public class GameLoop {
                 room.getElement(i).move(room.getAllObjects());
             }
 
+            // update score (for demonstration purposes)
+            ((Score) hud.getElements().get(2)).incScore();
+
+            // update frames
+            ((FrameDisplay) hud.getElements().get(1)).setFrameCount(displayFrames);
+
             // draw HUD
             hud.drawHUD();
-
-            // TODO: add to hud
-            glPushMatrix();
-            GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
-            font.drawString(400, 200, "Frames: " + displayFrames);
-            glPopMatrix();
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
