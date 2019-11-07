@@ -51,7 +51,7 @@ public class GameRoom {
     GameRoom(String name, String path) {
 
         this.roomName = name;
-        this.background = new Sprite(path);
+        this.background = new Sprite(path, 1);
 
         this.roomWidth = this.background.getWidth();
         this.roomHeight = this.background.getHeight();

@@ -41,6 +41,7 @@ class Texture {
 //        pixels.flip();
 
         this.id = glGenTextures();
+        System.out.println(this.id);
 
         glBindTexture(GL_TEXTURE_2D, id);
 
@@ -55,5 +56,9 @@ class Texture {
     // creates texture from filePath
     Texture(String filePath) throws IOException {
         this(ImageIO.read(new File(filePath)));
+    }
+
+    public void bind() {
+        glBindTexture(GL_TEXTURE_2D, id);
     }
 }

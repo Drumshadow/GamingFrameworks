@@ -19,6 +19,7 @@ public class INI {
         for (int i = 0; i < inputNum; i++) {
             room.addObject(new GameObject(iniO.get("object" + i, "name"),
                     iniO.get("object" + i, "sprPath"),
+                    Integer.parseInt(iniO.get("object" + i, "frames")),
                     Boolean.parseBoolean(iniO.get("object" + i, "collide")),
                     Boolean.parseBoolean(iniO.get("object" + i, "fear")),
                     Double.parseDouble(iniO.get("object" + i, "weight")),

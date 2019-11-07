@@ -9,16 +9,25 @@ import static org.lwjgl.opengl.GL11.*;
 public class Sprite {
 
     private String spritePath;
-    private BufferedImage sprite;
+    private BufferedImage[] sprite;
 
     // dimensions of sprite
     private int width;
     private int height;
 
-    private Texture texture;
+    private int frames;
+
+    private int pointer;
+
+    private Texture[] animation;
 
     // default is visible
     private boolean isVisible;
+
+    private double elapsedTime;
+    private double currentTime;
+    private double lastTime;
+    private double fps;
 
     /*==================================================
                      Initialization
@@ -33,27 +42,39 @@ public class Sprite {
         this.width = s.width;
         this.height = s.height;
 
+        this.frames = s.frames;
+
+        this.pointer = s.pointer;
+
+        this.elapsedTime = s.elapsedTime;
+        this.currentTime = s.currentTime;
+        this.lastTime = s.lastTime;
+        this.fps = s.fps;
+
         this.isVisible = s.isVisible;
 
-        this.texture = s.texture;
+        this.animation = s.animation;
     }
 
     // value constructor (loads sprite from file)
     // dimensions are set by shrinkSprite
-    public Sprite(String path) {
+    public Sprite(String path, int frames) {
 
         this.spritePath = path;
-        this.sprite = this.loadSprite(path);
+        this.sprite = new BufferedImage[frames];
+        this.animation = new Texture[frames];
 
+        this.frames = frames;
+        this.pointer = 0;
         this.isVisible = true;
 
-        this.shrinkSprite();
+        this.elapsedTime = 0;
+        this.currentTime = 0;
+        this.lastTime = FPS.getTime();
+        this.fps = 1.0 / frames;
+        System.out.println(this.fps);
 
-        if (path.equals(".\\sprites\\grass.png")) {
-            this.isVisible = true;
-        }
-
-        this.texture = new Texture(this.sprite);
+        this.loadAnimation(this.frames);
     }
 
     // value constructor for invisible sprites
@@ -62,17 +83,40 @@ public class Sprite {
         this.spritePath = null;
         this.sprite = null;
 
+        this.frames = 1;
+        this.pointer = 0;
+
         this.isVisible = false;
+
+        this.elapsedTime = 0;
+        this.currentTime = 0;
+        this.lastTime = FPS.getTime();
+        this.fps = 1.0/60;
 
         this.width = width;
         this.height = height;
 
-        this.texture = null;
+        this.animation = null;
+    }
+
+    private void loadAnimation(int frames) {
+        if(frames == 1) {
+            this.sprite[0] = this.loadSprite(spritePath + ".png");
+            this.shrinkSprite(0);
+            this.animation[0] = new Texture(this.sprite[0]);
+        } else {
+            for (int i = 0; i < frames; i++) {
+                this.sprite[i] = this.loadSprite(spritePath + "-" + i +
+                        ".png");
+                this.shrinkSprite(i);
+                this.animation[i] = new Texture(this.sprite[i]);
+            }
+        }
     }
 
     // shrinks sprite down to smallest size (gets rid of empty pixels)
     // sets width and height
-    private void shrinkSprite() {
+    private void shrinkSprite(int i) {
 
         int xMin = Integer.MAX_VALUE;
         int xMax = Integer.MIN_VALUE;
@@ -80,11 +124,11 @@ public class Sprite {
         int yMax = Integer.MIN_VALUE;
 
         // cycle through each pixel
-        for (int x = 0; x < this.sprite.getWidth(); x++) {
-            for (int y = 0; y < this.sprite.getHeight(); y++) {
+        for (int x = 0; x < this.sprite[i].getWidth(); x++) {
+            for (int y = 0; y < this.sprite[i].getHeight(); y++) {
 
                 // get the color of the current pixel
-                int color = this.sprite.getRGB(x, y);
+                int color = this.sprite[i].getRGB(x, y);
                 int alpha = (color >> 24) & 0xFF;
 
                 // resize sprite bounds if a non-empty pixel was found
@@ -99,22 +143,22 @@ public class Sprite {
         }
 
         // create new, smaller sprite
-        this.width = xMax - xMin;
-        this.height = yMax - yMin;
+        this.width = Math.max(this.width, xMax - xMin);
+        this.height = Math.max(this.height, yMax - yMin);
 
-        BufferedImage smallSprite = new BufferedImage(this.width, this.height,
-                BufferedImage.TYPE_INT_ARGB);
+        BufferedImage smallSprite = new BufferedImage(xMax - xMin,
+                yMax - yMin, BufferedImage.TYPE_INT_ARGB);
 
         // copy over non-empty pixels from original sprite
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                smallSprite.setRGB(x, y, this.sprite.getRGB(x + xMin,
+        for (int x = 0; x < xMax - xMin; x++) {
+            for (int y = 0; y < yMax - yMin; y++) {
+                smallSprite.setRGB(x, y, this.sprite[i].getRGB(x + xMin,
                         y + yMin));
             }
         }
 
         // set new sprite
-        this.sprite = smallSprite;
+        this.sprite[i] = smallSprite;
     }
 
     /*==================================================
@@ -125,25 +169,44 @@ public class Sprite {
     public void drawObject(double x, double y) {
         glPushMatrix();
 
+        this.currentTime = FPS.getTime();
+        this.elapsedTime += currentTime - lastTime;
+
+        if(elapsedTime >= fps) {
+            elapsedTime -= fps;
+            pointer++;
+        }
+
+        if(pointer >= frames) {
+            pointer = 0;
+        }
+
+        this.lastTime = currentTime;
+
         glEnable(GL_TEXTURE_2D);
 
-        glBindTexture(GL_TEXTURE_2D, this.texture.id);
+        glBindTexture(GL_TEXTURE_2D, this.animation[pointer].id);
 
-        glTranslated(x + (getWidth() / 1000.0), y + (getHeight() / 1000.0), 0);
+        glTranslated(x + (width / 1000.0),
+                y + (height / 1000.0), 0);
 
         glBegin(GL_QUADS);
         {
             glTexCoord2f(1.0f, 0.0f);
-            glVertex2f((float)(width / 1000.0), (float)(height / 1000.0));
+            glVertex2f((float)(width / 1000.0),
+                    (float)(height / 1000.0));
 
             glTexCoord2f(1.0f, 1.0f);
-            glVertex2f((float)(width / 1000.0), -(float)(height / 1000.0));
+            glVertex2f((float)(width / 1000.0),
+                    -(float)(height / 1000.0));
 
             glTexCoord2f(0.0f, 1.0f);
-            glVertex2f(-(float)(width / 1000.0), -(float)(height / 1000.0));
+            glVertex2f(-(float)(width / 1000.0),
+                    -(float)(height / 1000.0));
 
             glTexCoord2f(0.0f, 0.0f);
-            glVertex2f(-(float)(width / 1000.0), (float)(height / 1000.0));
+            glVertex2f(-(float)(width / 1000.0),
+                    (float)(height / 1000.0));
         }
         glEnd();
 
@@ -161,7 +224,7 @@ public class Sprite {
 
         // get sprite from file
         try {
-            return ImageIO.read(new File(this.spritePath));
+            return ImageIO.read(new File(spritePath));
 
         } catch (IOException e) {
             System.out.println("ERROR: bad path to sprite image");
@@ -172,23 +235,23 @@ public class Sprite {
     public void setSpritePath(String path) {
         this.spritePath = path;
 
-        // update sprite
-        this.sprite = this.loadSprite(path);
-        this.shrinkSprite();
+        loadAnimation(this.frames);
     }
 
     public String getSpritePath() {
         return this.spritePath;
     }
 
-    public void setSprite(BufferedImage i) {
+    public void setSprite(BufferedImage[] i) {
         this.sprite = i;
 
         // shrink sprite
-        this.shrinkSprite();
+        for(int j = 0; j < this.sprite.length; j++) {
+            this.shrinkSprite(j);
+        }
     }
 
-    public BufferedImage getSprite() {
+    public BufferedImage[] getSprite() {
         return this.sprite;
     }
 

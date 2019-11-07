@@ -112,7 +112,7 @@ public class GameLoop {
         GL.createCapabilities();
 
         // set background
-        room.setBackground(new Sprite("./sprites/purple_bkg.png"));
+        room.setBackground(new Sprite("./sprites/purple_bkg", 1));
 
         /*==================================================
                                 HUD

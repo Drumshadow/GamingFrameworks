@@ -73,12 +73,12 @@ public class GameObject {
     }
 
     // constructor via given values (finds sprite via path)
-    public GameObject(String name, String sprPath, boolean collide, boolean fear,
-                      double weight, double tv, double jump, int boxType,
-                      double x, double y) {
+    public GameObject(String name, String sprPath, int frames, boolean collide,
+                      boolean fear, double weight, double tv, double jump,
+                      int boxType, double x, double y) {
 
         this.objName = name;
-        this.sprite = new Sprite(sprPath);
+        this.sprite = new Sprite(sprPath, frames);
 
         this.weight = weight / 1000.0;
         this.terminalV = tv / 1000.0;
