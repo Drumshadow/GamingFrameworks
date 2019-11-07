@@ -9,8 +9,8 @@ public class FrameDisplay extends HUDElement {
 
     private int frameCount;
 
-    public FrameDisplay(float x, float y) {
-        super(x, y);
+    public FrameDisplay(float x, float y, String name) {
+        super(x, y, name);
     }
 
     @Override
