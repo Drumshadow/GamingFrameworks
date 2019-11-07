@@ -29,6 +29,8 @@ public class GameLoop {
     private InputList inputs = new InputList();
     private Audio bg = new Audio();
     private ControllerList controls = new ControllerList();
+    private HUD hud = new HUD();
+    private EventHandler events = new EventHandler();
     private INI pivotalMoment = new INI();
 
     //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
@@ -115,20 +117,8 @@ public class GameLoop {
         /*==================================================
                                 HUD
         ==================================================*/
-        HUD hud = new HUD();
         hud.setHudFont("Fonts/VCR_OSD_MONO_1.001.ttf", 32);
-
-        // TODO: add way to edit specific HUD element
-
-        // index 0
-        hud.addElement(new HealthBar(HealthBar.healthType.BAR, 10, 10,
-                null, -0.9f, 0.85f, 0.5f, 0.05f));
-
-        // index 1
-        hud.addElement(new FrameDisplay(15, 950));
-
-        // index 2
-        hud.addElement(new Score(50, 80, 0, 100));
+        pivotalMoment.renderHUD(hud);
 
         /*==================================================
                           Keyboard Inputs
@@ -145,6 +135,12 @@ public class GameLoop {
         ==================================================*/
         pivotalMoment.renderObjects(room);
 
+        /*==================================================
+                          Object Creation
+        ==================================================*/
+        pivotalMoment.renderEvents(events);
+
+        // NEED TO CHANGE THIS
         // allow foe to auto-move
         room.getElement("foe").setXSpeed(5.0/1000.0);
 
@@ -206,25 +202,11 @@ public class GameLoop {
                 room.getBackground().drawObject(-0.8, -0.8);
             glPopMatrix();
 
-            // demonstrate hp bar
-            if (room.getElement("player").getHitBox().basicCollision(room.getElement("foe").getHitBox()) ||
-                    room.getElement("foe").getHitBox().basicCollision(room.getElement("player").getHitBox())) {
-
-                ((HealthBar) hud.getElements().get(0)).decHealth();
-            }
-
-            // demonstrate flower healing power
-            if (room.getElement("player").getHitBox().basicCollision(room.getElement("flower").getHitBox())) {
-
-                ((HealthBar) hud.getElements().get(0)).incHealth(5);
-
-                // TODO: consume flower after use
-            }
-
             // demonstrate basic AI
             if (room.getElement("foe").getHitBox().basicCollision(room.getElement("wall").getHitBox())) {
                 room.getElement("foe").setXSpeed(room.getElement("foe").getXSpeed() * -1.0);
             }
+            // TO HERE
 
             // draw objects
             for(int i = 0; i < room.objectCount(); i++) {
@@ -233,14 +215,12 @@ public class GameLoop {
                 room.getElement(i).move(room.getAllObjects());
             }
 
-            // update score (for demonstration purposes)
-            ((Score) hud.getElements().get(2)).incScore();
-
-            // update frames
-            ((FrameDisplay) hud.getElements().get(1)).setFrameCount(displayFrames);
-
             // draw HUD
             hud.drawHUD();
+
+            for (int i = 0; i < events.size(); i++) {
+                events.getEvent(i).execute(room, hud, displayFrames);
+            }
 
             if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 

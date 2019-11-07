@@ -14,9 +14,9 @@ public class Score extends HUDElement {
                      Initialization
     ==================================================*/
 
-    public Score(int x, int y, int score, int maxScore) {
+    public Score(int x, int y, int score, int maxScore, String name) {
 
-        super(x, y);
+        super(x, y, name);
 
         this.score = score;
         this.maxScore = maxScore;
@@ -39,15 +39,23 @@ public class Score extends HUDElement {
                    Getters and Setters
     ==================================================*/
 
-    public void incScore() {
-
-        if (this.score < this.maxScore) {
-            this.score++;
+    public void modScore(int mod) {
+        if (mod > 0) {
+            if (score + mod <= maxScore) {
+                score += mod;
+            } else {
+                score = maxScore;
+            }
         }
-    }
+        else if (mod < 0) {
 
-    public void decScore() {
-        this.score--;
+            if (score - mod >= 0) {
+            score += mod;
+        }
+            else {
+                score = 0;
+            }
+        }
     }
 
     public int getScore() {

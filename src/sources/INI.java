@@ -1,6 +1,10 @@
 package sources;
 
 import org.ini4j.Ini;
+import sources.HUDcode.FrameDisplay;
+import sources.HUDcode.HUD;
+import sources.HUDcode.HealthBar;
+import sources.HUDcode.Score;
 import sources.objCode.GameObject;
 
 import java.io.File;
@@ -102,7 +106,49 @@ public class INI {
         }
     }
 
-    public void renderHUD(){
+    public void renderHUD(HUD hud) throws IOException {
+        Ini ini = new Ini(new File("./HUD/HUD.ini"));
+        int elementNum = Integer.parseInt(ini.get("control", "elements"));
+        for (int i = 0; i < elementNum; i++) {
+            if (ini.get("element" + i, "type").equals("HealthBar")) {
+                hud.addElement(new HealthBar(HealthBar.healthType.BAR, Integer.parseInt(ini.get("element" + i, "l")),
+                        Integer.parseInt(ini.get("element" + i, "m")), null,
+                        Float.parseFloat(ini.get("element" + i, "x")),
+                        Float.parseFloat(ini.get("element" + i, "y")),
+                        Float.parseFloat(ini.get("element" + i, "width")),
+                        Float.parseFloat(ini.get("element" + i, "height")),
+                        ini.get("element" + i, "name")));
+            }
+            else if (ini.get("element" + i, "type").equals("FrameDisplay")) {
+                hud.addElement(new FrameDisplay(Float.parseFloat(ini.get("element" + i, "x")),
+                        Float.parseFloat(ini.get("element" + i, "y")),
+                        ini.get("element" + i, "name")));
+            }
+            else if (ini.get("element" + i, "type").equals("Score")) {
+                hud.addElement(new Score(Integer.parseInt(ini.get("element" + i, "x")),
+                        Integer.parseInt(ini.get("element" + i, "y")),
+                        Integer.parseInt(ini.get("element" + i, "score")),
+                        Integer.parseInt(ini.get("element" + i, "maxScore")),
+                        ini.get("element" + i, "name")));
+            }
+        }
+    }
 
+    public void renderEvents(EventHandler events) throws IOException {
+        Ini ini = new Ini(new File("./events/events.ini"));
+        int eventNum = Integer.parseInt(ini.get("control", "events"));
+
+        for (int i = 0; i < eventNum; i++) {
+            if (ini.get("event" + i, "type").equals("collision")) {
+                events.addEvent(new Event(Event.eventType.COLLISION, ini.get("event" + i, "obj1"),
+                        ini.get("event" + i, "obj2"),
+                        ini.get("event" + i, "hud"),
+                        Integer.parseInt(ini.get("event" + i, "mod"))));
+            }
+            else if (ini.get("event" + i, "type").equals("frame")) {
+                events.addEvent(new Event(Event.eventType.FRAME, ini.get("event" + i, "hud"),
+                        Integer.parseInt(ini.get("event" + i, "mod"))));
+            }
+        }
     }
 }

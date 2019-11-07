@@ -8,24 +8,29 @@ public abstract class HUDElement {
     protected float width;
     protected float height;
 
+    protected String name;
+
     /*==================================================
                      Initialization
     ==================================================*/
 
     // value constructor
-    HUDElement(float x, float y, float width, float height) {
+    HUDElement(float x, float y, float width, float height, String name) {
 
         this.x = x;
         this.y = y;
 
         this.width = width;
         this.height = height;
+
+        this.name = name;
     }
 
     // value constructor with no dimensions
-    HUDElement(float x, float y) {
+    HUDElement(float x, float y, String name) {
         this.x = x;
         this.y = y;
+        this.name = name;
     }
 
     /*==================================================

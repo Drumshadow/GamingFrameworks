@@ -27,9 +27,9 @@ public class HealthBar extends HUDElement {
     // value constructor
     public HealthBar(healthType healthType, int l,
                      int m, Sprite hpSprite, float x, float y,
-                     float width, float height) {
+                     float width, float height, String name) {
 
-        super(x, y, width, height);
+        super(x, y, width, height, name);
 
         this.type = healthType;
 
@@ -103,28 +103,27 @@ public class HealthBar extends HUDElement {
 
     // TODO: make setters impact all related values
 
-    public void incHealth(int healing) {
-
-        if (lives + healing <= maxLives) {
-            lives += healing;
-        }
-        else {
-            lives = maxLives;
-        }
-    }
-
-    public void decHealth() {
-
-        // make sure there is time between damage taken
-        if (invincibilityCounter == 0) {
-
-            if (lives > 0) {
-                lives--;
+    public void modHealth(int mod) {
+        if (mod > 0) {
+            if (lives + mod <= maxLives) {
+                lives += mod;
+            } else {
+                lives = maxLives;
             }
-            invincibilityCounter = INVINT;
         }
-        else {
-            invincibilityCounter--;
+        else if (mod < 0) {
+            if (invincibilityCounter == 0) {
+                if (lives - mod >= 0) {
+                    lives += mod;
+                }
+                else {
+                    lives = 0;
+                }
+                invincibilityCounter = INVINT;
+            }
+            else {
+                invincibilityCounter--;
+            }
         }
     }
 

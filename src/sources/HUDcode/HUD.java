@@ -45,6 +45,15 @@ public class HUD {
         return this.elements;
     }
 
+    public HUDElement getElement(String name) {
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).name.equals(name)) {
+                return elements.get(i);
+            }
+        }
+        return null;
+    }
+
     public void setElements(Vector<HUDElement> elements) {
         this.elements = elements;
     }
