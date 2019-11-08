@@ -27,13 +27,19 @@ public class Input {
 
     private int key;  // 0-256? Not sure
     private int action; // 0: release, 1: press, 2: hold
-    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound, Jump};
+    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound, Jump, Pause};
     private purpose purpose;
     private String obj;
     private double speed;
     private String sndName;
     private Audio sounds = new Audio();
     private MultithreadingDemo object = new MultithreadingDemo();
+
+    Input(int k, int a, String pur) {
+        key = k;
+        action = a;
+        purpose = purpose.Pause;
+    }
 
     Input(int k, int a, String o, String pur) {
         key = k;
@@ -91,6 +97,7 @@ public class Input {
     public int getAction() {
         return action;
     }
+    public purpose getPurpose() { return purpose; }
 
     public void execute(GameRoom room) {
 
@@ -143,4 +150,6 @@ public class Input {
                 break;
         }
     }
+
+    public boolean execute(boolean paused) { return !paused; }
 }
