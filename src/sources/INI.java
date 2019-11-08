@@ -21,7 +21,6 @@ public class INI {
                     iniO.get("object" + i, "sprPath"),
                     Integer.parseInt(iniO.get("object" + i, "frames")),
                     Boolean.parseBoolean(iniO.get("object" + i, "collide")),
-                    Boolean.parseBoolean(iniO.get("object" + i, "fear")),
                     Double.parseDouble(iniO.get("object" + i, "weight")),
                     Double.parseDouble(iniO.get("object" + i, "tv")),
                     Double.parseDouble(iniO.get("object" + i, "jump")),
