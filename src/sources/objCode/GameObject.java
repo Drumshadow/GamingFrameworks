@@ -29,7 +29,7 @@ public class GameObject {
 
     // AI behaviors
     public enum Behavior{FOLLOW, LEDGES, WALLS, BOUNCE, AUTO, EMIT, DESTRUCT}
-    public Set<Behavior> ai = new HashSet<>();
+    private Set<Behavior> ai = new HashSet<>();
 
     /*==================================================
                      Initialization
@@ -155,17 +155,23 @@ public class GameObject {
                     }
                     else {
 
-                        // move up to object without actually colliding
-                        this.hitBox.ySpeed = Math.signum(
-                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistY(other.hitBox) < 0.001) {
-                            this.hitBox.ySpeed = 0;
+                        if (ai.contains(Behavior.BOUNCE)) {
+                            this.setYSpeed(this.getYSpeed() * -1.0);
                         }
+                        else {
 
-                        // TODO: change to object.doAI()??
-                        // perform ledge detection
-                        if (this.ai.contains(Behavior.LEDGES)) {
-                            this.ledges(roomObjects);
+                            // move up to object without actually colliding
+                            this.hitBox.ySpeed = Math.signum(
+                                    this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                            if (this.hitBox.objDistY(other.hitBox) < 0.001) {
+                                this.hitBox.ySpeed = 0;
+                            }
+
+                            // TODO: fix
+                            // perform ledge detection
+                            if (this.ai.contains(Behavior.LEDGES)) {
+                                this.ledges(roomObjects);
+                            }
                         }
                     }
                 }
@@ -258,10 +264,6 @@ public class GameObject {
         if (hasLedge) {
             this.setXSpeed(this.getXSpeed() * -1.0);
         }
-    }
-
-    public void bounce() {
-
     }
 
     public void auto(double xSpeed, double ySpeed) {
