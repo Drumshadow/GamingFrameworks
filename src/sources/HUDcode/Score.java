@@ -49,7 +49,7 @@ public class Score extends HUDElement {
         }
         else if (mod < 0) {
 
-            if (score - mod >= 0) {
+            if (score + mod >= 0) {
             score += mod;
         }
             else {
