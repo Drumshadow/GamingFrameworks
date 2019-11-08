@@ -1,5 +1,6 @@
 package sources;
 
+import org.ini4j.Ini;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
@@ -9,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import sources.HUDcode.HUD;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -40,7 +42,8 @@ public class GameLoop {
     }
 
     private void run() throws Exception {
-        bg.playSound("./music/omae_wa_mou.wav");
+        Ini ini = new Ini(new File("./options/options.ini"));
+        bg.playSound(ini.get("background", "music"));
         newWindow.init();
 
         // initialization
@@ -111,14 +114,15 @@ public class GameLoop {
   
     private void loop() throws IOException, SlickException {
         GL.createCapabilities();
+        Ini ini = new Ini(new File("./options/options.ini"));
 
         // set background
-        room.setBackground(new Sprite("./sprites/purple_bkg", 1));
+        room.setBackground(new Sprite(ini.get("background", "art"), 1));
 
         /*==================================================
                                 HUD
         ==================================================*/
-        hud.setHudFont("Fonts/VCR_OSD_MONO_1.001.ttf", 32);
+        hud.setHudFont(ini.get("misc", "font"), 32);
         pivotalMoment.renderHUD(hud);
 
         /*==================================================
@@ -204,7 +208,7 @@ public class GameLoop {
                 glScaled(1.25, 1.25, 1.0);
                 room.getBackground().drawObject(-0.8, -0.8);
                 glPopMatrix();
-                
+
                 // demonstrate basic AI
                 if (room.getElement("foe").getHitBox().basicCollision(room.getElement("wall").getHitBox())) {
                     room.getElement("foe").setXSpeed(room.getElement("foe").getXSpeed() * -1.0);
