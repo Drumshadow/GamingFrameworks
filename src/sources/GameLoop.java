@@ -7,10 +7,7 @@ import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
-import sources.HUDcode.FrameDisplay;
 import sources.HUDcode.HUD;
-import sources.HUDcode.HealthBar;
-import sources.HUDcode.Score;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -78,8 +75,12 @@ public class GameLoop {
 
                 if (key == inputs.get(i).getKey() &&
                         action == inputs.get(i).getAction()) {
-
-                    inputs.get(i).execute(room);
+                    if (inputs.get(i).getPurpose() == Input.purpose.Pause) {
+                        isPaused = inputs.get(i).execute(isPaused);
+                    }
+                    else {
+                        inputs.get(i).execute(room);
+                    }
                 }
 
                 else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
@@ -172,89 +173,92 @@ public class GameLoop {
         double passed;
         int displayFrames = 0;
 
+
         while ( !glfwWindowShouldClose(newWindow.window)) {
-            glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
+            if (!isPaused) {
+                glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 
             /*==================================================
                                  Frames
             ==================================================*/
 
-            time_2 = FPS.getTime();
-            passed = time_2 - time;
-            unprocesses += passed;
-            frame_time += passed;
+                time_2 = FPS.getTime();
+                passed = time_2 - time;
+                unprocesses += passed;
+                frame_time += passed;
 
-            time = time_2;
+                time = time_2;
 
-            while(unprocesses >= frame_cap){
-                unprocesses-=frame_cap;
-                glfwPollEvents();
-                if(frame_time >= 1.0){
-                    frame_time = 0;
-                    displayFrames = frames;
-                    frames = 0;
+                while (unprocesses >= frame_cap) {
+                    unprocesses -= frame_cap;
+                    glfwPollEvents();
+                    if (frame_time >= 1.0) {
+                        frame_time = 0;
+                        displayFrames = frames;
+                        frames = 0;
+                    }
                 }
-            }
 
-            // draw background (scale to fit window)
-            glPushMatrix();
+                // draw background (scale to fit window)
+                glPushMatrix();
                 glScaled(1.25, 1.25, 1.0);
                 room.getBackground().drawObject(-0.8, -0.8);
-            glPopMatrix();
+                glPopMatrix();
+                
+                // demonstrate basic AI
+                if (room.getElement("foe").getHitBox().basicCollision(room.getElement("wall").getHitBox())) {
+                    room.getElement("foe").setXSpeed(room.getElement("foe").getXSpeed() * -1.0);
+                }
 
-            // demonstrate basic AI
-            if (room.getElement("foe").getHitBox().basicCollision(room.getElement("wall").getHitBox())) {
-                room.getElement("foe").setXSpeed(room.getElement("foe").getXSpeed() * -1.0);
-            }
-            // TO HERE
+                // draw objects
+                for (int i = 0; i < room.objectCount(); i++) {
 
-            // draw objects
-            for(int i = 0; i < room.objectCount(); i++) {
+                    room.getElement(i).drawObject();
+                    room.getElement(i).move(room.getAllObjects());
+                }
 
-                room.getElement(i).drawObject();
-                room.getElement(i).move(room.getAllObjects());
-            }
+                // draw HUD
+                hud.drawHUD();
 
-            // draw HUD
-            hud.drawHUD();
+                // Execute events
+                for (int i = 0; i < events.size(); i++) {
+                    events.getEvent(i).execute(room, hud, displayFrames);
+                }
 
-            for (int i = 0; i < events.size(); i++) {
-                events.getEvent(i).execute(room, hud, displayFrames);
-            }
+                if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
-            if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
+                    FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+                    ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
 
-                FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
-                ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+                    for (int i = 0; i < controls.size(); i++) {
 
-                for (int i = 0; i < controls.size(); i++) {
+                        if (controls.get(i).getButton() == 1) {
+                            if (buttons.get(controls.get(i).getIndex()) == 1) {
+                                controls.get(i).execute(room);
+                            }
 
-                    if (controls.get(i).getButton() == 1) {
-                        if (buttons.get(controls.get(i).getIndex()) == 1) {
-                            controls.get(i).execute(room);
-                        }
+                        } else if (controls.get(i).getButton() == 0) {
 
-                    } else if (controls.get(i).getButton() == 0) {
+                            if (controls.get(i).getRange() < 0 &&
+                                    axes.get(controls.get(i).getIndex()) <
+                                            controls.get(i).getRange()) {
 
-                        if (controls.get(i).getRange() < 0 &&
-                                axes.get(controls.get(i).getIndex()) <
-                                        controls.get(i).getRange()) {
+                                controls.get(i).execute(room);
 
-                            controls.get(i).execute(room);
+                            } else if (controls.get(i).getRange() >= 0 &&
+                                    axes.get(controls.get(i).getIndex()) >
+                                            controls.get(i).getRange()) {
 
-                        } else if (controls.get(i).getRange() >= 0 &&
-                                axes.get(controls.get(i).getIndex()) >
-                                        controls.get(i).getRange()) {
-
-                            controls.get(i).execute(room);
+                                controls.get(i).execute(room);
+                            }
                         }
                     }
                 }
+
+                glfwSwapBuffers(newWindow.window); // swap the color buffers
+                frames++;
+
             }
-
-            glfwSwapBuffers(newWindow.window); // swap the color buffers
-            frames++;
-
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();

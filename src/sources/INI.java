@@ -104,6 +104,11 @@ public class INI {
                         ini.get("input" + i, "purpose"),
                         a));
             }
+            else if (ini.get("input" + i, "purpose").equals("Pause")) {
+                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                        Integer.parseInt(ini.get("input" + i, "action")),
+                        ini.get("input" + i, "purpose")));
+            }
         }
     }
 
