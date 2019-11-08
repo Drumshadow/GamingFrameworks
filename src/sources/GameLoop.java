@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import sources.HUDcode.HUD;
+import sources.objCode.GameObject;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -32,7 +33,6 @@ public class GameLoop {
     private EventHandler events = new EventHandler();
     private INI pivotalMoment = new INI();
 
-    //private GameRoom room = new GameRoom("test", "./sprites/clouds_bkg.png");
     private GameRoom room = new GameRoom();
     private boolean isPaused = false;
 
@@ -145,9 +145,10 @@ public class GameLoop {
         ==================================================*/
         pivotalMoment.renderEvents(events);
 
-        // NEED TO CHANGE THIS
-        // allow foe to auto-move
-        room.getElement("foe").setXSpeed(5.0/1000.0);
+        // TODO: NEED TO CHANGE THIS
+        // add ai behaviors
+        room.getElement("foe").addBehaviors(GameObject.Behavior.AUTO, GameObject.Behavior.WALLS, GameObject.Behavior.LEDGES);
+        room.getElement("foe").auto(5.0/1000.0, 0);
 
         /*==================================================
                           Game Loop
@@ -209,10 +210,7 @@ public class GameLoop {
                 room.getBackground().drawObject(-0.8, -0.8);
                 glPopMatrix();
 
-                // demonstrate basic AI
-                if (room.getElement("foe").getHitBox().basicCollision(room.getElement("wall").getHitBox())) {
-                    room.getElement("foe").setXSpeed(room.getElement("foe").getXSpeed() * -1.0);
-                }
+            // TODO: TO HERE
 
                 // draw objects
                 for (int i = 0; i < room.objectCount(); i++) {
