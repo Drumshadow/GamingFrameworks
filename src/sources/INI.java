@@ -121,8 +121,27 @@ public class INI {
         for (int i = 0; i < elementNum; i++) {
             switch (ini.get("element" + i, "type")) {
                 case "HealthBar":
-                    hud.addElement(new HealthBar(HealthBar.healthType.BAR, Integer.parseInt(ini.get("element" + i, "l")),
-                            Integer.parseInt(ini.get("element" + i, "m")), null,
+
+                    // get health bar type (default is bar)
+                    HealthBar.healthType hpType;
+                    Sprite hpSprite = null;
+
+                    if (ini.get("element" + i, "hType").equals("SPRITE")) {
+                        hpType = HealthBar.healthType.SPRITE;
+
+                        // get sprite path
+                        hpSprite = new Sprite(ini.get("element" + i, "spPath"),
+                                Integer.parseInt(ini.get("element" + i, "spFrames")));
+                    }
+                    else if (ini.get("element" + i, "hType").equals("NUM")) {
+                        hpType = HealthBar.healthType.NUM;
+                    }
+                    else {
+                        hpType = HealthBar.healthType.BAR;
+                    }
+
+                    hud.addElement(new HealthBar(hpType, Integer.parseInt(ini.get("element" + i, "lives")),
+                            Integer.parseInt(ini.get("element" + i, "max")), hpSprite,
                             Float.parseFloat(ini.get("element" + i, "x")),
                             Float.parseFloat(ini.get("element" + i, "y")),
                             Float.parseFloat(ini.get("element" + i, "width")),

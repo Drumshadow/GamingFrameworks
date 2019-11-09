@@ -14,7 +14,7 @@ public class HealthBar extends HUDElement {
     private static int lives;
     private static int maxLives;
 
-    // To be used if health depletes too quickly
+    // Increase INVINT if health depletes too quickly
     private static int invincibilityCounter = 0;
     private static final int INVINT = 0;
 
@@ -89,12 +89,15 @@ public class HealthBar extends HUDElement {
 
         glPushMatrix();
             GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
-            HUD.hudFont.drawString(this.x, this.y, "Score: " + lives);
+            HUD.hudFont.drawString(this.x, this.y, "Lives: " + lives);
         glPopMatrix();
     }
 
     private void spriteHealth() {
-        // TODO: sprite form
+
+        for (int i = 0; i < lives; i++) {
+            this.hpSprite.drawObject(this.x + (this.hpSprite.getHeight() / 300.0) * i, this.y);
+        }
     }
 
     /*==================================================
