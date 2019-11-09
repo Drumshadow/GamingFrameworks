@@ -20,7 +20,14 @@ public class MainForm {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddObject().display();
+                AddObject.main(null);
+            }
+        });
+
+        addHUDElementsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
