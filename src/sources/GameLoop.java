@@ -154,6 +154,7 @@ public class GameLoop {
         room.getElement("fairy").follow(room.getElement("player"));
 
         room.getElement("fireFoe").addBehaviors(GameObject.Behavior.EMIT);
+        //TODO: room.getElement("fireFoe").emit(new GameObject(...));
 
         room.getElement("flower").addBehaviors(GameObject.Behavior.DESTRUCT);
         room.getElement("flower").destruct(room.getElement("player"));
@@ -182,7 +183,7 @@ public class GameLoop {
         int frames = 0;
         double time = FPS.getTime();
         double unprocesses = 0;
-        double time_2 = FPS.getTime();
+        double time_2;
         double passed;
         int displayFrames = 0;
 

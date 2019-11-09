@@ -1,8 +1,5 @@
 package sources;
 
-import sources.objCode.GameObject;
-import sources.GameRoom;
-
 public class Controller {
 
     private int button; // 1 if button, 0 if axes
@@ -13,7 +10,7 @@ public class Controller {
     private double speed;
     private Audio sounds;
 
-    public Controller(int button, int index, float range, String obj, String purpose) {
+    Controller(int button, int index, float range, String obj, String purpose) {
         this.button = button;
         this.index = index;
         this.range = range;
@@ -21,7 +18,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
-    public Controller(int button, int index, float range, String obj, String purpose, double speed) {
+    Controller(int button, int index, float range, String obj, String purpose, double speed) {
         this.button = button;
         this.index = index;
         this.range = range;
@@ -30,7 +27,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
-    public Controller(int button, int index, float range, String obj, String purpose, Audio sndName) {
+    Controller(int button, int index, float range, String obj, String purpose, Audio sndName) {
         this.button = button;
         this.index = index;
         this.range = range;
@@ -39,7 +36,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
-    public int getButton() {
+    int getButton() {
         return button;
     }
 
@@ -47,7 +44,7 @@ public class Controller {
         return index;
     }
 
-    public float getRange() {
+    float getRange() {
         return range;
     }
 
@@ -67,7 +64,7 @@ public class Controller {
         return null;
     }*/
 
-    public void execute(GameRoom room) {
+    void execute(GameRoom room) {
         if (purpose.equals("Create")) {
             for (int i = 0; i < room.getAllObjects().size(); i++) {
                 if (room.getElement(i).getObjName().equals(obj)) {

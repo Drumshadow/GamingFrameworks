@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class EventHandler {
     private ArrayList<Event> events;
 
-    public EventHandler() {
+    EventHandler() {
         events = new ArrayList<>();
     }
 
-    public void addEvent(Event event) {
+    void addEvent(Event event) {
         events.add(event);
     }
 
-    public Event getEvent(int i) {
+    Event getEvent(int i) {
         return events.get(i);
     }
 

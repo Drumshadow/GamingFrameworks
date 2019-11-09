@@ -1,9 +1,5 @@
 package sources;
 
-import org.lwjgl.*;
-
-import java.awt.*;
-
 public class FPS {
     private int lastFPS;
 

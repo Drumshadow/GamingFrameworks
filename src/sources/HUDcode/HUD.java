@@ -11,7 +11,7 @@ public class HUD {
 
     private Vector<HUDElement> elements;
 
-    public static UnicodeFont hudFont;
+    static UnicodeFont hudFont;
 
      /*==================================================
                      Initialization
@@ -46,9 +46,9 @@ public class HUD {
     }
 
     public HUDElement getElement(String name) {
-        for (int i = 0; i < elements.size(); i++) {
-            if (elements.get(i).name.equals(name)) {
-                return elements.get(i);
+        for (HUDElement element : elements) {
+            if (element.name.equals(name)) {
+                return element;
             }
         }
         return null;

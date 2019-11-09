@@ -2,7 +2,7 @@ package sources;
 
 import java.util.ArrayList;
 
-public class InputList {
+class InputList {
 
     private ArrayList<Input> inputs;
 
@@ -22,7 +22,7 @@ public class InputList {
         return inputs.size();
     }
 
-    public void removeAll() {
+    void removeAll() {
         inputs.clear();
     }
 }

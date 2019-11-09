@@ -85,14 +85,14 @@ public class GameRoom {
         return this.roomName;
     }
 
-    public void setBackground(Sprite bk) {
+    void setBackground(Sprite bk) {
         this.background = new Sprite(bk);
 
         this.roomWidth = this.background.getWidth();
         this.roomHeight = this.background.getHeight();
     }
 
-    public Sprite getBackground() {
+    Sprite getBackground() {
         return this.background;
     }
 

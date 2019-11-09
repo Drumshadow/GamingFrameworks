@@ -220,7 +220,7 @@ public class Sprite {
     ==================================================*/
 
     // gets sprite from given path
-    public BufferedImage loadSprite(String spritePath) {
+    private BufferedImage loadSprite(String spritePath) {
 
         // get sprite from file
         try {

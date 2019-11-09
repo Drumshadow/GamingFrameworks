@@ -1,10 +1,5 @@
 package sources;
 
-import org.lwjgl.openal.ALUtil;
-import org.lwjgl.openal.*;
-import sources.objCode.GameObject;
-import sources.GameRoom;
-
 class MultithreadingDemo implements Runnable
 {
     private Input.purpose x;
@@ -91,7 +86,7 @@ public class Input {
         sounds = snd;
     }
 
-    public int getKey() {
+    int getKey() {
         return key;
     }
     public int getAction() {
@@ -99,7 +94,7 @@ public class Input {
     }
     public purpose getPurpose() { return purpose; }
 
-    public void execute(GameRoom room) {
+    void execute(GameRoom room) {
 
         switch(purpose) {
 
@@ -151,5 +146,5 @@ public class Input {
         }
     }
 
-    public boolean execute(boolean paused) { return !paused; }
+    boolean execute(boolean paused) { return !paused; }
 }

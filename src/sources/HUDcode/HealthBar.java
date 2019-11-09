@@ -101,8 +101,6 @@ public class HealthBar extends HUDElement {
                    Getters and Setters
     ==================================================*/
 
-    // TODO: make setters impact all related values
-
     public void modHealth(int mod) {
         if (mod > 0) {
             if (lives + mod <= maxLives) {

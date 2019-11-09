@@ -22,7 +22,7 @@ class InitWindow {
         init(1000, 1000);
     }
 
-    void init(int width, int height) {
+    private void init(int width, int height) {
 
         // setup error callback
         GLFWErrorCallback.createPrint(System.err).set();

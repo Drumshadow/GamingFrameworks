@@ -2,7 +2,7 @@ package sources;
 
 import java.util.ArrayList;
 
-public class ControllerList {
+class ControllerList {
 
     private ArrayList<Controller> inputs;
     ControllerList() {
@@ -21,7 +21,7 @@ public class ControllerList {
         return inputs.size();
     }
 
-    public void removeAll() {
+    void removeAll() {
         inputs.clear();
     }
 }
