@@ -9,8 +9,8 @@ abstract public class ObjectBox {
     double x;
     double y;
 
-    private double width;
-    private double height;
+   // private double width;
+  //  private double height;
 
     double xSpeed;
     double ySpeed;
@@ -37,8 +37,8 @@ abstract public class ObjectBox {
     ObjectBox(ObjectBox other) {
         this.x = other.x;
         this.y = other.y;
-        this.width = other.width;
-        this.height = other.height;
+      //  this.width = other.width;
+     //   this.height = other.height;
 
         this.xSpeed = other.xSpeed;
         this.ySpeed = other.ySpeed;
@@ -78,6 +78,7 @@ abstract public class ObjectBox {
 
     void setX(double x) {
         this.x = x;
+        this.boundingBox.setFrame(this.x, this.y, this.boundingBox.getWidth(), this.boundingBox.getHeight());
     }
 
     double getX() {
@@ -86,6 +87,7 @@ abstract public class ObjectBox {
 
     void setY(double y) {
         this.y = y;
+        this.boundingBox.setFrame(this.x, this.y, this.boundingBox.getWidth(), this.boundingBox.getHeight());
     }
 
     double getY() {
@@ -134,8 +136,9 @@ abstract public class ObjectBox {
 
     // generates object's hashcode for equality check
     private int hashcode() {
-        return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed,
-                this.width, this.height, this.boundingBox);
+       /* return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed,
+                this.width, this.height, this.boundingBox);*/
+        return Objects.hash(this.x, this.y, this.xSpeed, this.ySpeed, this.boundingBox);
     }
 
     // checks if two objects are the same

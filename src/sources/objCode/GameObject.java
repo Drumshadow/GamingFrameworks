@@ -20,7 +20,6 @@ public class GameObject {
     private double jumpPower;
 
     private boolean canCollide;
-   // private boolean fearLedge;
 
     // boxCode is the type of hit box
     // 0 = square, 1 = round
@@ -30,6 +29,13 @@ public class GameObject {
     // AI behaviors
     public enum Behavior{FOLLOW, LEDGES, WALLS, BOUNCE, AUTO, EMIT, DESTRUCT}
     private Set<Behavior> ai = new HashSet<>();
+
+    private double autoX = 0.0;
+    private double autoY = 0.0;
+
+    private GameObject target = null;
+    private GameObject destroyer = null;
+    private GameObject bullet = null;
 
     /*==================================================
                      Initialization
@@ -73,6 +79,11 @@ public class GameObject {
         }
 
         this.ai = other.ai;
+        this.autoX = other.autoX;
+        this.autoY = other.autoY;
+
+        this.target = other.target;
+        this.destroyer = other.destroyer;
     }
 
     // constructor via given values (finds sprite via path)
@@ -111,6 +122,36 @@ public class GameObject {
     // moves objects and performs collision detection
     public void move(Vector<GameObject> roomObjects) {
 
+        // emit bullet
+        if (this.ai.contains(Behavior.EMIT)) {
+            // TODO: emit bullet
+        }
+
+        // follow target
+        if (this.ai.contains(Behavior.FOLLOW)) {
+
+            double diffX = target.getX() - this.getX();
+            double diffY = target.getY() - this.getY();
+
+            double angle = Math.atan2(diffY, diffX);
+
+            this.setXSpeed(target.getXSpeed());
+            this.setYSpeed(target.getYSpeed());
+
+            this.setX(this.getX() + this.getXSpeed() * Math.abs(Math.cos(angle)));
+            this.setY(this.getY() + this.getYSpeed() * Math.abs(Math.sin(angle)));
+
+            if (this.weight == 0.0) {
+                return;
+            }
+        }
+
+        // auto-move unless the object is supposed to bounce off things
+        if (this.ai.contains(Behavior.AUTO) && !this.ai.contains(Behavior.WALLS) && !this.ai.contains(Behavior.BOUNCE)) {
+            this.setXSpeed(this.autoX);
+            this.setYSpeed(this.autoY);
+        }
+
         // acceleration due to gravity
         if (this.weight != 0.0 && this.hitBox.ySpeed < this.terminalV) {
             this.hitBox.ySpeed += (GameRoom.GRAVITY * this.weight);
@@ -127,12 +168,14 @@ public class GameObject {
             for (GameObject other : roomObjects) {
 
                 // don't collide with self
-                if (this.equals(other))
+                if (this.equals(other)) {
                     continue;
+                }
 
                 // don't collide with objects without collision
-                if (!other.canCollide)
+                if (!other.canCollide) {
                     continue;
+                }
 
                 // test future collision
                 boolean xCollision = this.hitBox.xCollisionCheck(other.hitBox);
@@ -140,6 +183,13 @@ public class GameObject {
 
                 if(xCollision || yCollision) {
                     if (xCollision) {
+
+                        // TODO: somehow un-draw object and delete it from room
+                      /*  if (ai.contains(Behavior.DESTRUCT) && other.equals(this.destroyer)) {
+                            roomObjects.remove(this);
+
+                            return;
+                        }*/
 
                         if (ai.contains(Behavior.WALLS)) {
                             this.setXSpeed(this.getXSpeed() * -1.0);
@@ -167,7 +217,6 @@ public class GameObject {
                                 this.hitBox.ySpeed = 0;
                             }
 
-                            // TODO: fix
                             // perform ledge detection
                             if (this.ai.contains(Behavior.LEDGES)) {
                                 this.ledges(roomObjects);
@@ -180,18 +229,25 @@ public class GameObject {
                 if (!xCollision && !yCollision) {
                     if(this.hitBox.diagCollisionCheck(other.hitBox)) {
 
-                        // move up to object from x direction
-                        this.hitBox.xSpeed = Math.signum(
-                                this.hitBox.objDistX(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistX(other.hitBox) <= 0.001) {
-                            this.hitBox.xSpeed = 0;
+                        if (this.ai.contains(Behavior.WALLS) && this.ai.contains(Behavior.BOUNCE)) {
+                            this.setXSpeed(this.getXSpeed() * -1.0);
+                            this.setYSpeed(this.getYSpeed() * -1.0);
                         }
+                        else {
 
-                        // move up to object from y direction
-                        this.hitBox.ySpeed = Math.signum(
-                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistY(other.hitBox) <= 0.001) {
-                            this.hitBox.ySpeed = 0;
+                            // move up to object from x direction
+                            this.hitBox.xSpeed = Math.signum(
+                                    this.hitBox.objDistX(other.hitBox)) / 1000.0;
+                            if (this.hitBox.objDistX(other.hitBox) <= 0.001) {
+                                this.hitBox.xSpeed = 0;
+                            }
+
+                            // move up to object from y direction
+                            this.hitBox.ySpeed = Math.signum(
+                                    this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                            if (this.hitBox.objDistY(other.hitBox) <= 0.001) {
+                                this.hitBox.ySpeed = 0;
+                            }
                         }
                     }
                 }
@@ -231,32 +287,34 @@ public class GameObject {
         this.ai.addAll(Arrays.asList(behaviors));
     }
 
-    public void follow() {
-        // TODO: add behavior
+    public void follow(GameObject o) {
+        this.target = o;
     }
 
     private void ledges(Vector<GameObject> room) {
 
-        // TODO: fix ledge detection (add to AI)
+        // create temp box to detect ledge
+        BoxyBox temp = new BoxyBox(this.getX(), this.getY(),
+                this.hitBox.boundingBox.getWidth() / 8.0,
+                this.hitBox.boundingBox.getHeight() / 8.0);
 
-        // create temporary testing rectangle
-        BoxyBox tempBox = new BoxyBox();
+        temp.setXSpeed(this.getXSpeed());
+        temp.setYSpeed(this.getYSpeed());
+        temp.updatePosition();
 
-        Rectangle2D.Double temp = new Rectangle2D.Double(
-                (this.sprite.getWidth() / 2.0) * Math.signum(this.getXSpeed()),
-                this.getY() - this.sprite.getHeight(),
-                this.sprite.getWidth() / 2.0,
-                8.0);
-        tempBox.setBoundBox(temp);
+        temp.setY(temp.y - this.hitBox.boundingBox.getHeight());
 
-        // check if temp rectangle intersects with an object
+        // check if temp intersects with any sort of ground
         boolean hasLedge = true;
 
         for (GameObject go : room) {
 
-            if (go.canCollide && tempBox.basicCollision(go.getHitBox())) {
-                hasLedge = false;
-                break;
+            // if there is something there, then there is NO ledge
+            if (go.canCollide && temp.getBoundBox().intersects((Rectangle2D.Double)go.hitBox.boundingBox)) {
+                if (go.getY() < this.getY()) {
+                    hasLedge = false;
+                    break;
+                }
             }
         }
 
@@ -267,18 +325,19 @@ public class GameObject {
     }
 
     public void auto(double xSpeed, double ySpeed) {
+        this.autoX = xSpeed;
+        this.autoY = ySpeed;
+
         this.setXSpeed(xSpeed);
         this.setYSpeed(ySpeed);
-
-        // TODO: if auto, and speed is 0, and no collision, restart movement (if no walls)
     }
 
-    public void emit() {
-        // TODO: add behavior
+    public void emit(GameObject o) {
+        this.bullet = o;
     }
 
-    public void destruct() {
-        // TODO: add behavior
+    public void destruct(GameObject o) {
+        this.destroyer = o;
     }
 
     /*==================================================
