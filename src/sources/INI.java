@@ -21,7 +21,6 @@ public class INI {
                     iniO.get("object" + i, "sprPath"),
                     Integer.parseInt(iniO.get("object" + i, "frames")),
                     Boolean.parseBoolean(iniO.get("object" + i, "collide")),
-                    Boolean.parseBoolean(iniO.get("object" + i, "fear")),
                     Double.parseDouble(iniO.get("object" + i, "weight")),
                     Double.parseDouble(iniO.get("object" + i, "tv")),
                     Double.parseDouble(iniO.get("object" + i, "jump")),
@@ -103,6 +102,11 @@ public class INI {
                         ini.get("input" + i, "object"),
                         ini.get("input" + i, "purpose"),
                         a));
+            }
+            else if (ini.get("input" + i, "purpose").equals("Pause")) {
+                inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                        Integer.parseInt(ini.get("input" + i, "action")),
+                        ini.get("input" + i, "purpose")));
             }
         }
     }

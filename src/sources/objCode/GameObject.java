@@ -4,8 +4,7 @@ import sources.GameRoom;
 import sources.Sprite;
 
 import java.awt.geom.Rectangle2D;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 
 // represents generic object
 public class GameObject {
@@ -21,12 +20,16 @@ public class GameObject {
     private double jumpPower;
 
     private boolean canCollide;
-    private boolean fearLedge;
+   // private boolean fearLedge;
 
     // boxCode is the type of hit box
     // 0 = square, 1 = round
     private int boxCode;
     private ObjectBox hitBox;
+
+    // AI behaviors
+    public enum Behavior{FOLLOW, LEDGES, WALLS, BOUNCE, AUTO, EMIT, DESTRUCT}
+    private Set<Behavior> ai = new HashSet<>();
 
     /*==================================================
                      Initialization
@@ -42,7 +45,6 @@ public class GameObject {
         this.jumpPower = 0.0;
 
         this.canCollide = false;
-        this.fearLedge = false;
 
         // default hit box is square
         this.boxCode = 0;
@@ -59,7 +61,6 @@ public class GameObject {
         this.jumpPower = other.jumpPower;
 
         this.canCollide = other.canCollide;
-        this.fearLedge = other.fearLedge;
 
         // create hit box
         this.boxCode = other.boxCode;
@@ -70,11 +71,13 @@ public class GameObject {
         else {
             this.hitBox = new BoxyBox(other.hitBox);
         }
+
+        this.ai = other.ai;
     }
 
     // constructor via given values (finds sprite via path)
     public GameObject(String name, String sprPath, int frames, boolean collide,
-                      boolean fear, double weight, double tv, double jump,
+                      double weight, double tv, double jump,
                       int boxType, double x, double y) {
 
         this.objName = name;
@@ -85,7 +88,6 @@ public class GameObject {
         this.jumpPower = jump;
 
         this.canCollide = collide;
-        this.fearLedge = fear;
 
         // create hit box
         this.boxCode = boxType;
@@ -99,33 +101,6 @@ public class GameObject {
             this.hitBox = new BoxyBox((x - 1000) / 1000,
                     (y - 1000) / 1000,  this.sprite.getWidth() / 500.0,
                     this.sprite.getHeight() / 500.0);
-        }
-    }
-
-    // constructor via given values (invisible object)
-    public GameObject(String name, boolean collide, double weight, double tv,
-                      double jump, int boxType, double x, double y, int width,
-                      int height) {
-
-        this.objName = name;
-        this.sprite = new Sprite(width, height);
-
-        this.weight = weight;
-        this.terminalV = tv;
-        this.jumpPower = jump;
-
-        this.canCollide = collide;
-
-        // create hit box
-        this.boxCode = boxType;
-
-        if (this.boxCode == 1) {
-            this.hitBox = new RoundBox(x, y, this.sprite.getWidth(),
-                    this.sprite.getHeight());
-        }
-        else {
-            this.hitBox = new BoxyBox(x, y, this.sprite.getWidth(),
-                    this.sprite.getHeight());
         }
     }
 
@@ -166,25 +141,37 @@ public class GameObject {
                 if(xCollision || yCollision) {
                     if (xCollision) {
 
-                        // move up to object without actually colliding
-                        this.hitBox.xSpeed = Math.signum(
-                                this.hitBox.objDistX(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistX(other.hitBox) <= 0.001) {
-                            this.hitBox.xSpeed = 0;
+                        if (ai.contains(Behavior.WALLS)) {
+                            this.setXSpeed(this.getXSpeed() * -1.0);
+                        }
+                        else {
+                            // move up to object without actually colliding
+                            this.hitBox.xSpeed = Math.signum(
+                                    this.hitBox.objDistX(other.hitBox)) / 1000.0;
+                            if(this.hitBox.objDistX(other.hitBox) <= 0.001) {
+                                this.hitBox.xSpeed = 0;
+                            }
                         }
                     }
                     else {
 
-                        // move up to object without actually colliding
-                        this.hitBox.ySpeed = Math.signum(
-                                this.hitBox.objDistY(other.hitBox)) / 1000.0;
-                        if(this.hitBox.objDistY(other.hitBox) < 0.001) {
-                            this.hitBox.ySpeed = 0;
+                        if (ai.contains(Behavior.BOUNCE)) {
+                            this.setYSpeed(this.getYSpeed() * -1.0);
                         }
+                        else {
 
-                        // perform ledge detection
-                        if (this.fearLedge) {
-                            this.reactToLedge(roomObjects);
+                            // move up to object without actually colliding
+                            this.hitBox.ySpeed = Math.signum(
+                                    this.hitBox.objDistY(other.hitBox)) / 1000.0;
+                            if (this.hitBox.objDistY(other.hitBox) < 0.001) {
+                                this.hitBox.ySpeed = 0;
+                            }
+
+                            // TODO: fix
+                            // perform ledge detection
+                            if (this.ai.contains(Behavior.LEDGES)) {
+                                this.ledges(roomObjects);
+                            }
                         }
                     }
                 }
@@ -215,38 +202,6 @@ public class GameObject {
         this.hitBox.updatePosition();
     }
 
-    // allows for ledge-detection
-    private void reactToLedge(Vector<GameObject> os) {
-
-        // TODO: fix ledge detection
-
-        // create temporary testing rectangle
-        BoxyBox tempBox = new BoxyBox();
-
-        Rectangle2D.Double temp = new Rectangle2D.Double(
-                (this.sprite.getWidth() / 2.0) * Math.signum(this.getXSpeed()),
-                this.getY() - this.sprite.getHeight(),
-                this.sprite.getWidth() / 2.0,
-                8.0);
-        tempBox.setBoundBox(temp);
-
-        // check if temp rectangle intersects with an object
-        boolean hasLedge = true;
-
-        for (GameObject go : os) {
-
-            if (go.canCollide && tempBox.basicCollision(go.getHitBox())) {
-                hasLedge = false;
-                break;
-            }
-        }
-
-        // adjust speed if there is a ledge
-        if (hasLedge) {
-            this.setXSpeed(this.getXSpeed() * -1.0);
-        }
-    }
-
     public void objectJump(Vector<GameObject> roomObjects) {
 
         // check if colliding on bottom
@@ -266,6 +221,64 @@ public class GameObject {
 
     public void drawObject() {
         this.sprite.drawObject(this.hitBox.getX(), this.hitBox.getY());
+    }
+
+    /*==================================================
+                      AI Behaviors
+    ==================================================*/
+
+    public void addBehaviors(Behavior ... behaviors) {
+        this.ai.addAll(Arrays.asList(behaviors));
+    }
+
+    public void follow() {
+        // TODO: add behavior
+    }
+
+    private void ledges(Vector<GameObject> room) {
+
+        // TODO: fix ledge detection (add to AI)
+
+        // create temporary testing rectangle
+        BoxyBox tempBox = new BoxyBox();
+
+        Rectangle2D.Double temp = new Rectangle2D.Double(
+                (this.sprite.getWidth() / 2.0) * Math.signum(this.getXSpeed()),
+                this.getY() - this.sprite.getHeight(),
+                this.sprite.getWidth() / 2.0,
+                8.0);
+        tempBox.setBoundBox(temp);
+
+        // check if temp rectangle intersects with an object
+        boolean hasLedge = true;
+
+        for (GameObject go : room) {
+
+            if (go.canCollide && tempBox.basicCollision(go.getHitBox())) {
+                hasLedge = false;
+                break;
+            }
+        }
+
+        // adjust speed if there is a ledge
+        if (hasLedge) {
+            this.setXSpeed(this.getXSpeed() * -1.0);
+        }
+    }
+
+    public void auto(double xSpeed, double ySpeed) {
+        this.setXSpeed(xSpeed);
+        this.setYSpeed(ySpeed);
+
+        // TODO: if auto, and speed is 0, and no collision, restart movement (if no walls)
+    }
+
+    public void emit() {
+        // TODO: add behavior
+    }
+
+    public void destruct() {
+        // TODO: add behavior
     }
 
     /*==================================================

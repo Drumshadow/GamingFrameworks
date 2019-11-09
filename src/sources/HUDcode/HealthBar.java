@@ -113,7 +113,7 @@ public class HealthBar extends HUDElement {
         }
         else if (mod < 0) {
             if (invincibilityCounter == 0) {
-                if (lives - mod >= 0) {
+                if (lives + mod >= 0) {
                     lives += mod;
                 }
                 else {
