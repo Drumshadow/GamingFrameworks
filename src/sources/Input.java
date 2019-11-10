@@ -1,15 +1,17 @@
 package sources;
 
+import sources.objCode.GameObject;
+
 class MultithreadingDemo implements Runnable
 {
-    private Input.purpose x;
+    private Input.inputPurpose x;
 
     @Override
     public void run() {
 
         Audio sounds = new Audio();
 
-        if(x == Input.purpose.MoveX){
+        if(x == Input.inputPurpose.MOVEX){
             if(sounds.fileName == null) {
                 sounds.setFileName("./audio-files/oof.ogg");
             }
@@ -22,129 +24,132 @@ public class Input {
 
     private int key;  // 0-256? Not sure
     private int action; // 0: release, 1: press, 2: hold
-    enum purpose{Create, Destroy, MoveX, MoveY, PlaySound, Jump, Pause};
-    private purpose purpose;
+
+    enum inputPurpose{CREATE, DESTROY, MOVEX, MOVEY, PLAYSOUND, JUMP, PAUSE, FIRE}
+    private inputPurpose purpose;
+
     private String obj;
     private double speed;
-    private String sndName;
+
     private Audio sounds = new Audio();
     private MultithreadingDemo object = new MultithreadingDemo();
 
-    Input(int k, int a, String pur) {
-        key = k;
-        action = a;
-        purpose = purpose.Pause;
+    // projectile variables
+    private GameObject projectile;
+
+    // pause
+    Input(int k, int a) {
+        this.key = k;
+        this.action = a;
+        this.purpose = inputPurpose.PAUSE;
     }
 
+    // create and destroy
     Input(int k, int a, String o, String pur) {
-        key = k;
-        action = a;
-        obj = o;
+        this.key = k;
+        this.action = a;
+        this.obj = o;
         if (pur.equals("Create")) {
-            purpose = purpose.Create;
+            this.purpose = inputPurpose.CREATE;
         }
         else if (pur.equals("Destroy")) {
-            purpose = purpose.Destroy;
+            this.purpose = inputPurpose.DESTROY;
         }
     }
 
+    // fire projectile
+    Input(int k, int a, String o, GameObject p) {
+
+        this.key = k;
+        this.action = a;
+        this.obj = o;
+        this.projectile = p;
+        this.purpose = inputPurpose.FIRE;
+    }
+
+
+    // movement
     Input(int k, int a, String o, String pur, double s) {
-        key = k;
-        action = a;
-        obj = o;
+        this.key = k;
+        this.action = a;
+        this.obj = o;
 
         switch(pur) {
 
             case "MoveX":
-                purpose = purpose.MoveX;
+                this.purpose = inputPurpose.MOVEX;
                 break;
 
             case "MoveY":
-                purpose = purpose.MoveY;
+                this.purpose = inputPurpose.MOVEY;
                 break;
 
             case "Jump":
-                purpose = purpose.Jump;
+                this.purpose = inputPurpose.JUMP;
                 break;
         }
-/*
-        if (pur.equals("MoveX")) {
-            purpose = purpose.MoveX;
 
-        }
-        else if (pur.equals("MoveY")) {
-            purpose = purpose.MoveY;
-        }*/
-        speed = s / 1000.0;
+        this.speed = s / 1000.0;
     }
 
-    Input(int k, int a, String o, String pur, Audio snd) {
-        key = k;
-        action = a;
-        obj = o;
-        purpose = purpose.PlaySound;
-        sounds = snd;
+    // sound
+    Input(int k, int a, String o, Audio snd) {
+        this.key = k;
+        this.action = a;
+        this.obj = o;
+        this.purpose = inputPurpose.PLAYSOUND;
+        this.sounds = snd;
     }
 
     int getKey() {
-        return key;
+        return this.key;
     }
     public int getAction() {
-        return action;
+        return this.action;
     }
-    public purpose getPurpose() { return purpose; }
+    public inputPurpose getPurpose() { return this.purpose; }
 
     void execute(GameRoom room) {
 
-        switch(purpose) {
+        switch(this.purpose) {
 
-            case Create:
-                for (int i = 0; i < room.getAllObjects().size(); i++) {
-                    if (room.getElement(i).getObjName().equals(obj)) {
-                        room.addObject(room.getElement(i));
-                        break;
-                    }
-                }
+            case CREATE:
+                room.addObject(room.getElement(this.obj));
                 break;
 
-            case Destroy:
-                for (int i = 0; i < room.getAllObjects().size(); i++) {
-                    if (room.getElement(i).getObjName().equals(obj)) {
-                        room.removeObject(room.getElement(i));
-                        break;
-                    }
-                }
+            case DESTROY:
+                room.removeObject(room.getElement(this.obj));
                 break;
 
-            case MoveX:
-                for (int i = 0; i < room.getAllObjects().size(); i++) {
-                    if (room.getElement(i).getObjName().equals(obj)) {
-                        room.getElement(i).setXSpeed(speed);
-                    }
-                }
+            case MOVEX:
+                room.getElement(this.obj).setXSpeed(this.speed);
                 break;
 
-            case MoveY:
-                for (int i = 0; i < room.getAllObjects().size(); i++) {
-                    if (room.getElement(i).getObjName().equals(obj)) {
-                        room.getElement(i).setYSpeed(speed);
-                    }
-                }
+            case MOVEY:
+                room.getElement(this.obj).setYSpeed(this.speed);
                 break;
 
-            case PlaySound:
-                sounds.loadPlaySound();
+            case PLAYSOUND:
+                this.sounds.loadPlaySound();
                 break;
 
-            case Jump:
-                for (int i = 0; i < room.getAllObjects().size(); i++) {
-                    if (room.getElement(i).getObjName().equals(obj)) {
-                        room.getElement(i).objectJump(room.getAllObjects());
-                    }
-                }
+            case JUMP:
+                room.getElement(this.obj).objectJump(room.getAllObjects());
+                break;
+
+            case FIRE:
+
+                // prepare projectile
+                Event.prepProjectile(room.getElement(obj), this.projectile);
+
+                // add to room
+                room.addObject(new GameObject(this.projectile));
+
                 break;
         }
     }
 
-    boolean execute(boolean paused) { return !paused; }
+    boolean execute(boolean paused) {
+        return !paused;
+    }
 }

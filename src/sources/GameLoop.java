@@ -78,7 +78,7 @@ public class GameLoop {
 
                 if (key == inputs.get(i).getKey() &&
                         action == inputs.get(i).getAction()) {
-                    if (inputs.get(i).getPurpose() == Input.purpose.Pause) {
+                    if (inputs.get(i).getPurpose() == Input.inputPurpose.PAUSE) {
                         isPaused = inputs.get(i).execute(isPaused);
                     }
                     else {

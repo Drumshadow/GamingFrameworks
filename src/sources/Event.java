@@ -72,29 +72,8 @@ class Event {
 
             case EMISSION:
 
-                GameObject O1 = room.getElement(obj1);
-
-                // set x position
-                if (this.projectile.getXSpeed() < 0) {
-                    this.projectile.setX(O1.getX() - this.projectile.getHitBox().getBoundBox().getWidth());
-                }
-                else if (this.projectile.getXSpeed() > 0){
-                    this.projectile.setX(O1.getX() + O1.getHitBox().getBoundBox().getWidth());
-                }
-                else {
-                    this.projectile.setX(O1.getX());
-                }
-
-                // set y position
-                if (this.projectile.getYSpeed() < 0) {
-                    this.projectile.setY(O1.getY() - O1.getHitBox().getBoundBox().getHeight());
-                }
-                else if (this.projectile.getYSpeed() > 0) {
-                    this.projectile.setY(O1.getY() + this.projectile.getHitBox().getBoundBox().getHeight());
-                }
-                else {
-                    this.projectile.setY(O1.getY());
-                }
+                // prepare projectile
+                prepProjectile(room.getElement(obj1), this.projectile);
 
                 // add to room
                 if (this.timer == this.fireTime) {
@@ -106,6 +85,29 @@ class Event {
                 }
 
                 break;
+        }
+    }
+
+    // prepares projectile to be emitted/fired from object
+    static void prepProjectile(GameObject o1, GameObject projectile) {
+        if (projectile.getXSpeed() < 0) {
+            projectile.setX(o1.getX() - projectile.getHitBox().getBoundBox().getWidth());
+        }
+        else if (projectile.getXSpeed() > 0){
+            projectile.setX(o1.getX() + o1.getHitBox().getBoundBox().getWidth());
+        }
+        else {
+            projectile.setX(o1.getX());
+        }
+
+        if (projectile.getYSpeed() < 0) {
+            projectile.setY(o1.getY() - o1.getHitBox().getBoundBox().getHeight());
+        }
+        else if (projectile.getYSpeed() > 0) {
+            projectile.setY(o1.getY() + projectile.getHitBox().getBoundBox().getHeight());
+        }
+        else {
+            projectile.setY(o1.getY());
         }
     }
 

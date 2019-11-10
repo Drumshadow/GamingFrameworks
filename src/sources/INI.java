@@ -102,14 +102,11 @@ public class INI {
 
                     inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                             Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
-                            ini.get("input" + i, "object"),
-                            ini.get("input" + i, "purpose"),
-                            a));
+                            ini.get("input" + i, "object"), a));
                     break;
                 case "Pause":
                     inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            ini.get("input" + i, "purpose")));
+                            Integer.parseInt(ini.get("input" + i, "action"))));
                     break;
             }
         }
