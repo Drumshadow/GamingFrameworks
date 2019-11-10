@@ -17,7 +17,8 @@ public class INI {
         Ini iniO = new Ini(new File("./objects/objects.ini"));
         int inputNum = Integer.parseInt(iniO.get("control", "objects"));
         for (int i = 0; i < inputNum; i++) {
-            room.addObject(new GameObject(iniO.get("object" + i, "name"),
+
+            GameObject newObject = new GameObject(iniO.get("object" + i, "name"),
                     iniO.get("object" + i, "sprPath"),
                     Integer.parseInt(iniO.get("object" + i, "frames")),
                     Boolean.parseBoolean(iniO.get("object" + i, "collide")),
@@ -26,7 +27,52 @@ public class INI {
                     Double.parseDouble(iniO.get("object" + i, "jump")),
                     Integer.parseInt(iniO.get("object" + i, "boxType")),
                     Double.parseDouble(iniO.get("object" + i, "x")),
-                    Double.parseDouble(iniO.get("object" + i, "y"))));
+                    Double.parseDouble(iniO.get("object" + i, "y")));
+
+            // add AI behaviors
+            String[] ai = iniO.get("object" + i, "AI").split(",");
+
+            if (!ai[0].equals("null")) {
+
+                for (String s : ai) {
+                    switch (s) {
+
+                        case "copy":
+                            newObject.addBehaviors(GameObject.Behavior.COPY);
+                            newObject.setTarget(room.getElement(iniO.get("object" + i, "o2")));
+                            break;
+
+                        case "ledges":
+                            newObject.addBehaviors(GameObject.Behavior.LEDGES);
+                            break;
+
+                        case "walls":
+                            newObject.addBehaviors(GameObject.Behavior.WALLS);
+                            break;
+
+                        case "bounce":
+                            newObject.addBehaviors(GameObject.Behavior.BOUNCE);
+                            break;
+
+                        case "auto":
+                            newObject.addBehaviors(GameObject.Behavior.AUTO);
+
+                            newObject.auto(Double.parseDouble(iniO.get("object" + i, "xSpeed")) / 1000.0,
+                                    Double.parseDouble(iniO.get("object" + i, "ySpeed")) / 1000.0);
+                            break;
+
+                        case "emit":
+                            newObject.addBehaviors(GameObject.Behavior.EMIT);
+                            break;
+
+                        case "destruct":
+                            newObject.addBehaviors(GameObject.Behavior.DESTRUCT);
+                            newObject.setDestroyer(room.getElement(iniO.get("object" + i, "o2")));
+                            break;
+                    }
+                }
+            }
+            room.addObject(newObject);
         }
     }
 
@@ -83,6 +129,7 @@ public class INI {
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
+
                     projectile.auto(Double.parseDouble(iniC.get("input" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(iniC.get("input" + i, "ySpeed")) / 1000.0);
 

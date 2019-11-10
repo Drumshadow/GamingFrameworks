@@ -265,8 +265,8 @@ public class GameObject {
                       AI Behaviors
     ==================================================*/
 
-    public void addBehaviors(Behavior ... behaviors) {
-        this.ai.addAll(Arrays.asList(behaviors));
+    public void addBehaviors(Behavior behavior) {
+        this.ai.add(behavior);
     }
 
     private void ledges(Vector<GameObject> room) {

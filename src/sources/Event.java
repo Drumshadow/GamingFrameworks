@@ -72,18 +72,19 @@ class Event {
 
             case EMISSION:
 
-                // prepare projectile
-                prepProjectile(room.getElement(obj1), this.projectile);
+                if (room.getElement(obj1).getAi().contains(GameObject.Behavior.EMIT)) {
 
-                // add to room
-                if (this.timer == this.fireTime) {
-                    room.addObject(new GameObject(this.projectile));
-                    this.timer = 0;
-                }
-                else {
-                    this.timer++;
-                }
+                    // prepare projectile
+                    prepProjectile(room.getElement(obj1), this.projectile);
 
+                    // add to room
+                    if (this.timer == this.fireTime) {
+                        room.addObject(new GameObject(this.projectile));
+                        this.timer = 0;
+                    } else {
+                        this.timer++;
+                    }
+                }
                 break;
         }
     }

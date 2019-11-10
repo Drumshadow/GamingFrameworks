@@ -140,7 +140,7 @@ public class Input {
             case FIRE:
 
                 // prepare projectile
-                Event.prepProjectile(room.getElement(obj), this.projectile);
+                Event.prepProjectile(room.getElement(this.obj), this.projectile);
 
                 // add to room
                 room.addObject(new GameObject(this.projectile));

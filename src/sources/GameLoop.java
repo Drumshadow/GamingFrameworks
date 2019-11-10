@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import sources.HUDcode.HUD;
-import sources.objCode.GameObject;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -113,50 +112,26 @@ public class GameLoop {
     }
   
     private void loop() throws IOException, SlickException {
+
+        /*==================================================
+                         Initialize Game
+        ==================================================*/
+
         GL.createCapabilities();
         Ini ini = new Ini(new File("./options/options.ini"));
 
         // set background
         room.setBackground(new Sprite(ini.get("background", "art"), 1));
 
-        /*==================================================
-                                HUD
-        ==================================================*/
+        // set hud
         hud.setHudFont(ini.get("misc", "font"), 32);
         pivotalMoment.renderHUD(hud);
 
-        /*==================================================
-                          Keyboard Inputs
-        ==================================================*/
+        // get other game components
         pivotalMoment.setKeyboardControls(inputs);
-
-        /*==================================================
-                        Controller Inputs
-        ==================================================*/
         pivotalMoment.setControls(controls);
-
-        /*==================================================
-                          Object Creation
-        ==================================================*/
         pivotalMoment.renderObjects(room);
-
-        /*==================================================
-                          Object Creation
-        ==================================================*/
         pivotalMoment.renderEvents(events);
-
-        // TODO: NEED TO CHANGE THIS
-        // add ai behaviors
-        room.getElement("foe").addBehaviors(GameObject.Behavior.AUTO, GameObject.Behavior.WALLS, GameObject.Behavior.LEDGES);
-        room.getElement("foe").auto(5.0/1000.0, 0);
-
-        room.getElement("fairy").addBehaviors(GameObject.Behavior.COPY);
-        room.getElement("fairy").setTarget(room.getElement("player"));
-
-        room.getElement("fireFoe").addBehaviors(GameObject.Behavior.EMIT);
-
-        room.getElement("flower").addBehaviors(GameObject.Behavior.DESTRUCT);
-        room.getElement("flower").setDestroyer(room.getElement("player"));
 
         /*==================================================
                           Game Loop
@@ -217,8 +192,6 @@ public class GameLoop {
                 glScaled(1.25, 1.25, 1.0);
                 room.getBackground().drawObject(-0.8, -0.8);
                 glPopMatrix();
-
-            // TODO: TO HERE
 
                 // draw objects
                 for (int i = 0; i < room.objectCount(); i++) {
