@@ -201,6 +201,8 @@ public class INI {
                     projectile.auto(Double.parseDouble(ini.get("input" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(ini.get("input" + i, "ySpeed")) / 1000.0);
 
+                    // TODO: add AI to projectiles
+
                     // add input
                     inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                             Integer.parseInt(ini.get("input" + i, "action")),
@@ -294,6 +296,8 @@ public class INI {
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
                     projectile.auto(Double.parseDouble(ini.get("event" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(ini.get("event" + i, "ySpeed")) / 1000.0);
+
+                    // TODO: add AI to projectiles
 
                     // add event
                     events.addEvent(new Event(Event.eventType.EMISSION,
