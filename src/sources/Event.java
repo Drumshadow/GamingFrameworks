@@ -1,6 +1,7 @@
 package sources;
 
 import sources.HUDcode.*;
+import sources.objCode.GameObject;
 
 class Event {
     public enum eventType {COLLISION, FRAME}
@@ -26,29 +27,42 @@ class Event {
 
     void execute(GameRoom room, HUD hud, int displayFrames) {
         if (type == eventType.COLLISION) {
-            if (room.getElement(obj1).getHitBox().basicCollision(room.getElement(obj2).getHitBox()) ||
-                    room.getElement(obj2).getHitBox().basicCollision(room.getElement(obj1).getHitBox())) {
-                if (hud.getElement(this.hud) instanceof HealthBar) {
-                    ((HealthBar) hud.getElement(this.hud)).modHealth(hpMod);
+
+            GameObject O1 = room.getElement(obj1);
+            GameObject O2 = room.getElement(obj2);
+
+            // make sure none of the colliding objects have been destroyed
+            if (O1 == null || O2 == null) {
+                return;
+            }
+
+            if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
+                    O2.getHitBox().basicCollision(O1.getHitBox())) {
+
+                updateHUD(hud, displayFrames);
+
+                if (O1.getAi().contains(GameObject.Behavior.DESTRUCT) && O1.getDestroyer().equals(O2)) {
+                    room.removeObject(room.getElement(obj1));
                 }
-                else if (hud.getElement(this.hud) instanceof FrameDisplay) {
-                    ((FrameDisplay) hud.getElement(this.hud)).setFrameCount(displayFrames);
-                }
-                else if (hud.getElement(this.hud) instanceof Score) {
-                    ((Score) hud.getElements().get(2)).modScore(hpMod);
+                else if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) && O2.getDestroyer().equals(O1)) {
+                    room.removeObject(room.getElement(obj2));
                 }
             }
         }
         else if (type == eventType.FRAME) {
-            if (hud.getElement(this.hud) instanceof HealthBar) {
-                ((HealthBar) hud.getElement(this.hud)).modHealth(hpMod);
-            }
-            else if (hud.getElement(this.hud) instanceof FrameDisplay) {
-                ((FrameDisplay) hud.getElement(this.hud)).setFrameCount(displayFrames);
-            }
-            else if (hud.getElement(this.hud) instanceof Score) {
-                ((Score) hud.getElements().get(2)).modScore(hpMod);
-            }
+            updateHUD(hud, displayFrames);
+        }
+    }
+
+    private void updateHUD(HUD hud, int displayFrames) {
+        if (hud.getElement(this.hud) instanceof HealthBar) {
+            ((HealthBar) hud.getElement(this.hud)).modHealth(hpMod);
+        }
+        else if (hud.getElement(this.hud) instanceof FrameDisplay) {
+            ((FrameDisplay) hud.getElement(this.hud)).setFrameCount(displayFrames);
+        }
+        else if (hud.getElement(this.hud) instanceof Score) {
+            ((Score) hud.getElements().get(2)).modScore(hpMod);
         }
     }
 }

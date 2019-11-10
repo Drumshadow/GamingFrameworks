@@ -27,7 +27,7 @@ public class GameObject {
     private ObjectBox hitBox;
 
     // AI behaviors
-    public enum Behavior{FOLLOW, LEDGES, WALLS, BOUNCE, AUTO, EMIT, DESTRUCT}
+    public enum Behavior{COPY, LEDGES, WALLS, BOUNCE, AUTO, EMIT, DESTRUCT}
     private Set<Behavior> ai = new HashSet<>();
 
     private double autoX = 0.0;
@@ -122,32 +122,22 @@ public class GameObject {
     // moves objects and performs collision detection
     public void move(Vector<GameObject> roomObjects) {
 
-        // emit bullet
-        if (this.ai.contains(Behavior.EMIT)) {
-            // TODO: emit bullet
-        }
-
-        // follow target
-        if (this.ai.contains(Behavior.FOLLOW)) {
-
-            double diffX = target.getX() - this.getX();
-            double diffY = target.getY() - this.getY();
-
-            double angle = Math.atan2(diffY, diffX);
+        // copy target
+        if (this.ai.contains(Behavior.COPY)) {
 
             this.setXSpeed(target.getXSpeed());
             this.setYSpeed(target.getYSpeed());
 
-            this.setX(this.getX() + this.getXSpeed() * Math.abs(Math.cos(angle)));
-            this.setY(this.getY() + this.getYSpeed() * Math.abs(Math.sin(angle)));
+            this.setX(this.getX() + this.getXSpeed());
+            this.setY(this.getY() + this.getYSpeed());
 
-            if (this.weight == 0.0) {
-                return;
-            }
+            return;
         }
 
         // auto-move unless the object is supposed to bounce off things
-        if (this.ai.contains(Behavior.AUTO) && !this.ai.contains(Behavior.WALLS) && !this.ai.contains(Behavior.BOUNCE)) {
+        if (this.ai.contains(Behavior.AUTO) && !this.ai.contains(Behavior.WALLS) &&
+                !this.ai.contains(Behavior.BOUNCE)) {
+
             this.setXSpeed(this.autoX);
             this.setYSpeed(this.autoY);
         }
@@ -183,13 +173,6 @@ public class GameObject {
 
                 if(xCollision || yCollision) {
                     if (xCollision) {
-
-                        // TODO: somehow un-draw object and delete it from room
-                      /*  if (ai.contains(Behavior.DESTRUCT) && other.equals(this.destroyer)) {
-                            roomObjects.remove(this);
-
-                            return;
-                        }*/
 
                         if (ai.contains(Behavior.WALLS)) {
                             this.setXSpeed(this.getXSpeed() * -1.0);
@@ -287,7 +270,7 @@ public class GameObject {
         this.ai.addAll(Arrays.asList(behaviors));
     }
 
-    public void follow(GameObject o) {
+    public void copy(GameObject o) {
         this.target = o;
     }
 
@@ -310,7 +293,9 @@ public class GameObject {
         for (GameObject go : room) {
 
             // if there is something there, then there is NO ledge
-            if (go.canCollide && temp.getBoundBox().intersects((Rectangle2D.Double)go.hitBox.boundingBox)) {
+            if (go.canCollide && temp.getBoundBox().intersects((
+                    Rectangle2D.Double)go.hitBox.boundingBox)) {
+
                 if (go.getY() < this.getY()) {
                     hasLedge = false;
                     break;
@@ -334,10 +319,12 @@ public class GameObject {
 
     public void emit(GameObject o) {
         this.bullet = o;
+        // TODO
     }
 
     public void destruct(GameObject o) {
         this.destroyer = o;
+        // TODO
     }
 
     /*==================================================
@@ -440,6 +427,22 @@ public class GameObject {
 
     public ObjectBox getHitBox() {
         return this.hitBox;
+    }
+
+    public Set<Behavior> getAi() {
+        return this.ai;
+    }
+
+    public void setAi(Set<Behavior> ai) {
+        this.ai = ai;
+    }
+
+    public GameObject getDestroyer() {
+        return this.destroyer;
+    }
+
+    public void setDestroyer(GameObject destroyer) {
+        this.destroyer = destroyer;
     }
 
     /*==================================================
