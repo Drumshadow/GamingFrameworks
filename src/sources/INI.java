@@ -108,6 +108,30 @@ public class INI {
                     inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
                             Integer.parseInt(ini.get("input" + i, "action"))));
                     break;
+
+                case "Fire":
+
+                    // create projectile (x and y position don't matter)
+                    GameObject projectile = new GameObject(ini.get("input" + i, "o2name"),
+                            ini.get("input" + i, "o2path"),
+                            Integer.parseInt(ini.get("input" + i, "o2frames")),
+                            Boolean.parseBoolean(ini.get("input" + i, "o2collide")),
+                            Double.parseDouble(ini.get("input" + i, "o2weight")),
+                            Double.parseDouble(ini.get("input" + i, "o2tv")),
+                            Double.parseDouble(ini.get("input" + i, "o2jump")),
+                            Integer.parseInt(ini.get("input" + i, "o2boxType")),
+                            0.0, 0.0);
+
+                    // make projectile auto-move
+                    projectile.addBehaviors(GameObject.Behavior.AUTO);
+                    projectile.auto(Double.parseDouble(ini.get("input" + i, "xSpeed")) / 1000.0,
+                            Double.parseDouble(ini.get("input" + i, "ySpeed")) / 1000.0);
+
+                    // add input
+                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
+                            Integer.parseInt(ini.get("input" + i, "action")),
+                            ini.get("input" + i, "object"), projectile));
+                    break;
             }
         }
     }
@@ -197,6 +221,7 @@ public class INI {
                     projectile.auto(Double.parseDouble(ini.get("event" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(ini.get("event" + i, "ySpeed")) / 1000.0);
 
+                    // add event
                     events.addEvent(new Event(Event.eventType.EMISSION,
                             ini.get("event" + i, "obj1"), projectile,
                             Integer.parseInt(ini.get("event" + i, "timer"))));
