@@ -1,5 +1,7 @@
 package sources;
 
+import sources.objCode.GameObject;
+
 public class Controller {
 
     private int button; // 1 if button, 0 if axes
@@ -10,6 +12,10 @@ public class Controller {
     private double speed;
     private Audio sounds;
 
+    // projectile variable
+    private GameObject projectile;
+
+    // creation/deletion
     Controller(int button, int index, float range, String obj, String purpose) {
         this.button = button;
         this.index = index;
@@ -18,6 +24,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
+    // movement
     Controller(int button, int index, float range, String obj, String purpose, double speed) {
         this.button = button;
         this.index = index;
@@ -27,6 +34,7 @@ public class Controller {
         this.purpose = purpose;
     }
 
+    // audio
     Controller(int button, int index, float range, String obj, String purpose, Audio sndName) {
         this.button = button;
         this.index = index;
@@ -36,65 +44,58 @@ public class Controller {
         this.purpose = purpose;
     }
 
+    // fire projectile
+    Controller(int button, int index, float range, String obj, String purpose, GameObject p) {
+        this.button = button;
+        this.index = index;
+        this.range = range;
+        this.obj = obj;
+        this.purpose = purpose;
+        this.projectile = p;
+    }
+
     int getButton() {
-        return button;
+        return this.button;
     }
 
     public int getIndex() {
-        return index;
+        return this.index;
     }
 
     float getRange() {
-        return range;
+        return this.range;
     }
 
-    /*public String getPurpose() {
-        switch(purpose) {
-            case Create:
-                return "Create";
-            case Destroy:
-                return "Destroy";
-            case MoveX:
-                return "MoveX";
-            case MoveY:
-                return "MoveY";
-            case PlaySound:
-                return "PlaySound";
-        }
-        return null;
-    }*/
-
     void execute(GameRoom room) {
-        if (purpose.equals("Create")) {
-            for (int i = 0; i < room.getAllObjects().size(); i++) {
-                if (room.getElement(i).getObjName().equals(obj)) {
-                    room.addObject(room.getElement(i));
-                }
-            }
-        }
-        if (purpose.equals("Destroy")) {
-            for (int i = 0; i < room.getAllObjects().size(); i++) {
-                if (room.getElement(i).getObjName().equals(obj)) {
-                    room.removeObject(room.getElement(i));
-                }
-            }
-        }
-        if (purpose.equals("MoveX")) {
-            for (int i = 0; i < room.getAllObjects().size(); i++) {
-                if (room.getElement(i).getObjName().equals(obj)) {
-                    room.getElement(i).setXSpeed(speed / 1000);
-                }
-            }
-        }
-        if (purpose.equals("MoveY")) {
-            for (int i = 0; i < room.getAllObjects().size(); i++) {
-                if (room.getElement(i).getObjName().equals(obj)) {
-                    room.getElement(i).setYSpeed(speed / 1000);
-                }
-            }
-        }
-        if (purpose.equals("PlaySound")) {
-            sounds.loadPlaySound();
+        switch (purpose) {
+            case "Create":
+                room.addObject(room.getElement(this.obj));
+                break;
+
+            case "Destroy":
+                room.removeObject(room.getElement(this.obj));
+                break;
+
+            case "MoveX":
+                room.getElement(this.obj).setXSpeed(this.speed / 1000.0);
+                break;
+
+            case "MoveY":
+                room.getElement(this.obj).setYSpeed(this.speed / 1000.0);
+                break;
+
+            case "PlaySound":
+                sounds.loadPlaySound();
+                break;
+
+            case "Fire":
+
+                // prepare projectile
+                Event.prepProjectile(room.getElement(obj), this.projectile);
+
+                // add to room
+                room.addObject(new GameObject(this.projectile));
+                break;
         }
     }
 }

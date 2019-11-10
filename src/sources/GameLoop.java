@@ -235,6 +235,7 @@ public class GameLoop {
                     events.getEvent(i).execute(room, hud, displayFrames);
                 }
 
+                // TODO: make sure controller works
                 if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
                     FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);

@@ -34,7 +34,7 @@ public class Input {
     private Audio sounds = new Audio();
     private MultithreadingDemo object = new MultithreadingDemo();
 
-    // projectile variables
+    // projectile variable
     private GameObject projectile;
 
     // pause
@@ -144,7 +144,6 @@ public class Input {
 
                 // add to room
                 room.addObject(new GameObject(this.projectile));
-
                 break;
         }
     }

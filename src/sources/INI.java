@@ -67,6 +67,33 @@ public class INI {
                             iniC.get("input" + i, "purpose"),
                             a));
                     break;
+
+                case "Fire":
+
+                    // create projectile (x and y position don't matter)
+                    GameObject projectile = new GameObject(iniC.get("input" + i, "o2name"),
+                            iniC.get("input" + i, "o2path"),
+                            Integer.parseInt(iniC.get("input" + i, "o2frames")),
+                            Boolean.parseBoolean(iniC.get("input" + i, "o2collide")),
+                            Double.parseDouble(iniC.get("input" + i, "o2weight")),
+                            Double.parseDouble(iniC.get("input" + i, "o2tv")),
+                            Double.parseDouble(iniC.get("input" + i, "o2jump")),
+                            Integer.parseInt(iniC.get("input" + i, "o2boxType")),
+                            0.0, 0.0);
+
+                    // make projectile auto-move
+                    projectile.addBehaviors(GameObject.Behavior.AUTO);
+                    projectile.auto(Double.parseDouble(iniC.get("input" + i, "xSpeed")) / 1000.0,
+                            Double.parseDouble(iniC.get("input" + i, "ySpeed")) / 1000.0);
+
+                    // add input
+                    controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
+                            Integer.parseInt(iniC.get("input" + i, "index")),
+                            Float.parseFloat(iniC.get("input" + i, "range")),
+                            iniC.get("input" + i, "object"),
+                            iniC.get("input" + i, "purpose"),
+                            projectile));
+                    break;
             }
         }
     }
