@@ -9,26 +9,26 @@ class Event {
     private String obj1;
     private String obj2;
     private String hud;
-    private int hpMod;
+    private int mod;
 
     private GameObject projectile;
     private int timer;
     private int fireTime;
 
     // frame event
-    Event(eventType eT, String hE, int hpMod) {
+    Event(eventType eT, String hE, int mod) {
         this.type = eT;
         this.hud = hE;
-        this.hpMod = hpMod;
+        this.mod = mod;
     }
 
     // collision event
-    Event(eventType eT, String o1, String o2, String hE, int hpMod) {
+    Event(eventType eT, String o1, String o2, String hE, int mod) {
         this.type = eT;
         this.obj1 = o1;
         this.obj2 = o2;
         this.hud = hE;
-        this.hpMod = hpMod;
+        this.mod = mod;
     }
 
     // emission event
@@ -44,8 +44,8 @@ class Event {
         switch (this.type) {
             case COLLISION: {
 
-                GameObject O1 = room.getElement(obj1);
-                GameObject O2 = room.getElement(obj2);
+                GameObject O1 = room.getElement(this.obj1);
+                GameObject O2 = room.getElement(this.obj2);
 
                 // make sure none of the colliding objects have been destroyed
                 if (O1 == null || O2 == null) {
@@ -58,9 +58,9 @@ class Event {
                     updateHUD(hud, displayFrames);
 
                     if (O1.getAi().contains(GameObject.Behavior.DESTRUCT) && O1.getDestroyer().equals(O2)) {
-                        room.removeObject(room.getElement(obj1));
+                        room.removeObject(room.getElement(this.obj1));
                     } else if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) && O2.getDestroyer().equals(O1)) {
-                        room.removeObject(room.getElement(obj2));
+                        room.removeObject(room.getElement(this.obj2));
                     }
                 }
                 break;
@@ -72,10 +72,10 @@ class Event {
 
             case EMISSION:
 
-                if (room.getElement(obj1).getAi().contains(GameObject.Behavior.EMIT)) {
+                if (room.getElement(this.obj1).getAi().contains(GameObject.Behavior.EMIT)) {
 
                     // prepare projectile
-                    prepProjectile(room.getElement(obj1), this.projectile);
+                    prepProjectile(room.getElement(this.obj1), this.projectile);
 
                     // add to room
                     if (this.timer == this.fireTime) {
@@ -114,13 +114,13 @@ class Event {
 
     private void updateHUD(HUD hud, int displayFrames) {
         if (hud.getElement(this.hud) instanceof HealthBar) {
-            ((HealthBar) hud.getElement(this.hud)).modHealth(hpMod);
+            ((HealthBar) hud.getElement(this.hud)).modHealth(this.mod);
         }
         else if (hud.getElement(this.hud) instanceof FrameDisplay) {
             ((FrameDisplay) hud.getElement(this.hud)).setFrameCount(displayFrames);
         }
         else if (hud.getElement(this.hud) instanceof Score) {
-            ((Score) hud.getElements().get(2)).modScore(hpMod);
+            ((Score) hud.getElement(this.hud)).modScore(this.mod);
         }
     }
 }
