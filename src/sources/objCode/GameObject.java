@@ -13,7 +13,7 @@ public class GameObject {
 
     private Sprite sprite;
 
-    // no gravity is gravityFactor = 0
+    // no gravity is weight = 0
     // controls "weight" of object
     private double weight;
     private double terminalV;
@@ -35,7 +35,6 @@ public class GameObject {
 
     private GameObject target = null;
     private GameObject destroyer = null;
-    private GameObject bullet = null;
 
     /*==================================================
                      Initialization
@@ -270,10 +269,6 @@ public class GameObject {
         this.ai.addAll(Arrays.asList(behaviors));
     }
 
-    public void copy(GameObject o) {
-        this.target = o;
-    }
-
     private void ledges(Vector<GameObject> room) {
 
         // create temp box to detect ledge
@@ -315,16 +310,6 @@ public class GameObject {
 
         this.setXSpeed(xSpeed);
         this.setYSpeed(ySpeed);
-    }
-
-    public void emit(GameObject o) {
-        this.bullet = o;
-        // TODO
-    }
-
-    public void destruct(GameObject o) {
-        this.destroyer = o;
-        // TODO
     }
 
     /*==================================================
@@ -443,6 +428,14 @@ public class GameObject {
 
     public void setDestroyer(GameObject destroyer) {
         this.destroyer = destroyer;
+    }
+
+    public GameObject getTarget() {
+        return this.target;
+    }
+
+    public void setTarget(GameObject target) {
+        this.target = target;
     }
 
     /*==================================================

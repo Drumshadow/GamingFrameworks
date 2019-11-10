@@ -151,15 +151,12 @@ public class GameLoop {
         room.getElement("foe").auto(5.0/1000.0, 0);
 
         room.getElement("fairy").addBehaviors(GameObject.Behavior.COPY);
-        room.getElement("fairy").copy(room.getElement("player"));
+        room.getElement("fairy").setTarget(room.getElement("player"));
 
         room.getElement("fireFoe").addBehaviors(GameObject.Behavior.EMIT);
-        //TODO: room.getElement("fireFoe").emit(new GameObject(...));
 
         room.getElement("flower").addBehaviors(GameObject.Behavior.DESTRUCT);
-        room.getElement("flower").destruct(room.getElement("player"));
-
-
+        room.getElement("flower").setDestroyer(room.getElement("player"));
 
         /*==================================================
                           Game Loop

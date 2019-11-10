@@ -169,15 +169,41 @@ public class INI {
         int eventNum = Integer.parseInt(ini.get("control", "events"));
 
         for (int i = 0; i < eventNum; i++) {
-            if (ini.get("event" + i, "type").equals("collision")) {
-                events.addEvent(new Event(Event.eventType.COLLISION, ini.get("event" + i, "obj1"),
-                        ini.get("event" + i, "obj2"),
-                        ini.get("event" + i, "hud"),
-                        Integer.parseInt(ini.get("event" + i, "mod"))));
-            }
-            else if (ini.get("event" + i, "type").equals("frame")) {
-                events.addEvent(new Event(Event.eventType.FRAME, ini.get("event" + i, "hud"),
-                        Integer.parseInt(ini.get("event" + i, "mod"))));
+            switch (ini.get("event" + i, "type")) {
+                case "collision":
+                    events.addEvent(new Event(Event.eventType.COLLISION, ini.get("event" + i, "obj1"),
+                            ini.get("event" + i, "obj2"),
+                            ini.get("event" + i, "hud"),
+                            Integer.parseInt(ini.get("event" + i, "mod"))));
+                    break;
+
+                case "frame":
+                    events.addEvent(new Event(Event.eventType.FRAME, ini.get("event" + i, "hud"),
+                            Integer.parseInt(ini.get("event" + i, "mod"))));
+                    break;
+
+                case "emission":
+
+                    // create projectile (x and y position don't matter)
+                    GameObject projectile = new GameObject(ini.get("event" + i, "o2name"),
+                            ini.get("event" + i, "o2path"),
+                            Integer.parseInt(ini.get("event" + i, "o2frames")),
+                            Boolean.parseBoolean(ini.get("event" + i, "o2collide")),
+                            Double.parseDouble(ini.get("event" + i, "o2weight")),
+                            Double.parseDouble(ini.get("event" + i, "o2tv")),
+                            Double.parseDouble(ini.get("event" + i, "o2jump")),
+                            Integer.parseInt(ini.get("event" + i, "o2boxType")),
+                            0.0, 0.0);
+
+                    // make projectile auto-move
+                    projectile.addBehaviors(GameObject.Behavior.AUTO);
+                    projectile.auto(Double.parseDouble(ini.get("event" + i, "xSpeed")) / 1000.0,
+                            Double.parseDouble(ini.get("event" + i, "ySpeed")) / 1000.0);
+
+                    events.addEvent(new Event(Event.eventType.EMISSION,
+                            ini.get("event" + i, "obj1"), projectile,
+                            Integer.parseInt(ini.get("event" + i, "timer"))));
+                    break;
             }
         }
     }
