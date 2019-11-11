@@ -28,11 +28,7 @@ Here is the link to our dropbox!
 https://baylor.box.com/s/0v7nzy9ekbv443373czsu63zb6oqne5a
     
 # User's Guide (How to Play the Demo Game)
-**Here are the steps to download!**
-1) If you are compiling the source code on a Mac you will need to supply a 
-JVM argument, `-XstartOnFirstThread`. This is because of how Mac and Windows
-both handle threading in different ways.
-2) Once the code is compiled and loaded, you are ready to play!
+**Download instructions will soon be posted!**
 
 **Here are the steps to play!**
 1) Move your player around with **WASD**.
