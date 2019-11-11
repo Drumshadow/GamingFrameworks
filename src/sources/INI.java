@@ -9,29 +9,29 @@ import sources.objCode.GameObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
 class INI {
     void renderObjects(GameRoom room, EventHandler events) throws IOException {
         Ini iniO = new Ini(new File("./objects/objects.ini"));
-        int inputNum = Integer.parseInt(iniO.get("control", "objects"));
-        for (int i = 0; i < inputNum; i++) {
+        for (String section : (Set<String>)iniO.keySet()) {
 
-            GameObject newObject = new GameObject(iniO.get("object" + i, "name"),
-                    iniO.get("object" + i, "sprPath"),
-                    Integer.parseInt(iniO.get("object" + i, "frames")),
-                    Boolean.parseBoolean(iniO.get("object" + i, "collide")),
-                    Double.parseDouble(iniO.get("object" + i, "weight")),
-                    Double.parseDouble(iniO.get("object" + i, "tv")),
-                    Double.parseDouble(iniO.get("object" + i, "jump")),
-                    Integer.parseInt(iniO.get("object" + i, "boxType")),
-                    Double.parseDouble(iniO.get("object" + i, "x")),
-                    Double.parseDouble(iniO.get("object" + i, "y")));
+            GameObject newObject = new GameObject(iniO.get(section, "name"),
+                    iniO.get(section, "sprPath"),
+                    Integer.parseInt(iniO.get(section, "frames")),
+                    Boolean.parseBoolean(iniO.get(section, "collide")),
+                    Double.parseDouble(iniO.get(section, "weight")),
+                    Double.parseDouble(iniO.get(section, "tv")),
+                    Double.parseDouble(iniO.get(section, "jump")),
+                    Integer.parseInt(iniO.get(section, "boxType")),
+                    Double.parseDouble(iniO.get(section, "x")),
+                    Double.parseDouble(iniO.get(section, "y")));
 
             // add AI behaviors
-            String[] ai = iniO.get("object" + i, "AI").split(",");
-            this.applyAI(events, iniO, i, newObject, ai, "object");
+            String[] ai = iniO.get(section, "AI").split(",");
+            this.applyAI(events, iniO, newObject, ai, section);
 
             room.addObject(newObject);
         }
@@ -39,71 +39,70 @@ class INI {
 
     void setControls(ControllerList controls, EventHandler events) throws IOException {
         Ini iniC = new Ini(new File("./inputs/controller.ini"));
-        int inputNum = Integer.parseInt(iniC.get("control", "inputs"));
 
-        for (int i = 0; i < inputNum; i++) {
-            switch (iniC.get("input" + i, "purpose")) {
+        for (String section : (Set<String>)iniC.keySet()) {
+            switch (iniC.get(section, "purpose")) {
                 case "Create":
                 case "Destroy":
 
-                    controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                            Integer.parseInt(iniC.get("input" + i, "index")),
-                            Float.parseFloat(iniC.get("input" + i, "range")),
-                            iniC.get("input" + i, "object"),
-                            iniC.get("input" + i, "purpose")));
+                    controls.add(new Controller(Integer.parseInt(iniC.get(section, "button")),
+                            Integer.parseInt(iniC.get(section, "index")),
+                            Float.parseFloat(iniC.get(section, "range")),
+                            iniC.get(section, "object"),
+                            iniC.get(section, "purpose")));
                     break;
                 case "MoveX":
                 case "MoveY":
 
-                    controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                            Integer.parseInt(iniC.get("input" + i, "index")),
-                            Float.parseFloat(iniC.get("input" + i, "range")),
-                            iniC.get("input" + i, "object"),
-                            iniC.get("input" + i, "purpose"),
-                            Double.parseDouble(iniC.get("input" + i, "speed"))));
+                    controls.add(new Controller(Integer.parseInt(iniC.get(section, "button")),
+                            Integer.parseInt(iniC.get(section, "index")),
+                            Float.parseFloat(iniC.get(section, "range")),
+                            iniC.get(section, "object"),
+                            iniC.get(section, "purpose"),
+                            Double.parseDouble(iniC.get(section, "speed"))));
                     break;
                 case "PlaySound":
 
                     Audio a = new Audio();
-                    a.setFileName(iniC.get("input" + i, "audio"));
+                    a.setFileName(iniC.get(section, "audio"));
 
-                    controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                            Integer.parseInt(iniC.get("input" + i, "index")),
-                            Float.parseFloat(iniC.get("input" + i, "range")),
-                            iniC.get("input" + i, "object"),
-                            iniC.get("input" + i, "purpose"),
+                    controls.add(new Controller(Integer.parseInt(iniC.get(section, "button")),
+                            Integer.parseInt(iniC.get(section, "index")),
+                            Float.parseFloat(iniC.get(section, "range")),
+                            iniC.get(section, "object"),
+                            iniC.get(section, "purpose"),
                             a));
                     break;
 
                 case "Fire":
 
                     // create projectile (x and y position don't matter)
-                    GameObject projectile = new GameObject(iniC.get("input" + i, "o2name"),
-                            iniC.get("input" + i, "o2path"),
-                            Integer.parseInt(iniC.get("input" + i, "o2frames")),
-                            Boolean.parseBoolean(iniC.get("input" + i, "o2collide")),
-                            Double.parseDouble(iniC.get("input" + i, "o2weight")),
-                            Double.parseDouble(iniC.get("input" + i, "o2tv")),
-                            Double.parseDouble(iniC.get("input" + i, "o2jump")),
-                            Integer.parseInt(iniC.get("input" + i, "o2boxType")),
+                    GameObject projectile = new GameObject(iniC.get(section, "o2name"),
+                            iniC.get(section, "o2path"),
+                            Integer.parseInt(iniC.get(section, "o2frames")),
+                            Boolean.parseBoolean(iniC.get(section, "o2collide")),
+                            Double.parseDouble(iniC.get(section, "o2weight")),
+                            Double.parseDouble(iniC.get(section, "o2tv")),
+                            Double.parseDouble(iniC.get(section, "o2jump")),
+                            Integer.parseInt(iniC.get(section, "o2boxType")),
                             0.0, 0.0);
 
                     // add AI to projectile
-                    String[] ai = iniC.get("input" + i, "AI").split(",");
+                    String[] ai = iniC.get(section, "AI").split(",");
 
-                    this.applyAI(events, iniC, i, projectile, ai, "input");
+                    this.applyAI(events, iniC, projectile, ai, section);
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
-                    projectile.auto(Double.parseDouble(iniC.get("input" + i, "xSpeed")) / 1000.0,
-                            Double.parseDouble(iniC.get("input" + i, "ySpeed")) / 1000.0);
+                    projectile.auto(Double.parseDouble(iniC.get(section, "xSpeed")) / 1000.0,
+                            Double.parseDouble(iniC.get(section, "ySpeed")) / 1000.0);
 
                     // add input
-                    controls.add(new Controller(Integer.parseInt(iniC.get("input" + i, "button")),
-                            Integer.parseInt(iniC.get("input" + i, "index")),
-                            Float.parseFloat(iniC.get("input" + i, "range")),
-                            iniC.get("input" + i, "object"),
-                            iniC.get("input" + i, "purpose"),
+                    controls.add(new Controller(Integer.parseInt(iniC.get(section, "button")),
+                            Integer.parseInt(iniC.get(section, "index")),
+                            Float.parseFloat(iniC.get(section, "range")),
+                            iniC.get(section, "object"),
+                            iniC.get(section, "purpose"),
                             projectile));
                     break;
             }
@@ -112,69 +111,68 @@ class INI {
 
     void setKeyboardControls(InputList inputs, EventHandler events) throws IOException {
         Ini ini = new Ini(new File("./inputs/keyboard.ini"));
-        int inputNum = Integer.parseInt(ini.get("control", "inputs"));
 
-        for (int i = 0; i < inputNum; i++) {
-            switch (ini.get("input" + i, "purpose")) {
+        for (String section : (Set<String>)ini.keySet()) {
+            switch (ini.get(section, "purpose")) {
                 case "Create":
                 case "Destroy":
 
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            ini.get("input" + i, "object"),
-                            ini.get("input" + i, "purpose")));
+                    inputs.add(new Input(Integer.parseInt(ini.get(section, "key")),
+                            Integer.parseInt(ini.get(section, "action")),
+                            ini.get(section, "object"),
+                            ini.get(section, "purpose")));
                     break;
                 case "MoveX":
                 case "MoveY":
                 case "Jump":
 
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            ini.get("input" + i, "object"),
-                            ini.get("input" + i, "purpose"),
-                            Double.parseDouble(ini.get("input" + i, "speed"))));
+                    inputs.add(new Input(Integer.parseInt(ini.get(section, "key")),
+                            Integer.parseInt(ini.get(section, "action")),
+                            ini.get(section, "object"),
+                            ini.get(section, "purpose"),
+                            Double.parseDouble(ini.get(section, "speed"))));
                     break;
                 case "PlaySound":
 
                     Audio a = new Audio();
-                    a.setFileName(ini.get("input" + i, "audio"));
+                    a.setFileName(ini.get(section, "audio"));
 
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")) | GLFW_PRESS,
-                            ini.get("input" + i, "object"), a));
+                    inputs.add(new Input(Integer.parseInt(ini.get(section, "key")),
+                            Integer.parseInt(ini.get(section, "action")) | GLFW_PRESS,
+                            ini.get(section, "object"), a));
                     break;
                 case "Pause":
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action"))));
+                    inputs.add(new Input(Integer.parseInt(ini.get(section, "key")),
+                            Integer.parseInt(ini.get(section, "action"))));
                     break;
 
                 case "Fire":
 
                     // create projectile (x and y position don't matter)
-                    GameObject projectile = new GameObject(ini.get("input" + i, "o2name"),
-                            ini.get("input" + i, "o2path"),
-                            Integer.parseInt(ini.get("input" + i, "o2frames")),
-                            Boolean.parseBoolean(ini.get("input" + i, "o2collide")),
-                            Double.parseDouble(ini.get("input" + i, "o2weight")),
-                            Double.parseDouble(ini.get("input" + i, "o2tv")),
-                            Double.parseDouble(ini.get("input" + i, "o2jump")),
-                            Integer.parseInt(ini.get("input" + i, "o2boxType")),
+                    GameObject projectile = new GameObject(ini.get(section, "o2name"),
+                            ini.get(section, "o2path"),
+                            Integer.parseInt(ini.get(section, "o2frames")),
+                            Boolean.parseBoolean(ini.get(section, "o2collide")),
+                            Double.parseDouble(ini.get(section, "o2weight")),
+                            Double.parseDouble(ini.get(section, "o2tv")),
+                            Double.parseDouble(ini.get(section, "o2jump")),
+                            Integer.parseInt(ini.get(section, "o2boxType")),
                             0.0, 0.0);
 
                     // add AI to projectile
-                    String[] ai = ini.get("input" + i, "AI").split(",");
+                    String[] ai = ini.get(section, "AI").split(",");
 
-                    this.applyAI(events, ini, i, projectile, ai, "input");
+                    this.applyAI(events, ini, projectile, ai, section);
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
-                    projectile.auto(Double.parseDouble(ini.get("input" + i, "xSpeed")) / 1000.0,
-                            Double.parseDouble(ini.get("input" + i, "ySpeed")) / 1000.0);
+                    projectile.auto(Double.parseDouble(ini.get(section, "xSpeed")) / 1000.0,
+                            Double.parseDouble(ini.get(section, "ySpeed")) / 1000.0);
 
                     // add input
-                    inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
-                            Integer.parseInt(ini.get("input" + i, "action")),
-                            ini.get("input" + i, "object"), projectile));
+                    inputs.add(new Input(Integer.parseInt(ini.get(section, "key")),
+                            Integer.parseInt(ini.get(section, "action")),
+                            ini.get(section, "object"), projectile));
                     break;
             }
         }
@@ -182,48 +180,47 @@ class INI {
 
     void renderHUD(HUD hud) throws IOException {
         Ini ini = new Ini(new File("./HUD/HUD.ini"));
-        int elementNum = Integer.parseInt(ini.get("control", "elements"));
-        for (int i = 0; i < elementNum; i++) {
-            switch (ini.get("element" + i, "type")) {
+        for (String section : (Set<String>)ini.keySet()) {
+            switch (ini.get(section, "type")) {
                 case "HealthBar":
 
                     // get health bar type (default is bar)
                     HealthBar.healthType hpType;
                     Sprite hpSprite = null;
 
-                    if (ini.get("element" + i, "hType").equals("SPRITE")) {
+                    if (ini.get(section, "hType").equals("SPRITE")) {
                         hpType = HealthBar.healthType.SPRITE;
 
                         // get sprite path
-                        hpSprite = new Sprite(ini.get("element" + i, "spPath"),
-                                Integer.parseInt(ini.get("element" + i, "spFrames")));
+                        hpSprite = new Sprite(ini.get(section, "spPath"),
+                                Integer.parseInt(ini.get(section, "spFrames")));
                     }
-                    else if (ini.get("element" + i, "hType").equals("NUM")) {
+                    else if (ini.get(section, "hType").equals("NUM")) {
                         hpType = HealthBar.healthType.NUM;
                     }
                     else {
                         hpType = HealthBar.healthType.BAR;
                     }
 
-                    hud.addElement(new HealthBar(hpType, Integer.parseInt(ini.get("element" + i, "lives")),
-                            Integer.parseInt(ini.get("element" + i, "max")), hpSprite,
-                            Float.parseFloat(ini.get("element" + i, "x")),
-                            Float.parseFloat(ini.get("element" + i, "y")),
-                            Float.parseFloat(ini.get("element" + i, "width")),
-                            Float.parseFloat(ini.get("element" + i, "height")),
-                            ini.get("element" + i, "name")));
+                    hud.addElement(new HealthBar(hpType, Integer.parseInt(ini.get(section, "lives")),
+                            Integer.parseInt(ini.get(section, "max")), hpSprite,
+                            Float.parseFloat(ini.get(section, "x")),
+                            Float.parseFloat(ini.get(section, "y")),
+                            Float.parseFloat(ini.get(section, "width")),
+                            Float.parseFloat(ini.get(section, "height")),
+                            ini.get(section, "name")));
                     break;
                 case "FrameDisplay":
-                    hud.addElement(new FrameDisplay(Float.parseFloat(ini.get("element" + i, "x")),
-                            Float.parseFloat(ini.get("element" + i, "y")),
-                            ini.get("element" + i, "name")));
+                    hud.addElement(new FrameDisplay(Float.parseFloat(ini.get(section, "x")),
+                            Float.parseFloat(ini.get(section, "y")),
+                            ini.get(section, "name")));
                     break;
                 case "Score":
-                    hud.addElement(new Score(Integer.parseInt(ini.get("element" + i, "x")),
-                            Integer.parseInt(ini.get("element" + i, "y")),
-                            Integer.parseInt(ini.get("element" + i, "score")),
-                            Integer.parseInt(ini.get("element" + i, "maxScore")),
-                            ini.get("element" + i, "name")));
+                    hud.addElement(new Score(Integer.parseInt(ini.get(section, "x")),
+                            Integer.parseInt(ini.get(section, "y")),
+                            Integer.parseInt(ini.get(section, "score")),
+                            Integer.parseInt(ini.get(section, "maxScore")),
+                            ini.get(section, "name")));
                     break;
             }
         }
@@ -231,61 +228,60 @@ class INI {
 
     void renderEvents(EventHandler events) throws IOException {
         Ini ini = new Ini(new File("./events/events.ini"));
-        int eventNum = Integer.parseInt(ini.get("control", "events"));
 
-        for (int i = 0; i < eventNum; i++) {
-            switch (ini.get("event" + i, "type")) {
+        for (String section : (Set<String>)ini.keySet()) {
+            switch (ini.get(section, "type")) {
                 case "collision":
-                    events.addEvent(new Event(Event.eventType.COLLISION, ini.get("event" + i, "obj1"),
-                            ini.get("event" + i, "obj2"),
-                            ini.get("event" + i, "hud"),
-                            Integer.parseInt(ini.get("event" + i, "mod"))));
+                    events.addEvent(new Event(Event.eventType.COLLISION, ini.get(section, "obj1"),
+                            ini.get(section, "obj2"),
+                            ini.get(section, "hud"),
+                            Integer.parseInt(ini.get(section, "mod"))));
                     break;
 
                 case "frame":
-                    events.addEvent(new Event(Event.eventType.FRAME, ini.get("event" + i, "hud"),
-                            Integer.parseInt(ini.get("event" + i, "mod"))));
+                    events.addEvent(new Event(Event.eventType.FRAME, ini.get(section, "hud"),
+                            Integer.parseInt(ini.get(section, "mod"))));
                     break;
 
                 case "emission":
 
                     // create projectile (x and y position don't matter)
-                    GameObject projectile = new GameObject(ini.get("event" + i, "o2name"),
-                            ini.get("event" + i, "o2path"),
-                            Integer.parseInt(ini.get("event" + i, "o2frames")),
-                            Boolean.parseBoolean(ini.get("event" + i, "o2collide")),
-                            Double.parseDouble(ini.get("event" + i, "o2weight")),
-                            Double.parseDouble(ini.get("event" + i, "o2tv")),
-                            Double.parseDouble(ini.get("event" + i, "o2jump")),
-                            Integer.parseInt(ini.get("event" + i, "o2boxType")),
+                    GameObject projectile = new GameObject(ini.get(section, "o2name"),
+                            ini.get(section, "o2path"),
+                            Integer.parseInt(ini.get(section, "o2frames")),
+                            Boolean.parseBoolean(ini.get(section, "o2collide")),
+                            Double.parseDouble(ini.get(section, "o2weight")),
+                            Double.parseDouble(ini.get(section, "o2tv")),
+                            Double.parseDouble(ini.get(section, "o2jump")),
+                            Integer.parseInt(ini.get(section, "o2boxType")),
                             0.0, 0.0);
 
                     // add AI behaviors
-                    String[] ai = ini.get("event" + i, "AI").split(",");
-                    this.applyAI(events, ini, i, projectile, ai, "event");
+                    String[] ai = ini.get(section, "AI").split(",");
+                    this.applyAI(events, ini, projectile, ai, section);
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
-                    projectile.auto(Double.parseDouble(ini.get("event" + i, "xSpeed")) / 1000.0,
-                            Double.parseDouble(ini.get("event" + i, "ySpeed")) / 1000.0);
+                    projectile.auto(Double.parseDouble(ini.get(section, "xSpeed")) / 1000.0,
+                            Double.parseDouble(ini.get(section, "ySpeed")) / 1000.0);
 
                     // add event
                     events.addEvent(new Event(Event.eventType.EMISSION,
-                            ini.get("event" + i, "obj1"), projectile,
-                            Integer.parseInt(ini.get("event" + i, "timer"))));
+                            ini.get(section, "obj1"), projectile,
+                            Integer.parseInt(ini.get(section, "timer"))));
                     break;
 
                 case "destruction":
                     events.addEvent(new Event(Event.eventType.DESTRUCTION,
-                            ini.get("event" + i, "obj1"),
-                            ini.get("event" + i, "obj2")));
+                            ini.get(section, "obj1"),
+                            ini.get(section, "obj2")));
                     break;
             }
         }
     }
 
     // applies AI to projectiles
-    private void applyAI(EventHandler events, Ini ini, int i, GameObject projectile, String[] ai, String iniType) {
+    private void applyAI(EventHandler events, Ini ini, GameObject projectile, String[] ai, String section) {
         if (!ai[0].equals("null")) {
 
             for (String s : ai) {
@@ -293,7 +289,7 @@ class INI {
 
                     case "copy":
                         projectile.addBehaviors(GameObject.Behavior.COPY);
-                        projectile.setTarget(ini.get(iniType + i, "o2"));
+                        projectile.setTarget(ini.get(section, "o2"));
                         break;
 
                     case "ledges":
@@ -311,8 +307,8 @@ class INI {
                     case "auto":
                         projectile.addBehaviors(GameObject.Behavior.AUTO);
 
-                        projectile.auto(Double.parseDouble(ini.get(iniType + i, "xSpeed")) / 1000.0,
-                                Double.parseDouble(ini.get(iniType + i, "ySpeed")) / 1000.0);
+                        projectile.auto(Double.parseDouble(ini.get(section, "xSpeed")) / 1000.0,
+                                Double.parseDouble(ini.get(section, "ySpeed")) / 1000.0);
                         break;
 
                     case "emit":
@@ -322,7 +318,7 @@ class INI {
                     case "destruct":
                         projectile.addBehaviors(GameObject.Behavior.DESTRUCT);
 
-                        String[] destroyers = ini.get(iniType + i, "destroyers").split(",");
+                        String[] destroyers = ini.get(section, "destroyers").split(",");
                         projectile.addDestroyer(destroyers);
 
                         for (String d : projectile.getDestroyers()) {
