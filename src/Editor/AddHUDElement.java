@@ -1,72 +1,33 @@
 package Editor;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 
 public class AddHUDElement {
     private JPanel AddHUDElement;
-    private JComboBox Type;
-    private JTextField typeTextField;
+    private JComboBox<Object> framesComboBox;
     private JButton sprImage;
     private JSpinner xPos;
     private JSpinner yPos;
-    private JTextField textField1;
+    private JTextField nameTextField;
+    private JCheckBox displayFramesCheckBox;
+    private JCheckBox displayHealthCheckBox;
+    private JComboBox comboBox1;
+    private JCheckBox showScoreCheckBox;
+    private JSpinner startSoreSpinner;
+    private JSpinner maxScoreSpinner;
+    private JButton saveButton;
+    private JSpinner widthSpinner;
+    private JSpinner heightSpinner;
     private File sprPath;
 
     public AddHUDElement() {
-        AddHUDElement.addComponentListener(new ComponentAdapter() {
-        });
-        AddHUDElement.addContainerListener(new ContainerAdapter() {
-        });
-        AddHUDElement.addComponentListener(new ComponentAdapter() {
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
-            }
-
-            @Override
-            protected Object clone() throws CloneNotSupportedException {
-                return super.clone();
-            }
-
-            @Override
-            public String toString() {
-                return super.toString();
-            }
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                super.componentMoved(e);
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) {
-                super.componentHidden(e);
-            }
-        });
         sprImage.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e the event to be processed
-             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
@@ -85,11 +46,65 @@ public class AddHUDElement {
                 sprPath = fc.getSelectedFile();
             }
         });
+
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./HUD/HUD.ini"));
+
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
+
+                    String strNum = Integer.toString(i);
+
+                    if(displayFramesCheckBox.isSelected()) {
+                        ini.put(strNum, "type", "FrameDisplay");
+                    } else if(displayHealthCheckBox.isSelected()) {
+                        ini.put(strNum, "type", "HealthBar");
+                        ini.put(strNum, "width", widthSpinner.getValue());
+                        ini.put(strNum, "height", heightSpinner.getValue());
+
+                        if(sprPath != null) {
+                            ini.put(strNum, "spFrames",
+                                    sprPath.getAbsolutePath().replace('\\',
+                                            '/'));
+                            ini.put(strNum, "spFrames", 1);
+                        }
+                    } else if(showScoreCheckBox.isSelected()) {
+                        ini.put(strNum, "type", "Score");
+                        ini.put(strNum, "score", startSoreSpinner.getValue());
+                        ini.put(strNum, "maxScore", maxScoreSpinner.getValue());
+                    }
+
+                    ini.put(strNum, "name", nameTextField.getText());
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
+        });
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
+        SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
+        SpinnerNumberModel scoreModel = new SpinnerNumberModel(0, 0, 10000, 1);
+        SpinnerNumberModel sizeModel = new SpinnerNumberModel(0, 0, 5, 0.05);
 
+        xPos = new JSpinner(xPosModel);
+        yPos = new JSpinner(yPosModel);
+        startSoreSpinner = new JSpinner(scoreModel);
+        maxScoreSpinner = new JSpinner(scoreModel);
+        widthSpinner = new JSpinner(sizeModel);
+        heightSpinner = new JSpinner(sizeModel);
+        framesComboBox = new JComboBox<>();
+        for(int i = 1; i <= 60; i++) {
+            framesComboBox.addItem(i);
+        }
     }
 
     public static void main(String[] args) {
