@@ -4,7 +4,7 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 **Engine Skillfully Built By:** Cody Dowell, Stevie Damrel, Weston Straw, and Ashley Roesler
 
 # Current Features
-- **GUI:** allows the user to edit, add, and remove game objects, events, inputs, HUD elements, AI, sounds, sprites, fonts, and backgrounds
+- **GUI:** allows the user to edit and add game objects, events, inputs, HUD elements, AI, sounds, sprites, fonts, and backgrounds
 - Functional pause button
 - Animations
 - **AI options for all game objects:**
