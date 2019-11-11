@@ -1,10 +1,19 @@
 package sources;
 
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import sources.HUDcode.*;
 import sources.objCode.GameObject;
 
+import java.awt.*;
+
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+
 class Event {
-    public enum eventType {COLLISION, FRAME, EMISSION, DESTRUCTION}
+    public enum eventType {COLLISION, FRAME, EMISSION, DESTRUCTION, END}
     private eventType type;
     private String obj1;
     private String obj2;
@@ -16,6 +25,11 @@ class Event {
     private int fireTime;
 
     private Audio sound;
+
+    // For end event
+    private int x;
+    private int y;
+    private String msg;
 
     // test
 
@@ -55,7 +69,17 @@ class Event {
         this.sound = a;
     }
 
-    void execute(GameRoom room, HUD hud, int displayFrames) {
+    // end event
+    Event(eventType eT, String hE, int mod, String msg, int x, int y) {
+        this.type = eT;
+        this.hud = hE;
+        this.mod = mod;
+        this.msg = msg;
+        this.x = x;
+        this.y = y;
+    }
+
+    void execute(GameRoom room, HUD hud, int displayFrames) throws SlickException {
         switch (this.type) {
             case COLLISION: {
 
@@ -184,6 +208,28 @@ class Event {
                 break;
             }
         }
+    }
+
+    public boolean execute(HUD hud, UnicodeFont hudFont, boolean paused) {
+        if (hud.getElement(this.hud) instanceof HealthBar) {
+            if (((HealthBar) hud.getElement(this.hud)).getLives() == mod) {
+                glPushMatrix();
+                GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
+                hudFont.drawString(this.x, this.y, this.msg);
+                glPopMatrix();
+                return true;
+            }
+        }
+        else if (hud.getElement(this.hud) instanceof Score) {
+            if (((Score) hud.getElement(this.hud)).getScore() == mod) {
+                glPushMatrix();
+                GL11.glOrtho(0, 1000, 1000, 0, -100, 100);
+                hudFont.drawString(this.x, this.y, this.msg);
+                glPopMatrix();
+                return true;
+            }
+        }
+        return paused;
     }
 
     // prepares projectile to be emitted/fired from object
