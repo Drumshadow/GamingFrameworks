@@ -69,16 +69,18 @@ public class AddHUDElement {
                         ini.put(strNum, "height", heightSpinner.getValue());
 
                         if(sprPath != null) {
-                            ini.put(strNum, "spFrames",
+                            ini.put(strNum, "spPath",
                                     sprPath.getAbsolutePath().replace('\\',
                                             '/'));
-                            ini.put(strNum, "spFrames", 1);
+                            ini.put(strNum, "spFrames", "1");
                         }
                     } else if(showScoreCheckBox.isSelected()) {
                         ini.put(strNum, "type", "Score");
                         ini.put(strNum, "score", startSoreSpinner.getValue());
                         ini.put(strNum, "maxScore", maxScoreSpinner.getValue());
                     }
+                    ini.put(strNum, "xPos", xPos.getValue());
+                    ini.put(strNum, "yPos", yPos.getValue());
 
                     ini.put(strNum, "name", nameTextField.getText());
 
