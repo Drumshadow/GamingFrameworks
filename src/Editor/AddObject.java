@@ -66,13 +66,20 @@ public class AddObject {
                     num++;
                 }
 
+
                 String strNum = Integer.toString(num);
 
                 try {
                     ini.put(strNum, "name", nameTextField.getText());
-                    ini.put(strNum, "sprPath",
-                            sprite.getAbsolutePath().substring(0,
-                                    sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                    if(Integer.parseInt(framesComboBox.getSelectedItem().toString()) > 1) {
+                        ini.put(strNum, "sprPath",
+                                sprite.getAbsolutePath().substring(0,
+                                        sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                    } else {
+                        ini.put(strNum, "sprPath",
+                                sprite.getAbsolutePath().substring(0,
+                                        sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
+                    }
                     ini.put(strNum, "frames", framesComboBox.getSelectedItem());
                     ini.put(strNum, "collide", collidesCheckBox.isSelected());
                     ini.put(strNum, "weight", weightSpinner.getValue());
