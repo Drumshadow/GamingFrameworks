@@ -140,7 +140,7 @@ public class GameRoom {
     }
 
     // returns all elements with the same name
-    public Vector<GameObject> getElements(String name) {
+    Vector<GameObject> getElements(String name) {
 
         Vector<GameObject> elements = new Vector<>();
 
