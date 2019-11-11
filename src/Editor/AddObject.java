@@ -30,7 +30,7 @@ public class AddObject {
     private JCheckBox movesByItselfCheckBox;
     private JCheckBox shootsProjectileCheckBox;
     private JCheckBox destructsCheckBox;
-    private JComboBox<String> destructsComboBox;
+    private JComboBox<String> destructorComboBox;
     private File sprite;
     private Wini ini;
 
@@ -82,6 +82,12 @@ public class AddObject {
 
                 if(copiesCheckBox.isSelected()) {
                     AI += "copy";
+                }
+                if(fearsLedgesCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "ledges";
                 }
                 if(bounceOffWallsCheckBox.isSelected()) {
                     if(AI.length() != 0) {
@@ -141,17 +147,18 @@ public class AddObject {
         boundingBoxTypeComboBox.addItem("Rectangle");
         boundingBoxTypeComboBox.addItem("Oval");
 
-        destructsComboBox = new JComboBox<>();
+        framesComboBox = new JComboBox<>();
+        for(int i = 1; i <= 60; i++) {
+            framesComboBox.addItem(i);
+        }
+
+        destructorComboBox = new JComboBox<>();
+        // destructsComboBox.addItem("Test");
         Set<String> keys = ini.keySet();
 
         for(String key : keys) {
             System.out.println(key + " " + ini.get(key, "name"));
-            destructsComboBox.addItem(key + " " + ini.get(key, "name"));
-        }
-
-        framesComboBox = new JComboBox<>();
-        for(int i = 1; i <= 60; i++) {
-            framesComboBox.addItem(i);
+            destructorComboBox.addItem(key + " " + ini.get(key, "name"));
         }
     }
 
