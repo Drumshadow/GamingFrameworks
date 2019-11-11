@@ -22,25 +22,23 @@
             </constraints>
             <properties>
               <model>
-                <item value=""/>
+                <item value="Create"/>
+                <item value="Destroy"/>
                 <item value="MoveX"/>
-                <item value="Move Y"/>
-                <item value="Play Sound"/>
+                <item value="MoveY"/>
+                <item value="PlaySound"/>
                 <item value="Jump"/>
                 <item value="Pause"/>
+                <item value="Fire"/>
               </model>
             </properties>
           </component>
-          <vspacer id="46528">
-            <constraints>
-              <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-            </constraints>
-          </vspacer>
           <component id="4224e" class="javax.swing.JLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <labelFor value="f97d7"/>
               <text value="Button purpose"/>
             </properties>
           </component>
@@ -49,16 +47,16 @@
               <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <labelFor value="f8333"/>
               <text value="Map to"/>
             </properties>
           </component>
-          <component id="f8333" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+          <component id="f8333" class="javax.swing.JComboBox" binding="mapToComboBox" default-binding="true">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
-                <item value=""/>
                 <item value="a"/>
                 <item value="b"/>
                 <item value="c"/>
@@ -84,6 +82,7 @@
                 <item value="x"/>
                 <item value="y"/>
                 <item value="z"/>
+                <item value="0"/>
                 <item value="1"/>
                 <item value="2"/>
                 <item value="3"/>
@@ -93,59 +92,13 @@
                 <item value="7"/>
                 <item value="8"/>
                 <item value="9"/>
-                <item value="0"/>
                 <item value="(space)"/>
               </model>
             </properties>
           </component>
-          <vspacer id="cc206">
+          <component id="dfd50" class="javax.swing.JSpinner" binding="speedSpinner" custom-create="true" default-binding="true">
             <constraints>
-              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-            </constraints>
-          </vspacer>
-          <component id="354a" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Object"/>
-            </properties>
-          </component>
-          <component id="c0219" class="javax.swing.JComboBox" binding="comboBox3" default-binding="true">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <model>
-                <item value=""/>
-                <item value="player"/>
-              </model>
-            </properties>
-          </component>
-          <component id="c6a34" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Speed"/>
-            </properties>
-          </component>
-          <vspacer id="7bdfc">
-            <constraints>
-              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-            </constraints>
-          </vspacer>
-          <component id="c9c61" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Audio File"/>
-            </properties>
-          </component>
-          <component id="dfd50" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
-            <constraints>
-              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
           </component>
@@ -162,19 +115,60 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <labelFor value="56834"/>
               <text value="Action"/>
             </properties>
           </component>
-          <component id="56834" class="javax.swing.JComboBox" binding="comboBox4" default-binding="true">
+          <component id="56834" class="javax.swing.JComboBox" binding="actionComboBox" default-binding="true">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
-                <item value="0"/>
-                <item value="1"/>
-                <item value="2"/>
+                <item value="Release"/>
+                <item value="Press"/>
+                <item value="Hold"/>
               </model>
+            </properties>
+          </component>
+          <component id="a700b" class="javax.swing.JButton" binding="saveButton" default-binding="true">
+            <constraints>
+              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Save"/>
+            </properties>
+          </component>
+          <component id="d915b" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="58d67"/>
+              <text value="Object"/>
+            </properties>
+          </component>
+          <component id="58d67" class="javax.swing.JComboBox" binding="objectComboBox" custom-create="true" default-binding="true">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="51329" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <labelFor value="dfd50"/>
+              <text value="Speed"/>
+            </properties>
+          </component>
+          <component id="c9c61" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Audio File"/>
             </properties>
           </component>
         </children>
@@ -184,10 +178,11 @@
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <labelFor value="74f83"/>
           <text value="Controller Type"/>
         </properties>
       </component>
-      <component id="74f83" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+      <component id="74f83" class="javax.swing.JComboBox" binding="controllerTypeComboBox" default-binding="true">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

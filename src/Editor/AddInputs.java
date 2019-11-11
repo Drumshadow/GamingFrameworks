@@ -1,5 +1,7 @@
 package Editor;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
@@ -7,66 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
 public class AddInputs {
     private JPanel panel1;
     private JPanel AddInputs;
     private JComboBox buttonPurposeDropDown;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JComboBox comboBox3;
-    private JSpinner spinner1;
+    private JComboBox mapToComboBox;
+    private JComboBox controllerTypeComboBox;
+    private JComboBox<String> objectComboBox;
+    private JSpinner speedSpinner;
     private JButton audioFilleIfNeededButton;
-    private JComboBox comboBox4;
+    private JComboBox actionComboBox;
+    private JButton saveButton;
     private File audioPath;
 
     public AddInputs() {
-        AddInputs.addComponentListener(new ComponentAdapter() {
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
-            }
-
-            @Override
-            protected Object clone() throws CloneNotSupportedException {
-                return super.clone();
-            }
-
-            @Override
-            public String toString() {
-                return super.toString();
-            }
-
-            @Override
-            protected void finalize() throws Throwable {
-                super.finalize();
-            }
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                super.componentMoved(e);
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) {
-                super.componentHidden(e);
-            }
-        });
         audioFilleIfNeededButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,6 +45,45 @@ public class AddInputs {
                 audioPath = fc.getSelectedFile();
             }
         });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./inputs/keyboard.ini"));
+                    int num = 0;
+
+                    while(ini.containsKey(Integer.toString(num))) {
+                        num++;
+                    }
+
+                    String strNum = Integer.toString(num);
+
+                    ini.put(strNum, "action",
+                            buttonPurposeDropDown.getSelectedIndex());
+
+                    if(mapToComboBox.getSelectedIndex() == 36) {
+                        ini.put(strNum, "key", 32);
+                    } else if(mapToComboBox.getSelectedIndex() < 26) {
+                        ini.put(strNum, "key",
+                                mapToComboBox.getSelectedIndex() + 65);
+                    } else {
+                        ini.put(strNum, "key",
+                                mapToComboBox.getSelectedIndex() + 22);
+                    }
+
+                    ini.put(strNum, "object", objectComboBox.getSelectedItem());
+                    ini.put(strNum, "purpose",
+                            buttonPurposeDropDown.getSelectedItem());
+                    ini.put(strNum, "speed", speedSpinner.getValue());
+                    if(audioPath != null) {
+                        ini.put(strNum, "audio",
+                                audioPath.getAbsolutePath().replace('\\', '/'));
+                    }
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
+        });
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame("Slammin' Game Editor");
@@ -93,5 +91,27 @@ public class AddInputs {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+
+        SpinnerNumberModel speedModel = new SpinnerNumberModel(0, -20.0, 20.0,
+                0.5);
+        speedSpinner = new JSpinner(speedModel);
+
+        objectComboBox = new JComboBox<>();
+
+        try {
+            Wini ini = new Wini(new File("./objects/objects.ini"));
+
+            Set<String> keys = ini.keySet();
+            for(String key : keys) {
+                System.out.println(ini.get(key, "name"));
+                objectComboBox.addItem(ini.get(key, "name"));
+            }
+        } catch(IOException err) {
+            err.printStackTrace();
+        }
     }
 }
