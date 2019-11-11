@@ -2,25 +2,26 @@ package Editor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 
-public class AddHUDElement {
-    private JPanel AddHUDElement;
-    private JComboBox Type;
-    private JTextField typeTextField;
-    private JButton sprImage;
-    private JSpinner xPos;
-    private JSpinner yPos;
-    private JTextField textField1;
-    private File sprPath;
+public class AddInputs {
+    private JPanel panel1;
+    private JPanel AddInputs;
+    private JComboBox buttonPurposeDropDown;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
+    private JComboBox comboBox3;
+    private JSpinner spinner1;
+    private JButton audioFilleIfNeededButton;
+    private JComboBox comboBox4;
+    private File audioPath;
 
-    public AddHUDElement() {
-        AddHUDElement.addComponentListener(new ComponentAdapter() {
-        });
-        AddHUDElement.addContainerListener(new ContainerAdapter() {
-        });
-        AddHUDElement.addComponentListener(new ComponentAdapter() {
+    public AddInputs() {
+        AddInputs.addComponentListener(new ComponentAdapter() {
             @Override
             public int hashCode() {
                 return super.hashCode();
@@ -39,6 +40,11 @@ public class AddHUDElement {
             @Override
             public String toString() {
                 return super.toString();
+            }
+
+            @Override
+            protected void finalize() throws Throwable {
+                super.finalize();
             }
 
             @Override
@@ -61,12 +67,7 @@ public class AddHUDElement {
                 super.componentHidden(e);
             }
         });
-        sprImage.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e the event to be processed
-             */
+        audioFilleIfNeededButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
@@ -81,21 +82,15 @@ public class AddHUDElement {
                         return null;
                     }
                 });
-                fc.showOpenDialog(AddHUDElement);
-                sprPath = fc.getSelectedFile();
+                fc.showOpenDialog(AddInputs);
+                audioPath = fc.getSelectedFile();
             }
         });
     }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-
-    }
-
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Add HUD element");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setContentPane(new AddHUDElement().AddHUDElement);
+        JFrame frame = new JFrame("Slammin' Game Editor");
+        frame.setContentPane(new AddInputs().AddInputs);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
