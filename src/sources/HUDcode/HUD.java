@@ -67,4 +67,8 @@ public class HUD {
         hudFont.getEffects().add(new ColorEffect(Color.WHITE));
         hudFont.loadGlyphs();
     }
+
+    public UnicodeFont getFont() {
+        return hudFont;
+    }
 }

@@ -70,13 +70,18 @@ class Event {
     }
 
     // end event
-    Event(eventType eT, String hE, int mod, String msg, int x, int y) {
+    Event(eventType eT, String hE, int mod, String msg, int x, int y, Audio a) {
         this.type = eT;
         this.hud = hE;
         this.mod = mod;
         this.msg = msg;
         this.x = x;
         this.y = y;
+        this.sound = a;
+    }
+
+    public eventType getType() {
+        return this.type;
     }
 
     void execute(GameRoom room, HUD hud, int displayFrames) throws SlickException {
