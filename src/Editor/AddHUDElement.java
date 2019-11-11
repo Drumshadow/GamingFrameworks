@@ -17,13 +17,15 @@ public class AddHUDElement {
     private JTextField nameTextField;
     private JCheckBox displayFramesCheckBox;
     private JCheckBox displayHealthCheckBox;
-    private JComboBox comboBox1;
+    private JComboBox healthBarTypeComboBox;
     private JCheckBox showScoreCheckBox;
     private JSpinner startSoreSpinner;
     private JSpinner maxScoreSpinner;
     private JButton saveButton;
     private JSpinner widthSpinner;
     private JSpinner heightSpinner;
+    private JSpinner livesSpinner;
+    private JSpinner maxLivesSpinner;
     private File sprPath;
 
     public AddHUDElement() {
@@ -65,12 +67,16 @@ public class AddHUDElement {
                         ini.put(strNum, "type", "FrameDisplay");
                     } else if(displayHealthCheckBox.isSelected()) {
                         ini.put(strNum, "type", "HealthBar");
+                        ini.put(strNum, "hType", healthBarTypeComboBox.getSelectedItem());
+                        ini.put(strNum, "max", maxLivesSpinner.getValue());
+                        ini.put(strNum, "lives", livesSpinner.getValue());
                         ini.put(strNum, "width", widthSpinner.getValue());
                         ini.put(strNum, "height", heightSpinner.getValue());
 
                         if(sprPath != null) {
-                            ini.put(strNum, "spPath",
-                                    sprPath.getAbsolutePath().replace('\\',
+                            ini.put(strNum, "spFrames",
+                                    sprPath.getAbsolutePath().substring(0,
+                                            sprPath.getAbsolutePath().length() - 4).replace('\\',
                                             '/'));
                             ini.put(strNum, "spFrames", "1");
                         }
@@ -102,6 +108,9 @@ public class AddHUDElement {
                 1);
         SpinnerNumberModel xSizeModel = new SpinnerNumberModel(0, 0, 5, 0.05);
         SpinnerNumberModel ySizeModel = new SpinnerNumberModel(0, 0, 5, 0.05);
+        SpinnerNumberModel livesModel = new SpinnerNumberModel(5, 0, 10, 1);
+        SpinnerNumberModel maxLivesModel = new SpinnerNumberModel(0, 0, 10,
+                1);
 
         xPos = new JSpinner(xPosModel);
         yPos = new JSpinner(yPosModel);
@@ -109,6 +118,8 @@ public class AddHUDElement {
         maxScoreSpinner = new JSpinner(maxScoreModel);
         widthSpinner = new JSpinner(xSizeModel);
         heightSpinner = new JSpinner(ySizeModel);
+        livesSpinner = new JSpinner(livesModel);
+        maxLivesSpinner = new JSpinner(maxLivesModel);
         framesComboBox = new JComboBox<>();
         for(int i = 1; i <= 60; i++) {
             framesComboBox.addItem(i);
