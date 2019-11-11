@@ -4,15 +4,21 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 **Engine Skillfully Built By:** Cody Dowell, Stevie Damrel, Weston Straw, and Ashley Roesler
 
 # Current Features
-- Drag-and-Drop Audio
-- Accurate Collision Detection and Gravity
-- Input Handling for Keyboard and Controllers 
-- Functional Game Loop
-- Sprite Drawing (Now with transparency!)
-- Basic HUD Drawing
-- Basic AI for "foe" Object
-- Functional Pause Button
-- In-Game Editing of Objects
+- **GUI:** allows the user to edit and add game objects, events, inputs, HUD elements, AI, sounds, sprites, fonts, and backgrounds
+- Functional pause button
+- Animations
+- **AI options for all game objects:**
+  - COPY - an object copies the movements of another
+  - LEDGES - an object turns around when it detects a ledge
+  - WALLS - an object turns around when it collides with something horizontally
+  - BOUNCE - an object turns around when it collides with something vertically
+  - AUTO - an object moves automatically without user input
+  - EMIT - an object emits another object
+  - DESTRUCT - an object is destroyed by another
+- Drawing text to screen
+- End game conditions
+- Concurrent audio
+- Proper collision detection
 
 # Developer's Guide
     Adding/Changing Audio
