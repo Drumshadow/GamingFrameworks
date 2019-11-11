@@ -125,7 +125,6 @@ public class Audio {
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(-24f);
 
-    //    System.out.println(clip.getFrameLength() + " | " + clip.getFramePosition());
         clip.start();
     }
 }

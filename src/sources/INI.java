@@ -31,7 +31,7 @@ class INI {
 
             // add AI behaviors
             String[] ai = iniO.get(section, "AI").split(",");
-            this.applyAI(events, iniO, newObject, ai, section);
+            this.applyAI(events, iniO, newObject, ai, section, null);
 
             room.addObject(newObject);
         }
@@ -90,7 +90,7 @@ class INI {
                     // add AI to projectile
                     String[] ai = iniC.get(section, "AI").split(",");
 
-                    this.applyAI(events, iniC, projectile, ai, section);
+                    this.applyAI(events, iniC, projectile, ai, section, null);
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
@@ -162,7 +162,7 @@ class INI {
                     // add AI to projectile
                     String[] ai = ini.get(section, "AI").split(",");
 
-                    this.applyAI(events, ini, projectile, ai, section);
+                    this.applyAI(events, ini, projectile, ai, section, null);
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
@@ -230,17 +230,26 @@ class INI {
         Ini ini = new Ini(new File("./events/events.ini"));
 
         for (String section : (Set<String>)ini.keySet()) {
+
+            // get sound if there is one
+            Audio a = null;
+
+            if (!ini.get(section, "audio").equals("null")) {
+                a = new Audio();
+                a.setFileName(ini.get(section, "audio"));
+            }
+
             switch (ini.get(section, "type")) {
                 case "collision":
                     events.addEvent(new Event(Event.eventType.COLLISION, ini.get(section, "obj1"),
                             ini.get(section, "obj2"),
                             ini.get(section, "hud"),
-                            Integer.parseInt(ini.get(section, "mod"))));
+                            Integer.parseInt(ini.get(section, "mod")), a));
                     break;
 
                 case "frame":
                     events.addEvent(new Event(Event.eventType.FRAME, ini.get(section, "hud"),
-                            Integer.parseInt(ini.get(section, "mod"))));
+                            Integer.parseInt(ini.get(section, "mod")), a));
                     break;
 
                 case "emission":
@@ -258,7 +267,7 @@ class INI {
 
                     // add AI behaviors
                     String[] ai = ini.get(section, "AI").split(",");
-                    this.applyAI(events, ini, projectile, ai, section);
+                    this.applyAI(events, ini, projectile, ai, section, a);
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
@@ -268,20 +277,20 @@ class INI {
                     // add event
                     events.addEvent(new Event(Event.eventType.EMISSION,
                             ini.get(section, "obj1"), projectile,
-                            Integer.parseInt(ini.get(section, "timer"))));
+                            Integer.parseInt(ini.get(section, "timer")), a));
                     break;
 
                 case "destruction":
                     events.addEvent(new Event(Event.eventType.DESTRUCTION,
                             ini.get(section, "obj1"),
-                            ini.get(section, "obj2")));
+                            ini.get(section, "obj2"), a));
                     break;
             }
         }
     }
 
     // applies AI to projectiles
-    private void applyAI(EventHandler events, Ini ini, GameObject projectile, String[] ai, String section) {
+    private void applyAI(EventHandler events, Ini ini, GameObject projectile, String[] ai, String section, Audio a) {
         if (!ai[0].equals("null")) {
 
             for (String s : ai) {
@@ -322,7 +331,7 @@ class INI {
                         projectile.addDestroyer(destroyers);
 
                         for (String d : projectile.getDestroyers()) {
-                            events.addEvent(new Event(Event.eventType.DESTRUCTION, projectile.getObjName(), d));
+                            events.addEvent(new Event(Event.eventType.DESTRUCTION, projectile.getObjName(), d, a));
                         }
                         break;
                 }
