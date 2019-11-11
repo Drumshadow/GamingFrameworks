@@ -116,7 +116,7 @@ public class GameRoom {
         this.allObjects = o;
     }
 
-    Vector<GameObject> getAllObjects() {
+    public Vector<GameObject> getAllObjects() {
         return this.allObjects;
     }
 
@@ -124,7 +124,7 @@ public class GameRoom {
         return this.allObjects.size();
     }
 
-    GameObject getElement(String oN) {
+    public GameObject getElement(String oN) {
         for (int i = 0; i < this.allObjects.size(); i++) {
 
             if (this.allObjects.elementAt(i).getObjName().equals(oN)) {

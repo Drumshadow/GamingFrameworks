@@ -13,7 +13,7 @@ import java.io.IOException;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
 public class INI {
-    void renderObjects(GameRoom room) throws IOException {
+    void renderObjects(GameRoom room, EventHandler events) throws IOException {
         Ini iniO = new Ini(new File("./objects/objects.ini"));
         int inputNum = Integer.parseInt(iniO.get("control", "objects"));
         for (int i = 0; i < inputNum; i++) {
@@ -39,7 +39,7 @@ public class INI {
 
                         case "copy":
                             newObject.addBehaviors(GameObject.Behavior.COPY);
-                            newObject.setTarget(room.getElement(iniO.get("object" + i, "o2")));
+                            newObject.setTarget(iniO.get("object" + i, "o2"));
                             break;
 
                         case "ledges":
@@ -67,7 +67,13 @@ public class INI {
 
                         case "destruct":
                             newObject.addBehaviors(GameObject.Behavior.DESTRUCT);
-                            newObject.setDestroyer(room.getElement(iniO.get("object" + i, "o2")));
+
+                            String[] destroyers = iniO.get("object" + i, "destroyers").split(",");
+                            newObject.addDestroyer(destroyers);
+
+                            for (String d : newObject.getDestroyers()) {
+                                events.addEvent(new Event(Event.eventType.DESTRUCTION, newObject.getObjName(), d));
+                            }
                             break;
                     }
                 }
@@ -76,7 +82,7 @@ public class INI {
         }
     }
 
-    public void setControls(ControllerList controls) throws IOException {
+    public void setControls(ControllerList controls, EventHandler events) throws IOException {
         Ini iniC = new Ini(new File("./inputs/controller.ini"));
         int inputNum = Integer.parseInt(iniC.get("control", "inputs"));
 
@@ -145,7 +151,7 @@ public class INI {
         }
     }
 
-    void setKeyboardControls(InputList inputs) throws IOException {
+    void setKeyboardControls(InputList inputs, EventHandler events) throws IOException {
         Ini ini = new Ini(new File("./inputs/keyboard.ini"));
         int inputNum = Integer.parseInt(ini.get("control", "inputs"));
 
@@ -196,12 +202,60 @@ public class INI {
                             Integer.parseInt(ini.get("input" + i, "o2boxType")),
                             0.0, 0.0);
 
+                    // add AI to projectile
+                    String[] ai = ini.get("input" + i, "AI").split(",");
+
+                    if (!ai[0].equals("null")) {
+
+                        for (String s : ai) {
+                            switch (s) {
+
+                                case "copy":
+                                    projectile.addBehaviors(GameObject.Behavior.COPY);
+                                    projectile.setTarget(ini.get("input" + i, "o2"));
+                                    break;
+
+                                case "ledges":
+                                    projectile.addBehaviors(GameObject.Behavior.LEDGES);
+                                    break;
+
+                                case "walls":
+                                    projectile.addBehaviors(GameObject.Behavior.WALLS);
+                                    break;
+
+                                case "bounce":
+                                    projectile.addBehaviors(GameObject.Behavior.BOUNCE);
+                                    break;
+
+                                case "auto":
+                                    projectile.addBehaviors(GameObject.Behavior.AUTO);
+
+                                    projectile.auto(Double.parseDouble(ini.get("input" + i, "xSpeed")) / 1000.0,
+                                            Double.parseDouble(ini.get("input" + i, "ySpeed")) / 1000.0);
+                                    break;
+
+                                case "emit":
+                                    projectile.addBehaviors(GameObject.Behavior.EMIT);
+                                    break;
+
+                                case "destruct":
+                                    projectile.addBehaviors(GameObject.Behavior.DESTRUCT);
+
+                                    String[] destroyers = ini.get("input" + i, "destroyers").split(",");
+                                    projectile.addDestroyer(destroyers);
+
+                                    for (String d : projectile.getDestroyers()) {
+                                        events.addEvent(new Event(Event.eventType.DESTRUCTION, projectile.getObjName(), d));
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
                     projectile.auto(Double.parseDouble(ini.get("input" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(ini.get("input" + i, "ySpeed")) / 1000.0);
-
-                    // TODO: add AI to projectiles
 
                     // add input
                     inputs.add(new Input(Integer.parseInt(ini.get("input" + i, "key")),
@@ -303,6 +357,12 @@ public class INI {
                     events.addEvent(new Event(Event.eventType.EMISSION,
                             ini.get("event" + i, "obj1"), projectile,
                             Integer.parseInt(ini.get("event" + i, "timer"))));
+                    break;
+
+                case "destruction":
+                    events.addEvent(new Event(Event.eventType.DESTRUCTION,
+                            ini.get("event" + i, "obj1"),
+                            ini.get("event" + i, "obj2")));
                     break;
             }
         }

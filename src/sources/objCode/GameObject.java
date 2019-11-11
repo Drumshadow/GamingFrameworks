@@ -33,8 +33,10 @@ public class GameObject {
     private double autoX = 0.0;
     private double autoY = 0.0;
 
-    private GameObject target = null;
-    private GameObject destroyer = null;
+    //todo private GameObject target = null;
+    //private GameObject destroyer = null;
+    private String target;
+    private Set<String> destroyers = new HashSet<>();
 
     /*==================================================
                      Initialization
@@ -82,7 +84,8 @@ public class GameObject {
         this.autoY = other.autoY;
 
         this.target = other.target;
-        this.destroyer = other.destroyer;
+        this.destroyers = other.destroyers;
+      //todo  this.destroyer = other.destroyer;
     }
 
     // constructor via given values (finds sprite via path)
@@ -119,13 +122,16 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
-    public void move(Vector<GameObject> roomObjects) {
+ //todo   public void move(Vector<GameObject> roomObjects) {
+    public void move(GameRoom room) {
 
         // copy target
         if (this.ai.contains(Behavior.COPY)) {
 
-            this.setXSpeed(target.getXSpeed());
-            this.setYSpeed(target.getYSpeed());
+           //todo this.setXSpeed(target.getXSpeed());
+           // this.setYSpeed(target.getYSpeed());
+            this.setXSpeed(room.getElement(this.target).getXSpeed());
+            this.setYSpeed(room.getElement(this.target).getYSpeed());
 
             this.setX(this.getX() + this.getXSpeed());
             this.setY(this.getY() + this.getYSpeed());
@@ -154,7 +160,7 @@ public class GameObject {
         // check collision
         if (this.canCollide) {
 
-            for (GameObject other : roomObjects) {
+            for (GameObject other : room.getAllObjects()) {
 
                 // don't collide with self
                 if (this.equals(other)) {
@@ -201,7 +207,7 @@ public class GameObject {
 
                             // perform ledge detection
                             if (this.ai.contains(Behavior.LEDGES)) {
-                                this.ledges(roomObjects);
+                                this.ledges(room.getAllObjects());
                             }
                         }
                     }
@@ -422,19 +428,31 @@ public class GameObject {
         this.ai = ai;
     }
 
-    public GameObject getDestroyer() {
+   /*todo public GameObject getDestroyer() {
         return this.destroyer;
     }
 
     public void setDestroyer(GameObject destroyer) {
         this.destroyer = destroyer;
+    }*/
+
+    public Set<String> getDestroyers() {
+        return this.destroyers;
     }
 
-    public GameObject getTarget() {
+    public void setDestroyers(Set<String> destroyers) {
+        this.destroyers = destroyers;
+    }
+
+    public void addDestroyer(String ... d) {
+        this.destroyers.addAll(Arrays.asList(d));
+    }
+
+    public String getTarget() {
         return this.target;
     }
 
-    public void setTarget(GameObject target) {
+    public void setTarget(String target) {
         this.target = target;
     }
 
@@ -443,9 +461,17 @@ public class GameObject {
     ==================================================*/
 
     // generates object's hashcode for equality check
-    private int hashcode() {
+  /*  todo private int hashcode() {
         return Objects.hash(this.objName, this.sprite, this.weight,
                 this.canCollide, this.hitBox, this.terminalV, this.jumpPower);
+    }*/
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.objName, this.sprite, this.weight,
+                this.terminalV, this.jumpPower, this.canCollide, this.boxCode,
+                this.hitBox, this.ai, this.autoX, this.autoY, this.target,
+                this.destroyers);
     }
 
     // checks if two objects are the same
@@ -460,6 +486,6 @@ public class GameObject {
             return false;
 
         // Check class members
-        return (this.hashcode() == other.hashCode());
+        return (this.hashCode() == other.hashCode());
     }
 }

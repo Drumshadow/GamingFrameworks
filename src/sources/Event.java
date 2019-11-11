@@ -4,7 +4,7 @@ import sources.HUDcode.*;
 import sources.objCode.GameObject;
 
 class Event {
-    public enum eventType {COLLISION, FRAME, EMISSION}
+    public enum eventType {COLLISION, FRAME, EMISSION, DESTRUCTION}
     private eventType type;
     private String obj1;
     private String obj2;
@@ -40,6 +40,13 @@ class Event {
         this.timer = fireTime;
     }
 
+    // destruction event
+    Event(eventType eT, String o1, String o2) {
+        this.type = eT;
+        this.obj1 = o1;
+        this.obj2 = o2;
+    }
+
     void execute(GameRoom room, HUD hud, int displayFrames) {
         switch (this.type) {
             case COLLISION: {
@@ -56,26 +63,26 @@ class Event {
                         O2.getHitBox().basicCollision(O1.getHitBox())) {
 
                     updateHUD(hud, displayFrames);
-
-                    if (O1.getAi().contains(GameObject.Behavior.DESTRUCT) && O1.getDestroyer().equals(O2)) {
-                        room.removeObject(room.getElement(this.obj1));
-                    } else if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) && O2.getDestroyer().equals(O1)) {
-                        room.removeObject(room.getElement(this.obj2));
-                    }
                 }
                 break;
             }
-
             case FRAME:
                 updateHUD(hud, displayFrames);
                 break;
 
-            case EMISSION:
+            case EMISSION: {
 
-                if (room.getElement(this.obj1).getAi().contains(GameObject.Behavior.EMIT)) {
+                GameObject O1 = room.getElement(this.obj1);
+
+                // make sure emitting object was not destroyed
+                if (O1 == null) {
+                    return;
+                }
+
+                if (O1.getAi().contains(GameObject.Behavior.EMIT)) {
 
                     // prepare projectile
-                    prepProjectile(room.getElement(this.obj1), this.projectile);
+                    prepProjectile(O1, this.projectile);
 
                     // add to room
                     if (this.timer == this.fireTime) {
@@ -86,6 +93,30 @@ class Event {
                     }
                 }
                 break;
+            }
+            case DESTRUCTION: {
+
+                GameObject O1 = room.getElement(this.obj1);
+                GameObject O2 = room.getElement(this.obj2);
+
+                // make sure none of the colliding objects have been destroyed
+                if (O1 == null || O2 == null) {
+                    return;
+                }
+
+                // check for collision
+                if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
+                        O2.getHitBox().basicCollision(O1.getHitBox())) {
+
+                    // destroy objects
+                    if (O1.getAi().contains(GameObject.Behavior.DESTRUCT) && O1.getDestroyers().contains(this.obj2)) {
+                        room.removeObject(O1);
+                    }
+                    if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) && O2.getDestroyers().contains(this.obj1)) {
+                        room.removeObject(O2);
+                    }
+                }
+            }
         }
     }
 

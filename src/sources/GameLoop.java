@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import sources.HUDcode.HUD;
+import sources.objCode.GameObject;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -64,9 +65,9 @@ public class GameLoop {
                 System.out.println("O");
                 isPaused = false;
                 try {
-                    pivotalMoment.renderObjects(room);
-                    pivotalMoment.setControls(controls);
-                    pivotalMoment.setKeyboardControls(inputs);
+                    pivotalMoment.renderObjects(room, events);
+                    pivotalMoment.setControls(controls, events);
+                    pivotalMoment.setKeyboardControls(inputs, events);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -128,10 +129,10 @@ public class GameLoop {
         pivotalMoment.renderHUD(hud);
 
         // get other game components
-        pivotalMoment.setKeyboardControls(inputs);
-        pivotalMoment.setControls(controls);
-        pivotalMoment.renderObjects(room);
         pivotalMoment.renderEvents(events);
+        pivotalMoment.setKeyboardControls(inputs, events);
+        pivotalMoment.setControls(controls, events);
+        pivotalMoment.renderObjects(room, events);
 
         /*==================================================
                           Game Loop
@@ -193,11 +194,9 @@ public class GameLoop {
                 room.getBackground().drawObject(-0.8, -0.8);
                 glPopMatrix();
 
-                // draw objects
-                for (int i = 0; i < room.objectCount(); i++) {
-
-                    room.getElement(i).drawObject();
-                    room.getElement(i).move(room.getAllObjects());
+                for (GameObject GO : room.getAllObjects()) {
+                    GO.drawObject();
+                    GO.move(room);
                 }
 
                 // draw HUD
