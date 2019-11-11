@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
-public class INI {
+class INI {
     void renderObjects(GameRoom room, EventHandler events) throws IOException {
         Ini iniO = new Ini(new File("./objects/objects.ini"));
         int inputNum = Integer.parseInt(iniO.get("control", "objects"));
@@ -31,58 +31,13 @@ public class INI {
 
             // add AI behaviors
             String[] ai = iniO.get("object" + i, "AI").split(",");
+            this.applyAI(events, iniO, i, newObject, ai, "object");
 
-            if (!ai[0].equals("null")) {
-
-                for (String s : ai) {
-                    switch (s) {
-
-                        case "copy":
-                            newObject.addBehaviors(GameObject.Behavior.COPY);
-                            newObject.setTarget(iniO.get("object" + i, "o2"));
-                            break;
-
-                        case "ledges":
-                            newObject.addBehaviors(GameObject.Behavior.LEDGES);
-                            break;
-
-                        case "walls":
-                            newObject.addBehaviors(GameObject.Behavior.WALLS);
-                            break;
-
-                        case "bounce":
-                            newObject.addBehaviors(GameObject.Behavior.BOUNCE);
-                            break;
-
-                        case "auto":
-                            newObject.addBehaviors(GameObject.Behavior.AUTO);
-
-                            newObject.auto(Double.parseDouble(iniO.get("object" + i, "xSpeed")) / 1000.0,
-                                    Double.parseDouble(iniO.get("object" + i, "ySpeed")) / 1000.0);
-                            break;
-
-                        case "emit":
-                            newObject.addBehaviors(GameObject.Behavior.EMIT);
-                            break;
-
-                        case "destruct":
-                            newObject.addBehaviors(GameObject.Behavior.DESTRUCT);
-
-                            String[] destroyers = iniO.get("object" + i, "destroyers").split(",");
-                            newObject.addDestroyer(destroyers);
-
-                            for (String d : newObject.getDestroyers()) {
-                                events.addEvent(new Event(Event.eventType.DESTRUCTION, newObject.getObjName(), d));
-                            }
-                            break;
-                    }
-                }
-            }
             room.addObject(newObject);
         }
     }
 
-    public void setControls(ControllerList controls, EventHandler events) throws IOException {
+    void setControls(ControllerList controls, EventHandler events) throws IOException {
         Ini iniC = new Ini(new File("./inputs/controller.ini"));
         int inputNum = Integer.parseInt(iniC.get("control", "inputs"));
 
@@ -133,9 +88,13 @@ public class INI {
                             Integer.parseInt(iniC.get("input" + i, "o2boxType")),
                             0.0, 0.0);
 
+                    // add AI to projectile
+                    String[] ai = iniC.get("input" + i, "AI").split(",");
+
+                    this.applyAI(events, iniC, i, projectile, ai, "input");
+
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
-
                     projectile.auto(Double.parseDouble(iniC.get("input" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(iniC.get("input" + i, "ySpeed")) / 1000.0);
 
@@ -205,52 +164,7 @@ public class INI {
                     // add AI to projectile
                     String[] ai = ini.get("input" + i, "AI").split(",");
 
-                    if (!ai[0].equals("null")) {
-
-                        for (String s : ai) {
-                            switch (s) {
-
-                                case "copy":
-                                    projectile.addBehaviors(GameObject.Behavior.COPY);
-                                    projectile.setTarget(ini.get("input" + i, "o2"));
-                                    break;
-
-                                case "ledges":
-                                    projectile.addBehaviors(GameObject.Behavior.LEDGES);
-                                    break;
-
-                                case "walls":
-                                    projectile.addBehaviors(GameObject.Behavior.WALLS);
-                                    break;
-
-                                case "bounce":
-                                    projectile.addBehaviors(GameObject.Behavior.BOUNCE);
-                                    break;
-
-                                case "auto":
-                                    projectile.addBehaviors(GameObject.Behavior.AUTO);
-
-                                    projectile.auto(Double.parseDouble(ini.get("input" + i, "xSpeed")) / 1000.0,
-                                            Double.parseDouble(ini.get("input" + i, "ySpeed")) / 1000.0);
-                                    break;
-
-                                case "emit":
-                                    projectile.addBehaviors(GameObject.Behavior.EMIT);
-                                    break;
-
-                                case "destruct":
-                                    projectile.addBehaviors(GameObject.Behavior.DESTRUCT);
-
-                                    String[] destroyers = ini.get("input" + i, "destroyers").split(",");
-                                    projectile.addDestroyer(destroyers);
-
-                                    for (String d : projectile.getDestroyers()) {
-                                        events.addEvent(new Event(Event.eventType.DESTRUCTION, projectile.getObjName(), d));
-                                    }
-                                    break;
-                            }
-                        }
-                    }
+                    this.applyAI(events, ini, i, projectile, ai, "input");
 
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
@@ -346,12 +260,14 @@ public class INI {
                             Integer.parseInt(ini.get("event" + i, "o2boxType")),
                             0.0, 0.0);
 
+                    // add AI behaviors
+                    String[] ai = ini.get("event" + i, "AI").split(",");
+                    this.applyAI(events, ini, i, projectile, ai, "event");
+
                     // make projectile auto-move
                     projectile.addBehaviors(GameObject.Behavior.AUTO);
                     projectile.auto(Double.parseDouble(ini.get("event" + i, "xSpeed")) / 1000.0,
                             Double.parseDouble(ini.get("event" + i, "ySpeed")) / 1000.0);
-
-                    // TODO: add AI to projectiles
 
                     // add event
                     events.addEvent(new Event(Event.eventType.EMISSION,
@@ -364,6 +280,56 @@ public class INI {
                             ini.get("event" + i, "obj1"),
                             ini.get("event" + i, "obj2")));
                     break;
+            }
+        }
+    }
+
+    // applies AI to projectiles
+    private void applyAI(EventHandler events, Ini ini, int i, GameObject projectile, String[] ai, String iniType) {
+        if (!ai[0].equals("null")) {
+
+            for (String s : ai) {
+                switch (s) {
+
+                    case "copy":
+                        projectile.addBehaviors(GameObject.Behavior.COPY);
+                        projectile.setTarget(ini.get(iniType + i, "o2"));
+                        break;
+
+                    case "ledges":
+                        projectile.addBehaviors(GameObject.Behavior.LEDGES);
+                        break;
+
+                    case "walls":
+                        projectile.addBehaviors(GameObject.Behavior.WALLS);
+                        break;
+
+                    case "bounce":
+                        projectile.addBehaviors(GameObject.Behavior.BOUNCE);
+                        break;
+
+                    case "auto":
+                        projectile.addBehaviors(GameObject.Behavior.AUTO);
+
+                        projectile.auto(Double.parseDouble(ini.get(iniType + i, "xSpeed")) / 1000.0,
+                                Double.parseDouble(ini.get(iniType + i, "ySpeed")) / 1000.0);
+                        break;
+
+                    case "emit":
+                        projectile.addBehaviors(GameObject.Behavior.EMIT);
+                        break;
+
+                    case "destruct":
+                        projectile.addBehaviors(GameObject.Behavior.DESTRUCT);
+
+                        String[] destroyers = ini.get(iniType + i, "destroyers").split(",");
+                        projectile.addDestroyer(destroyers);
+
+                        for (String d : projectile.getDestroyers()) {
+                            events.addEvent(new Event(Event.eventType.DESTRUCTION, projectile.getObjName(), d));
+                        }
+                        break;
+                }
             }
         }
     }
