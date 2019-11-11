@@ -26,8 +26,13 @@ public class MainForm {
 
         addHUDElementsButton.addActionListener(new ActionListener() {
             @Override
+            public void actionPerformed(ActionEvent e) {AddHUDElement.main(null);
+            }
+        });
+        addInputsButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-
+                AddInputs.main(null);
             }
         });
     }
