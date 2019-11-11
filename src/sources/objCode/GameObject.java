@@ -33,8 +33,6 @@ public class GameObject {
     private double autoX = 0.0;
     private double autoY = 0.0;
 
-    //todo private GameObject target = null;
-    //private GameObject destroyer = null;
     private String target;
     private Set<String> destroyers = new HashSet<>();
 
@@ -85,7 +83,6 @@ public class GameObject {
 
         this.target = other.target;
         this.destroyers = other.destroyers;
-      //todo  this.destroyer = other.destroyer;
     }
 
     // constructor via given values (finds sprite via path)
@@ -122,14 +119,11 @@ public class GameObject {
     ==================================================*/
 
     // moves objects and performs collision detection
- //todo   public void move(Vector<GameObject> roomObjects) {
     public void move(GameRoom room) {
 
         // copy target
         if (this.ai.contains(Behavior.COPY)) {
 
-           //todo this.setXSpeed(target.getXSpeed());
-           // this.setYSpeed(target.getYSpeed());
             this.setXSpeed(room.getElement(this.target).getXSpeed());
             this.setYSpeed(room.getElement(this.target).getYSpeed());
 
@@ -273,6 +267,10 @@ public class GameObject {
 
     public void addBehaviors(Behavior behavior) {
         this.ai.add(behavior);
+    }
+
+    public void removeBehavior(Behavior behavior) {
+        this.ai.remove(behavior);
     }
 
     private void ledges(Vector<GameObject> room) {
@@ -428,14 +426,6 @@ public class GameObject {
         this.ai = ai;
     }
 
-   /*todo public GameObject getDestroyer() {
-        return this.destroyer;
-    }
-
-    public void setDestroyer(GameObject destroyer) {
-        this.destroyer = destroyer;
-    }*/
-
     public Set<String> getDestroyers() {
         return this.destroyers;
     }
@@ -446,6 +436,10 @@ public class GameObject {
 
     public void addDestroyer(String ... d) {
         this.destroyers.addAll(Arrays.asList(d));
+    }
+
+    public void removeDestroyer(String d) {
+        this.destroyers.remove(d);
     }
 
     public String getTarget() {
@@ -461,11 +455,6 @@ public class GameObject {
     ==================================================*/
 
     // generates object's hashcode for equality check
-  /*  todo private int hashcode() {
-        return Objects.hash(this.objName, this.sprite, this.weight,
-                this.canCollide, this.hitBox, this.terminalV, this.jumpPower);
-    }*/
-
     @Override
     public int hashCode() {
         return Objects.hash(this.objName, this.sprite, this.weight,
