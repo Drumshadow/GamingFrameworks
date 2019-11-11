@@ -94,15 +94,19 @@ public class AddHUDElement {
         // TODO: place custom component creation code here
         SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
-        SpinnerNumberModel scoreModel = new SpinnerNumberModel(0, 0, 10000, 1);
-        SpinnerNumberModel sizeModel = new SpinnerNumberModel(0, 0, 5, 0.05);
+        SpinnerNumberModel startScoreModel = new SpinnerNumberModel(0, 0, 10000,
+                1);
+        SpinnerNumberModel maxScoreModel = new SpinnerNumberModel(0, 0, 10000,
+                1);
+        SpinnerNumberModel xSizeModel = new SpinnerNumberModel(0, 0, 5, 0.05);
+        SpinnerNumberModel ySizeModel = new SpinnerNumberModel(0, 0, 5, 0.05);
 
         xPos = new JSpinner(xPosModel);
         yPos = new JSpinner(yPosModel);
-        startSoreSpinner = new JSpinner(scoreModel);
-        maxScoreSpinner = new JSpinner(scoreModel);
-        widthSpinner = new JSpinner(sizeModel);
-        heightSpinner = new JSpinner(sizeModel);
+        startSoreSpinner = new JSpinner(startScoreModel);
+        maxScoreSpinner = new JSpinner(maxScoreModel);
+        widthSpinner = new JSpinner(xSizeModel);
+        heightSpinner = new JSpinner(ySizeModel);
         framesComboBox = new JComboBox<>();
         for(int i = 1; i <= 60; i++) {
             framesComboBox.addItem(i);

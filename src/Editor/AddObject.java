@@ -31,6 +31,8 @@ public class AddObject {
     private JCheckBox shootsProjectileCheckBox;
     private JCheckBox destructsCheckBox;
     private JList<String> destructorsList;
+    private JSpinner xSpeedSpinner;
+    private JSpinner ySpeedSpinner;
     private File sprite;
     private Wini ini;
 
@@ -109,6 +111,8 @@ public class AddObject {
                             AI += ",";
                         }
                         AI += "auto";
+                        ini.put(strNum, "xSpeed", xSpeedSpinner.getValue());
+                        ini.put(strNum, "ySpeed", ySpeedSpinner.getValue());
                     }
                     if(shootsProjectileCheckBox.isSelected()) {
                         if(AI.length() != 0) {
@@ -159,11 +163,17 @@ public class AddObject {
         SpinnerNumberModel weightModel = new SpinnerNumberModel(0, 0, 10, 0.5);
         SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
+        SpinnerNumberModel xSpeedModel = new SpinnerNumberModel(0, -10, 10,
+                0.5);
+        SpinnerNumberModel ySpeedModel = new SpinnerNumberModel(0, -10, 10,
+                0.5);
         SpinnerNumberModel tvModel = new SpinnerNumberModel(0, 0, 30, 1);
         SpinnerNumberModel jumpModel = new SpinnerNumberModel(0, 0, 30, 1);
         weightSpinner = new JSpinner(weightModel);
         xPositionSpinner = new JSpinner(xPosModel);
         yPositionSpinner = new JSpinner(yPosModel);
+        xSpeedSpinner = new JSpinner(xSpeedModel);
+        ySpeedSpinner = new JSpinner(ySpeedModel);
         terminalVelocitySpinner = new JSpinner(tvModel);
         jumpSpinner = new JSpinner(jumpModel);
 
