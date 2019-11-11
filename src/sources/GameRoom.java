@@ -125,10 +125,11 @@ public class GameRoom {
     }
 
     public GameObject getElement(String oN) {
-        for (int i = 0; i < this.allObjects.size(); i++) {
 
-            if (this.allObjects.elementAt(i).getObjName().equals(oN)) {
-                return this.allObjects.elementAt(i);
+        for (GameObject object : this.allObjects) {
+
+            if (object.getObjName().equals(oN)) {
+                return object;
             }
         }
         return null;
@@ -136,5 +137,19 @@ public class GameRoom {
 
     GameObject getElement(int i) {
         return this.allObjects.get(i);
+    }
+
+    // returns all elements with the same name
+    public Vector<GameObject> getElements(String name) {
+
+        Vector<GameObject> elements = new Vector<>();
+
+        for (GameObject object : this.allObjects) {
+
+            if (object.getObjName().equals(name)) {
+                elements.add(object);
+            }
+        }
+        return elements;
     }
 }

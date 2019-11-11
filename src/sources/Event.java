@@ -51,18 +51,24 @@ class Event {
         switch (this.type) {
             case COLLISION: {
 
-                GameObject O1 = room.getElement(this.obj1);
-                GameObject O2 = room.getElement(this.obj2);
+                // cycle through all objects with the same name
+                outerLoop:
+                for (GameObject O1 : room.getElements(this.obj1)) {
+                    for (GameObject O2 : room.getElements(this.obj2)) {
 
-                // make sure none of the colliding objects have been destroyed
-                if (O1 == null || O2 == null) {
-                    return;
-                }
+                        // make sure none of the colliding objects have been destroyed
+                        if (O1 == null || O2 == null) {
+                            return;
+                        }
 
-                if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
-                        O2.getHitBox().basicCollision(O1.getHitBox())) {
+                        // check collision
+                        if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
+                                O2.getHitBox().basicCollision(O1.getHitBox())) {
 
-                    updateHUD(hud, displayFrames);
+                            updateHUD(hud, displayFrames);
+                            break outerLoop;
+                        }
+                    }
                 }
                 break;
             }
@@ -72,50 +78,61 @@ class Event {
 
             case EMISSION: {
 
-                GameObject O1 = room.getElement(this.obj1);
+                // cycle through all objects with same name
+                for (GameObject O : room.getElements(this.obj1)) {
 
-                // make sure emitting object was not destroyed
-                if (O1 == null) {
-                    return;
-                }
+                    // make sure emitting object was not destroyed
+                    if (O == null) {
+                        continue;
+                    }
 
-                if (O1.getAi().contains(GameObject.Behavior.EMIT)) {
+                    if (O.getAi().contains(GameObject.Behavior.EMIT)) {
 
-                    // prepare projectile
-                    prepProjectile(O1, this.projectile);
+                        // prepare projectile
+                        prepProjectile(O, this.projectile);
 
-                    // add to room
-                    if (this.timer == this.fireTime) {
-                        room.addObject(new GameObject(this.projectile));
-                        this.timer = 0;
-                    } else {
-                        this.timer++;
+                        // add to room
+                        if (this.timer == this.fireTime) {
+                            room.addObject(new GameObject(this.projectile));
+                            this.timer = 0;
+                        } else {
+                            this.timer++;
+                        }
                     }
                 }
                 break;
             }
             case DESTRUCTION: {
 
-                GameObject O1 = room.getElement(this.obj1);
-                GameObject O2 = room.getElement(this.obj2);
+                outerLoop:
+                for (GameObject O1 : room.getElements(this.obj1)) {
+                    for (GameObject O2: room.getElements(this.obj2)) {
 
-                // make sure none of the colliding objects have been destroyed
-                if (O1 == null || O2 == null) {
-                    return;
-                }
+                        // make sure none of the colliding objects have been destroyed
+                        if (O1 == null || O2 == null) {
+                            return;
+                        }
 
-                // check for collision
-                if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
-                        O2.getHitBox().basicCollision(O1.getHitBox())) {
+                        // check for collision
+                        if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
+                                O2.getHitBox().basicCollision(O1.getHitBox())) {
 
-                    // destroy objects
-                    if (O1.getAi().contains(GameObject.Behavior.DESTRUCT) && O1.getDestroyers().contains(this.obj2)) {
-                        room.removeObject(O1);
+                            // destroy objects
+                            if (O1.getAi().contains(GameObject.Behavior.DESTRUCT) &&
+                                    O1.getDestroyers().contains(this.obj2)) {
+
+                                room.removeObject(O1);
+                            }
+                            if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) &&
+                                    O2.getDestroyers().contains(this.obj1)) {
+
+                                room.removeObject(O2);
+                            }
+                            break outerLoop;
+                        }
                     }
-                    if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) && O2.getDestroyers().contains(this.obj1)) {
-                        room.removeObject(O2);
-                    }
                 }
+                break;
             }
         }
     }
