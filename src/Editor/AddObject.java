@@ -66,7 +66,6 @@ public class AddObject {
                     num++;
                 }
 
-
                 String strNum = Integer.toString(num);
 
                 try {
