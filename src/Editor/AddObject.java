@@ -30,7 +30,7 @@ public class AddObject {
     private JCheckBox movesByItselfCheckBox;
     private JCheckBox shootsProjectileCheckBox;
     private JCheckBox destructsCheckBox;
-    private JComboBox<String> destructorComboBox;
+    private JList<String> destructorsList;
     private File sprite;
     private Wini ini;
 
@@ -66,59 +66,83 @@ public class AddObject {
 
                 String strNum = Integer.toString(num);
 
-                ini.put(strNum, "name", nameTextField.getText());
-                ini.put(strNum, "sprPath", sprite.getAbsolutePath());
-                ini.put(strNum, "frames", framesComboBox.getSelectedItem());
-                ini.put(strNum, "collide", collidesCheckBox.isSelected());
-                ini.put(strNum, "weight", weightSpinner.getValue());
-                ini.put(strNum, "tv", terminalVelocitySpinner.getValue());
-                ini.put(strNum, "jump", jumpSpinner.getValue());
-                ini.put(strNum, "boxType",
-                        boundingBoxTypeComboBox.getSelectedIndex());
-                ini.put(strNum, "x", xPositionSpinner.getValue());
-                ini.put(strNum, "y", yPositionSpinner.getValue());
+                try {
+                    ini.put(strNum, "name", nameTextField.getText());
+                    ini.put(strNum, "sprPath",
+                            sprite.getAbsolutePath().substring(0,
+                                    sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                    ini.put(strNum, "frames", framesComboBox.getSelectedItem());
+                    ini.put(strNum, "collide", collidesCheckBox.isSelected());
+                    ini.put(strNum, "weight", weightSpinner.getValue());
+                    ini.put(strNum, "tv", terminalVelocitySpinner.getValue());
+                    ini.put(strNum, "jump", jumpSpinner.getValue());
+                    ini.put(strNum, "boxType", Integer.toString(
+                            boundingBoxTypeComboBox.getSelectedIndex()));
+                    ini.put(strNum, "x", xPositionSpinner.getValue());
+                    ini.put(strNum, "y", yPositionSpinner.getValue());
 
-                String AI = "";
+                    String AI = "";
 
-                if(copiesCheckBox.isSelected()) {
-                    AI += "copy";
-                }
-                if(fearsLedgesCheckBox.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
+                    if(copiesCheckBox.isSelected()) {
+                        AI += "copy";
                     }
-                    AI += "ledges";
-                }
-                if(bounceOffWallsCheckBox.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
+                    if(fearsLedgesCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "ledges";
                     }
-                    AI += "walls";
-                }
-                if(bounceOffFloorsCheckBox.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
+                    if(bounceOffWallsCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "walls";
                     }
-                    AI += "bounce";
-                }
-                if(movesByItselfCheckBox.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
+                    if(bounceOffFloorsCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "bounce";
                     }
-                    AI += "auto";
-                }
-                if(shootsProjectileCheckBox.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
+                    if(movesByItselfCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "auto";
                     }
-                    AI += "emit";
-                }
-                if(destructsCheckBox.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
+                    if(shootsProjectileCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "emit";
                     }
-                    AI += "destruct";
+                    if(destructsCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "destruct";
 
+                        StringBuilder destroyers = new StringBuilder();
+                        for(String value: destructorsList.getSelectedValuesList()) {
+                            if(destroyers.length() != 0) {
+                                destroyers.append(",");
+                            }
+
+                            destroyers.append(value);
+                        }
+
+                        ini.put(strNum, "destroyers", destroyers);
+                    }
+
+                    if(AI.length() != 0) {
+                        ini.put(strNum, "AI", AI);
+                    } else {
+                        ini.put(strNum, "AI", "null");
+                    }
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
                 }
             }
         });
@@ -152,14 +176,17 @@ public class AddObject {
             framesComboBox.addItem(i);
         }
 
-        destructorComboBox = new JComboBox<>();
-        // destructsComboBox.addItem("Test");
         Set<String> keys = ini.keySet();
+        String[] values = new String[keys.size()];
 
+        int i = 0;
         for(String key : keys) {
             System.out.println(key + " " + ini.get(key, "name"));
-            destructorComboBox.addItem(key + " " + ini.get(key, "name"));
+            values[i] = key + " " + ini.get(key, "name");
+            i++;
         }
+
+        destructorsList = new JList<>(values);
     }
 
     public static void main(String[] args) {

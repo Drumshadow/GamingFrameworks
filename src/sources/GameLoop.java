@@ -43,7 +43,9 @@ public class GameLoop {
 
     private void run() throws Exception {
         Ini ini = new Ini(new File("./options/options.ini"));
-        bg.playSound(ini.get("background", "music"));
+        if(ini.containsKey("background")) {
+            bg.playSound(ini.get("background", "music"));
+        }
         newWindow.init();
 
         // initialization
@@ -122,10 +124,15 @@ public class GameLoop {
         Ini ini = new Ini(new File("./options/options.ini"));
 
         // set background
-        room.setBackground(new Sprite(ini.get("background", "art"), 1));
+        if(ini.containsKey("background")) {
+            room.setBackground(new Sprite(ini.get("background", "art"), 1));
+        }
 
         // set hud
-        hud.setHudFont(ini.get("misc", "font"), 32);
+        if(ini.containsKey("misc")) {
+            hud.setHudFont(ini.get("misc", "font"), 32);
+        }
+
         pivotalMoment.renderHUD(hud);
 
         // get other game components
@@ -191,7 +198,9 @@ public class GameLoop {
                 // draw background (scale to fit window)
                 glPushMatrix();
                 glScaled(1.25, 1.25, 1.0);
-                room.getBackground().drawObject(-0.8, -0.8);
+                if(room.getBackground() != null) {
+                    room.getBackground().drawObject(-0.8, -0.8);
+                }
                 glPopMatrix();
 
                 for (GameObject GO : room.getAllObjects()) {

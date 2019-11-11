@@ -1,5 +1,6 @@
 package sources;
 
+import org.ini4j.Config;
 import org.ini4j.Ini;
 import sources.HUDcode.FrameDisplay;
 import sources.HUDcode.HUD;
@@ -16,6 +17,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 class INI {
     void renderObjects(GameRoom room, EventHandler events) throws IOException {
         Ini iniO = new Ini(new File("./objects/objects.ini"));
+        Config.getGlobal().setEscape(false);
         for (String section : (Set<String>)iniO.keySet()) {
 
             GameObject newObject = new GameObject(iniO.get(section, "name"),
