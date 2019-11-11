@@ -8,20 +8,20 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 
-public class AddInputs {
+public class AddOptions {
     private JPanel panel1;
-    private JPanel AddInputs;
-    private JComboBox buttonPurposeDropDown;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JComboBox comboBox3;
-    private JSpinner spinner1;
-    private JButton audioFilleIfNeededButton;
-    private JComboBox comboBox4;
-    private File audioPath;
+    private JPanel AddOptions;
+    private JLabel Music;
+    private JButton MusicPath;
+    private JButton ArtPath;
+    private JLabel FontPath;
+    private JButton Font;
+    private File fontPath;
+    private File artPath;
+    private File musicPath;
 
-    public AddInputs() {
-        AddInputs.addComponentListener(new ComponentAdapter() {
+    public AddOptions() {
+        AddOptions.addComponentListener(new ComponentAdapter() {
             @Override
             public int hashCode() {
                 return super.hashCode();
@@ -40,11 +40,6 @@ public class AddInputs {
             @Override
             public String toString() {
                 return super.toString();
-            }
-
-            @Override
-            protected void finalize() throws Throwable {
-                super.finalize();
             }
 
             @Override
@@ -67,7 +62,7 @@ public class AddInputs {
                 super.componentHidden(e);
             }
         });
-        audioFilleIfNeededButton.addActionListener(new ActionListener() {
+        MusicPath.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
@@ -82,14 +77,52 @@ public class AddInputs {
                         return null;
                     }
                 });
-                fc.showOpenDialog(AddInputs);
-                audioPath = fc.getSelectedFile();
+                fc.showOpenDialog(AddOptions);
+                musicPath = fc.getSelectedFile();
+            }
+        });
+        ArtPath.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        return f.getPath().matches(".*\\.png$");
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return null;
+                    }
+                });
+                fc.showOpenDialog(AddOptions);
+                artPath = fc.getSelectedFile();
+            }
+        });
+        Font.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        return f.getPath().matches(".*\\.png$");
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return null;
+                    }
+                });
+                fc.showOpenDialog(AddOptions);
+                fontPath = fc.getSelectedFile();
             }
         });
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame("Slammin' Game Editor");
-        frame.setContentPane(new AddInputs().AddInputs);
+        frame.setContentPane(new AddOptions().AddOptions);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
