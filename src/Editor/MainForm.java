@@ -10,6 +10,7 @@ public class MainForm {
     private JButton addHUDElementsButton;
     private JButton addObjectButton;
     private JButton addOptionsButton;
+    private JButton AddEvents;
 
     public MainForm() {
         addObjectButton.addActionListener(new ActionListener() {
@@ -41,6 +42,13 @@ public class MainForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AddOptions.main(null);
+            }
+        });
+
+        AddEvents.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Editor.AddEvents.main(null);
             }
         });
     }
