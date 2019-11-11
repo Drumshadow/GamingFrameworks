@@ -54,11 +54,17 @@ class Event {
                 // cycle through all objects with the same name
                 outerLoop:
                 for (GameObject O1 : room.getElements(this.obj1)) {
+
+                    // make sure first object exists
+                    if (O1 == null) {
+                        continue;
+                    }
+
                     for (GameObject O2 : room.getElements(this.obj2)) {
 
-                        // make sure none of the colliding objects have been destroyed
-                        if (O1 == null || O2 == null) {
-                            return;
+                        // make sure second object exists
+                        if (O2 == null) {
+                            continue;
                         }
 
                         // check collision
@@ -81,7 +87,7 @@ class Event {
                 // cycle through all objects with same name
                 for (GameObject O : room.getElements(this.obj1)) {
 
-                    // make sure emitting object was not destroyed
+                    // make sure emitting object exists
                     if (O == null) {
                         continue;
                     }
@@ -106,11 +112,17 @@ class Event {
 
                 outerLoop:
                 for (GameObject O1 : room.getElements(this.obj1)) {
+
+                    // make sure first object exists
+                    if (O1 == null) {
+                        continue;
+                    }
+
                     for (GameObject O2: room.getElements(this.obj2)) {
 
-                        // make sure none of the colliding objects have been destroyed
-                        if (O1 == null || O2 == null) {
-                            return;
+                        // make sure second object exists
+                        if (O2 == null) {
+                            continue;
                         }
 
                         // check for collision

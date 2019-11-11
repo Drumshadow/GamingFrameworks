@@ -72,7 +72,6 @@ public class Sprite {
         this.currentTime = 0;
         this.lastTime = FPS.getTime();
         this.fps = 1.0 / frames;
-        System.out.println(this.fps);
 
         this.loadAnimation(this.frames);
     }

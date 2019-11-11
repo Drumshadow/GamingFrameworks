@@ -20,24 +20,8 @@ class Texture {
         int[] pixels_raw;
         pixels_raw = sprite.getRGB(0, 0, sprite.getWidth(),
                 sprite.getHeight(), null, 0, sprite.getWidth());
-//
-//        ByteBuffer pixels = BufferUtils.createByteBuffer(
-//                sprite.getWidth() * sprite.getHeight() * 4);
-//
-//        // convert int RGB values to byte values
-//        for (int i : pixels_raw) {
-//
-//            pixels.put((byte) ((i >> 16) & 0xFF));
-//            pixels.put((byte) ((i >> 8) & 0xFF));
-//            pixels.put((byte) (i & 0xFF));
-//            pixels.put((byte) ((i >> 24) & 0xFF));
-//        }
-//
-//        // invert values to stay unsigned
-//        pixels.flip();
 
         this.id = glGenTextures();
-        System.out.println(this.id);
 
         glBindTexture(GL_TEXTURE_2D, id);
 
