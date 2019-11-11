@@ -35,6 +35,7 @@ public class GameLoop {
 
     private GameRoom room = new GameRoom();
     private boolean isPaused = false;
+    private boolean isEnd = false;
 
 
     private void paused(int key, int action){
@@ -171,7 +172,7 @@ public class GameLoop {
 
 
         while ( !glfwWindowShouldClose(newWindow.window)) {
-            if (!isPaused) {
+            if (!isPaused && !isEnd) {
                 glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 
             /*==================================================
@@ -208,13 +209,18 @@ public class GameLoop {
                     GO.move(room);
                 }
 
-                // draw HUD
-                hud.drawHUD();
-
                 // Execute events
                 for (int i = 0; i < events.size(); i++) {
-                    events.getEvent(i).execute(room, hud, displayFrames);
+                    if (events.getEvent(i).getType() == Event.eventType.END) {
+                        isEnd = events.getEvent(i).execute(hud, hud.getFont(), isPaused);
+                    }
+                    else {
+                        events.getEvent(i).execute(room, hud, displayFrames);
+                    }
                 }
+
+                // draw HUD
+                hud.drawHUD();
 
                 // TODO: make sure controller works
                 if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
