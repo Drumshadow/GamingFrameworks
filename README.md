@@ -79,12 +79,19 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
     3) Go into the .ini file and find the line that says "sprPath=./sprites/friend.png" and change it to the following
     "sprPath=./sprites/foe.png". Now your sprite will be changed!
     
-# User's Guide
-Here are the steps to play!
+# User's Guide (How to Play the Demo Game)
+**Here are the steps to download!**
 1) If you are compiling the source code on a Mac you will need to supply a 
-JVM argument, -XstartOnFirstThread. This is because of how Mac and Windows
+JVM argument, `-XstartOnFirstThread`. This is because of how Mac and Windows
 both handle threading in different ways.
-2) Once the code is compiled and loaded feel free to move Mario around
-to your favorite music all while enjoying some timeless
-meme sound effect classics. Move with WASD.
-3) Run into the right-most Mario and watch your HP drain from the bar in the top left of your screen.
+2) Once the code is compiled and loaded, you are ready to play!
+
+**Here are the steps to play!**
+1) Move your player around with **WASD**.
+2) Shoot hearts by pressing **Enter**.
+    1) The hearts will disappear when you run into them.
+    2) The blue enemy will be destroyed if it gets hit by a heart.
+3) If you run into the blue enemy, your health will decrease! **NOTE: THE GAME WILL END IF YOU RUN OUT OF HEALTH!**
+4) To replenish your health, collect the flower at the right side of the level.
+5) When you touch the fire balls, they are destroyed.
+6) If you touch the red enemy, your score goes up!
