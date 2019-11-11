@@ -81,6 +81,8 @@ public class AddHUDElement {
                     }
 
                     ini.put(strNum, "name", nameTextField.getText());
+
+                    ini.store();
                 } catch(IOException err) {
                     err.printStackTrace();
                 }

@@ -181,8 +181,7 @@ public class AddObject {
 
         int i = 0;
         for(String key : keys) {
-            System.out.println(key + " " + ini.get(key, "name"));
-            values[i] = key + " " + ini.get(key, "name");
+            values[i] = ini.get(key, "name");
             i++;
         }
 

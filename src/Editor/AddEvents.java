@@ -1,28 +1,31 @@
 package Editor;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
 public class AddEvents {
     private JPanel panel1;
     private JPanel AddEvents;
     private JComboBox typeComboBox;
-    private JCheckBox checkBox1;
-    private JCheckBox checkBox2;
-    private JTextArea textArea1;
-    private JSpinner spinner1;
-    private JCheckBox checkBox3;
-    private JSpinner spinner2;
-    private JButton button1;
+    private JSpinner modSpinner;
+    private JCheckBox projectileCheckBox;
+    private JSpinner timerSpinner;
+    private JButton audioSelector;
+    private JComboBox<String> object1ComboBox;
+    private JComboBox<String> object2ComboBox;
+    private JButton saveButton;
+    private JComboBox<String> HUDComboBox;
     private File audioFile;
 
     public AddEvents() {
-        button1.addActionListener(new ActionListener() {
+        audioSelector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
@@ -41,45 +44,52 @@ public class AddEvents {
                 audioFile = fc.getSelectedFile();
             }
         });
-        AddEvents.addComponentListener(new ComponentAdapter() {
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
 
+        saveButton.addActionListener(new ActionListener() {
             @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
-            }
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./events/events.ini"));
 
-            @Override
-            protected Object clone() throws CloneNotSupportedException {
-                return super.clone();
-            }
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
 
-            @Override
-            public String toString() {
-                return super.toString();
-            }
+                    String strNum = Integer.toString(i);
 
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-            }
+                    ini.put(strNum, "type", typeComboBox.getSelectedItem());
 
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                super.componentMoved(e);
-            }
+                    if(object1ComboBox.getSelectedIndex() != 0) {
+                        ini.put(strNum, "obj1",
+                                object1ComboBox.getSelectedItem());
+                    }
 
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-            }
+                    if(object2ComboBox.getSelectedIndex() != 0) {
+                        ini.put(strNum, "obj2",
+                                object2ComboBox.getSelectedItem());
+                    }
 
-            @Override
-            public void componentHidden(ComponentEvent e) {
-                super.componentHidden(e);
+                    if(HUDComboBox.getSelectedIndex() != 0) {
+                        ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
+                        ini.put(strNum, "mod", modSpinner.getValue());
+                    }
+
+                    if(projectileCheckBox.isSelected()) {
+                        ini.put(strNum, "timer", timerSpinner.getValue());
+                    }
+
+                    if(audioFile != null) {
+                        ini.put(strNum, "audio",
+                                audioFile.getAbsolutePath().replace('\\', '/'));
+                    } else {
+                        ini.put(strNum, "audio", "null");
+                    }
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
             }
         });
     }
@@ -90,5 +100,47 @@ public class AddEvents {
         frame.setContentPane(new AddEvents().AddEvents);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        try {
+            Wini ini = new Wini(new File("./objects/objects.ini"));
+
+            Set<String> keys = ini.keySet();
+            String[] values = new String[keys.size() + 1];
+
+            int i = 1;
+            for(String key : keys) {
+                values[i] = ini.get(key, "name");
+                i++;
+            }
+
+            object1ComboBox = new JComboBox<>(values);
+            object2ComboBox = new JComboBox<>(values);
+
+            ini = new Wini(new File("./HUD/HUD.ini"));
+
+            keys = ini.keySet();
+            values = new String[keys.size()];
+
+            i = 0;
+            for(String key : keys) {
+                values[i] = ini.get(key, "name");
+                i++;
+            }
+
+            HUDComboBox = new JComboBox<>(values);
+
+            SpinnerNumberModel modModel = new SpinnerNumberModel(0, 0, 100, 1);
+            modSpinner = new JSpinner(modModel);
+
+            SpinnerNumberModel timerModel = new SpinnerNumberModel(0, 0, 300,
+                    5);
+            timerSpinner = new JSpinner(timerModel);
+
+        } catch(IOException err) {
+            err.printStackTrace();
+        }
     }
 }

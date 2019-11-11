@@ -144,6 +144,7 @@ public class AddOptions {
                                 fontPath.getAbsolutePath().replace('\\', '/'));
                     }
 
+                    ini.store();
                 } catch(IOException err) {
                     err.printStackTrace();
                 }

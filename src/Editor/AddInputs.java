@@ -79,6 +79,8 @@ public class AddInputs {
                         ini.put(strNum, "audio",
                                 audioPath.getAbsolutePath().replace('\\', '/'));
                     }
+
+                    ini.store();
                 } catch(IOException err) {
                     err.printStackTrace();
                 }
