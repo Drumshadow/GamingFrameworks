@@ -287,6 +287,14 @@ class INI {
                             ini.get(section, "obj1"),
                             ini.get(section, "obj2"), a));
                     break;
+
+                case "end":
+                    events.addEvent(new Event(Event.eventType.END,
+                            ini.get(section, "hud"),
+                            Integer.parseInt(ini.get(section, "mod")),
+                            ini.get(section, "msg"),
+                            Integer.parseInt(ini.get(section, "x")),
+                            Integer.parseInt(ini.get(section, "y")), a));
             }
         }
     }
