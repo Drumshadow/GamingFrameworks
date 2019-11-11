@@ -95,3 +95,4 @@ both handle threading in different ways.
 4) To replenish your health, collect the flower at the right side of the level.
 5) When you touch the fire balls, they are destroyed.
 6) If you touch the red enemy, your score goes up!
+7) Pause the game by pressing **P** and unpause by pressing **O**.
