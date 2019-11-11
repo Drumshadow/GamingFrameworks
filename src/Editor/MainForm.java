@@ -35,6 +35,13 @@ public class MainForm {
                 AddInputs.main(null);
             }
         });
+
+        addOptionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddOptions.main(null);
+            }
+        });
     }
 
     public static void main(String[] args) {
