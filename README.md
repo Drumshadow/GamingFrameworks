@@ -22,8 +22,10 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 
 # Developer's Guide
 Here is the link to the tutorial for how to use our game engine!
-
 https://docs.google.com/document/d/12KBGy3d9sBkPRVUFHalbUuELw0DZ6vi1oxGVSpgAZ6o/edit?usp=sharing
+
+Here is the link to our dropbox!
+https://baylor.box.com/s/0v7nzy9ekbv443373czsu63zb6oqne5a
     
 # User's Guide (How to Play the Demo Game)
 **Here are the steps to download!**
