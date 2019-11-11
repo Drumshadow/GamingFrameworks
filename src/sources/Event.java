@@ -15,36 +15,42 @@ class Event {
     private int timer;
     private int fireTime;
 
+    private Audio sound;
+
     // frame event
-    Event(eventType eT, String hE, int mod) {
+    Event(eventType eT, String hE, int mod, Audio a) {
         this.type = eT;
         this.hud = hE;
         this.mod = mod;
+        this.sound = a;
     }
 
     // collision event
-    Event(eventType eT, String o1, String o2, String hE, int mod) {
+    Event(eventType eT, String o1, String o2, String hE, int mod, Audio a) {
         this.type = eT;
         this.obj1 = o1;
         this.obj2 = o2;
         this.hud = hE;
         this.mod = mod;
+        this.sound = a;
     }
 
     // emission event
-    Event(eventType eT, String o1, GameObject p, int fireTime) {
+    Event(eventType eT, String o1, GameObject p, int fireTime, Audio a) {
         this.type = eT;
         this.obj1 = o1;
         this.projectile = p;
         this.fireTime = fireTime;
         this.timer = fireTime;
+        this.sound = a;
     }
 
     // destruction event
-    Event(eventType eT, String o1, String o2) {
+    Event(eventType eT, String o1, String o2, Audio a) {
         this.type = eT;
         this.obj1 = o1;
         this.obj2 = o2;
+        this.sound = a;
     }
 
     void execute(GameRoom room, HUD hud, int displayFrames) {
@@ -71,7 +77,14 @@ class Event {
                         if (O1.getHitBox().basicCollision(O2.getHitBox()) ||
                                 O2.getHitBox().basicCollision(O1.getHitBox())) {
 
+                            // update HUD
                             updateHUD(hud, displayFrames);
+
+                            // play sound
+                            if (this.sound != null) {
+                                this.sound.loadPlaySound();
+                            }
+
                             break outerLoop;
                         }
                     }
@@ -80,6 +93,12 @@ class Event {
             }
             case FRAME:
                 updateHUD(hud, displayFrames);
+
+                // play sound
+                if (this.sound != null) {
+                    this.sound.loadPlaySound();
+                }
+
                 break;
 
             case EMISSION: {
@@ -101,6 +120,12 @@ class Event {
                         if (this.timer == this.fireTime) {
                             room.addObject(new GameObject(this.projectile));
                             this.timer = 0;
+
+                            // play sound
+                            if (this.sound != null) {
+                                this.sound.loadPlaySound();
+                            }
+
                         } else {
                             this.timer++;
                         }
@@ -134,11 +159,21 @@ class Event {
                                     O1.getDestroyers().contains(this.obj2)) {
 
                                 room.removeObject(O1);
+
+                                // play sound
+                                if (this.sound != null) {
+                                    this.sound.loadPlaySound();
+                                }
                             }
                             if (O2.getAi().contains(GameObject.Behavior.DESTRUCT) &&
                                     O2.getDestroyers().contains(this.obj1)) {
 
                                 room.removeObject(O2);
+
+                                // play sound
+                                if (this.sound != null) {
+                                    this.sound.loadPlaySound();
+                                }
                             }
                             break outerLoop;
                         }
