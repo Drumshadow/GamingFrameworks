@@ -1,10 +1,14 @@
 package Editor;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
 public class AddObject {
     private JPanel AddObject;
@@ -20,15 +24,18 @@ public class AddObject {
     private JComboBox<String> boundingBoxTypeComboBox;
     private JSpinner xPositionSpinner;
     private JSpinner yPositionSpinner;
+    private JCheckBox copiesCheckBox;
+    private JCheckBox bounceOffWallsCheckBox;
+    private JCheckBox bounceOffFloorsCheckBox;
+    private JCheckBox movesByItselfCheckBox;
+    private JCheckBox shootsProjectileCheckBox;
+    private JCheckBox destructsCheckBox;
+    private JComboBox<String> destructsComboBox;
     private File sprite;
+    private Wini ini;
 
     public AddObject() {
         chooseSpriteRequiresAButton.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e the event to be processed
-             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
@@ -47,10 +54,78 @@ public class AddObject {
                 sprite = fc.getSelectedFile();
             }
         });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Set<String> keys = ini.keySet();
+                int num = 0;
+                while(keys.contains(Integer.toString(num))) {
+                    num++;
+                }
+
+                String strNum = Integer.toString(num);
+
+                ini.put(strNum, "name", nameTextField.getText());
+                ini.put(strNum, "sprPath", sprite.getAbsolutePath());
+                ini.put(strNum, "frames", framesComboBox.getSelectedItem());
+                ini.put(strNum, "collide", collidesCheckBox.isSelected());
+                ini.put(strNum, "weight", weightSpinner.getValue());
+                ini.put(strNum, "tv", terminalVelocitySpinner.getValue());
+                ini.put(strNum, "jump", jumpSpinner.getValue());
+                ini.put(strNum, "boxType",
+                        boundingBoxTypeComboBox.getSelectedIndex());
+                ini.put(strNum, "x", xPositionSpinner.getValue());
+                ini.put(strNum, "y", yPositionSpinner.getValue());
+
+                String AI = "";
+
+                if(copiesCheckBox.isSelected()) {
+                    AI += "copy";
+                }
+                if(bounceOffWallsCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "walls";
+                }
+                if(bounceOffFloorsCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "bounce";
+                }
+                if(movesByItselfCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "auto";
+                }
+                if(shootsProjectileCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "emit";
+                }
+                if(destructsCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "destruct";
+
+                }
+            }
+        });
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        try {
+            ini = new Wini(new File("./objects/objects.ini"));
+        } catch(IOException err) {
+            err.printStackTrace();
+        }
+
         SpinnerNumberModel weightModel = new SpinnerNumberModel(0, 0, 10, 0.5);
         SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
@@ -65,6 +140,14 @@ public class AddObject {
         boundingBoxTypeComboBox = new JComboBox<>();
         boundingBoxTypeComboBox.addItem("Rectangle");
         boundingBoxTypeComboBox.addItem("Oval");
+
+        destructsComboBox = new JComboBox<>();
+        Set<String> keys = ini.keySet();
+
+        for(String key : keys) {
+            System.out.println(key + " " + ini.get(key, "name"));
+            destructsComboBox.addItem(key + " " + ini.get(key, "name"));
+        }
 
         framesComboBox = new JComboBox<>();
         for(int i = 1; i <= 60; i++) {
