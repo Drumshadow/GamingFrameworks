@@ -205,7 +205,7 @@ public class AddObject {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Add Object");
+        JFrame frame = new JFrame("Add Objects");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(new AddObject().AddObject);
         frame.pack();

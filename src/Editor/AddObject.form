@@ -22,15 +22,17 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
       <component id="ebc76" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <labelFor value="18c3"/>
-          <text value="Name"/>
+          <text value="Object Name"/>
         </properties>
       </component>
       <component id="b2ab5" class="javax.swing.JLabel">
@@ -39,7 +41,7 @@
         </constraints>
         <properties>
           <labelFor value="bc12b"/>
-          <text value="Frames"/>
+          <text value="Animation Frame Count"/>
         </properties>
       </component>
       <component id="fa61a" class="javax.swing.JButton" binding="chooseSpriteRequiresAButton" default-binding="true">
@@ -52,10 +54,10 @@
       </component>
       <component id="5f3b7" class="javax.swing.JCheckBox" binding="collidesCheckBox" default-binding="true">
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Collides?"/>
+          <text value="Collides"/>
         </properties>
       </component>
       <component id="cc1d0" class="javax.swing.JCheckBox" binding="fearsLedgesCheckBox" default-binding="true">
@@ -63,7 +65,7 @@
           <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Fears Ledges?"/>
+          <text value="Detects Ledges"/>
         </properties>
       </component>
       <component id="3eea7" class="javax.swing.JSpinner" binding="weightSpinner" custom-create="true" default-binding="true">
@@ -93,7 +95,7 @@
         </constraints>
         <properties>
           <labelFor value="1328b"/>
-          <text value="Jump"/>
+          <text value="Jump Power"/>
         </properties>
       </component>
       <component id="31af1" class="javax.swing.JSpinner" binding="terminalVelocitySpinner" custom-create="true" default-binding="true">
@@ -169,7 +171,7 @@
           <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Copies?"/>
+          <text value="Copies Another Object"/>
         </properties>
       </component>
       <component id="75e29" class="javax.swing.JCheckBox" binding="bounceOffWallsCheckBox" default-binding="true">
@@ -177,7 +179,7 @@
           <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Bounce off Walls?"/>
+          <text value="Bounces off Walls"/>
         </properties>
       </component>
       <component id="69c93" class="javax.swing.JCheckBox" binding="bounceOffFloorsCheckBox" default-binding="true">
@@ -185,7 +187,7 @@
           <grid row="9" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Bounce off Floors?"/>
+          <text value="Bounces off Ground"/>
         </properties>
       </component>
       <component id="83f74" class="javax.swing.JCheckBox" binding="movesByItselfCheckBox" default-binding="true">
@@ -193,15 +195,15 @@
           <grid row="10" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Moves by Itself?"/>
+          <text value="Auto-Moves"/>
         </properties>
       </component>
       <component id="58c6b" class="javax.swing.JCheckBox" binding="shootsProjectileCheckBox" default-binding="true">
         <constraints>
-          <grid row="13" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Shoots Projectile?"/>
+          <text value="Fires Projectile"/>
         </properties>
       </component>
       <component id="ca1f0" class="javax.swing.JCheckBox" binding="destructsCheckBox" default-binding="true">
@@ -209,15 +211,15 @@
           <grid row="14" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Destructs?"/>
+          <text value="Destructable"/>
         </properties>
       </component>
       <component id="afb23" class="javax.swing.JLabel">
         <constraints>
-          <grid row="15" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Destructor"/>
+          <text value="Objects that Cause Destruction"/>
         </properties>
       </component>
       <scrollpane id="a3089">

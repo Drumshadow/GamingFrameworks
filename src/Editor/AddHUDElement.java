@@ -127,7 +127,7 @@ public class AddHUDElement {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Add HUD element");
+        JFrame frame = new JFrame("Add HUD Elements");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(new AddHUDElement().AddHUDElement);
         frame.pack();

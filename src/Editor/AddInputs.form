@@ -39,7 +39,7 @@
             </constraints>
             <properties>
               <labelFor value="f97d7"/>
-              <text value="Button purpose"/>
+              <text value="Button Purpose"/>
             </properties>
           </component>
           <component id="dd4b9" class="javax.swing.JLabel">
@@ -116,10 +116,10 @@
             </constraints>
             <properties>
               <labelFor value="56834"/>
-              <text value="Action"/>
+              <text value="Input Type"/>
             </properties>
           </component>
-          <component id="56834" class="javax.swing.JComboBox" binding="actionComboBox" default-binding="true">
+          <component id="56834" class="javax.swing.JComboBox" binding="inputTypeComboBox" default-binding="true">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>

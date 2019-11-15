@@ -22,7 +22,7 @@
             </constraints>
             <properties>
               <labelFor value="f0ac6"/>
-              <text value="Type"/>
+              <text value="Event Type"/>
             </properties>
           </component>
           <component id="f0ac6" class="javax.swing.JComboBox" binding="typeComboBox">
@@ -92,7 +92,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Projectile?"/>
+              <text value="Fires Projectile"/>
             </properties>
           </component>
           <component id="774ab" class="javax.swing.JLabel">
@@ -101,7 +101,7 @@
             </constraints>
             <properties>
               <labelFor value="35bc"/>
-              <text value="Timer"/>
+              <text value="Projectile Fire Rate"/>
             </properties>
           </component>
           <component id="35bc" class="javax.swing.JSpinner" binding="timerSpinner" custom-create="true" default-binding="true">
@@ -117,7 +117,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Audio File"/>
+              <text value="Event Sound"/>
             </properties>
           </component>
           <component id="7928f" class="javax.swing.JComboBox" binding="object2ComboBox" custom-create="true" default-binding="true">
