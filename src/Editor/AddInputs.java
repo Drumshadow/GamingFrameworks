@@ -21,7 +21,7 @@ public class AddInputs {
     private JComboBox<String> objectComboBox;
     private JSpinner speedSpinner;
     private JButton audioFilleIfNeededButton;
-    private JComboBox actionComboBox;
+    private JComboBox inputTypeComboBox;
     private JButton saveButton;
     private File audioPath;
 
@@ -88,7 +88,7 @@ public class AddInputs {
         });
     }
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Slammin' Game Editor");
+        JFrame frame = new JFrame("Add Inputs");
         frame.setContentPane(new AddInputs().AddInputs);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();

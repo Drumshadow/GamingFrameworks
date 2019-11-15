@@ -76,7 +76,7 @@
           <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Display Frames?"/>
+          <text value="Display Frames"/>
         </properties>
       </component>
       <component id="e63fd" class="javax.swing.JCheckBox" binding="displayHealthCheckBox" default-binding="true">
@@ -84,7 +84,7 @@
           <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Display Health?"/>
+          <text value="Display Health"/>
         </properties>
       </component>
       <component id="6deaf" class="javax.swing.JComboBox" binding="healthBarTypeComboBox" default-binding="true">
@@ -101,10 +101,10 @@
       </component>
       <component id="4bb23" class="javax.swing.JCheckBox" binding="showScoreCheckBox" default-binding="true">
         <constraints>
-          <grid row="9" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Show Score?"/>
+          <text value="Show Score"/>
         </properties>
       </component>
       <component id="49ea0" class="javax.swing.JSpinner" binding="startSoreSpinner" custom-create="true" default-binding="true">
@@ -202,7 +202,7 @@
         </constraints>
         <properties>
           <labelFor value="d4c2"/>
-          <text value="Lives"/>
+          <text value="Starting Lives"/>
         </properties>
       </component>
       <component id="d92e8" class="javax.swing.JLabel">
