@@ -1,4 +1,4 @@
-package Editor;
+package Editor.OldGUI;
 
 import org.ini4j.Wini;
 

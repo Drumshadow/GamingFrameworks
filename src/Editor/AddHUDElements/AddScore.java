@@ -53,6 +53,7 @@ public class AddScore {
 
         startSoreSpinner = new JSpinner(startScoreModel);
         c.gridy = 4;
+        c.gridx = 0;
         pane.add(startSoreSpinner, c);
 
         maxScoreSpinner = new JSpinner(maxScoreModel);

@@ -1,4 +1,4 @@
-package Editor;
+package Editor.OldGUI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
