@@ -189,9 +189,14 @@ public class AddNew {
         });
 
         saveButton.addActionListener(new ActionListener() {
-            private Wini ini;
             @Override
             public void actionPerformed(ActionEvent e) {
+                Wini ini = null;
+                try {
+                    ini = new Wini(new File("./objects/objects.ini"));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 Set<String> keys = ini.keySet();
                 int num = 0;
                 while(keys.contains(Integer.toString(num))) {
