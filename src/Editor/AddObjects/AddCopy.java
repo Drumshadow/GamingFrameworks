@@ -25,14 +25,14 @@ public class AddCopy {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = 2;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
 
         pane = new JPanel(grid);
         frame = new JFrame();
 
         objectCopyLabel = new JLabel("Choose object to copy (if no selections" +
                 " appear, then no objects have been created)");
-        c.weightx = 0.5;
-        c.weighty = 0.5;
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(20, 0, 20, 0);
@@ -79,15 +79,14 @@ public class AddCopy {
 
         saveButton = new JButton("Save");
         c.gridy = 4;
-        c.gridx = 0;
-        pane.add(saveButton);
+        pane.add(saveButton, c);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
     }
 
     public void setVisible() {
-        frame.setSize(500, 300);
+        frame.setSize(500, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

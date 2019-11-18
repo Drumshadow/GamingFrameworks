@@ -39,7 +39,7 @@ public class AddEventsHome {
         addCollisionEvent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddCollision().setVisible();
             }
         });
 

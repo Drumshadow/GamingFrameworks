@@ -25,6 +25,8 @@ public class AddAI {
     private JSpinner terminalVelocity;
     private JLabel jumpLabel;
     private JSpinner jumpHeight;
+    private JLabel weightLabel;
+    private JSpinner weightSpinner;
     private JLabel xPosLabel;
     private JLabel yPosLabel;
     private JSpinner xPosition;
@@ -152,27 +154,37 @@ public class AddAI {
         c.gridx = 1;
         pane.add(yPosition, c);
 
-        boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
+        weightLabel = new JLabel("Weight of the Object");
+        c.gridwidth = 2;
         c.gridy = 13;
         c.gridx = 0;
-        c.gridwidth = 2;
+        pane.add(weightLabel, c);
+
+        SpinnerNumberModel weightModel = new SpinnerNumberModel(0, 0, 10, 1);
+
+        weightSpinner = new JSpinner(weightModel);
+        c.gridy = 14;
+        pane.add(weightSpinner, c);
+
+        boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
+        c.gridy = 15;
         pane.add(boundingBoxLabel, c);
 
         boundingBox = new JComboBox<>(new String[] {"Rectangle", "Oval"});
-        c.gridy = 14;
+        c.gridy = 16;
         pane.add(boundingBox, c);
 
         chooseSprite = new JButton("Sprite File (Requires PNG)");
-        c.gridy = 15;
+        c.gridy = 17;
         pane.add(chooseSprite, c);
 
         animatedCheck = new JCheckBox("Is the sprite animated?");
-        c.gridy = 16;
+        c.gridy = 18;
         pane.add(animatedCheck, c);
 
         framesLabel = new JLabel("Number of Frames (Number of frames for an " +
                 "animated sprite)");
-        c.gridy = 17;
+        c.gridy = 19;
         pane.add(framesLabel, c);
 
         frames = new JComboBox<>();
@@ -181,13 +193,13 @@ public class AddAI {
             frames.addItem(i);
         }
 
-        c.gridy = 18;
+        c.gridy = 20;
         pane.add(frames, c);
         frames.setEnabled(false);
 
         saveButton = new JButton("Save");
         c.gridwidth = 1;
-        c.gridy = 19;
+        c.gridy = 21;
         c.gridx = 1;
         pane.add(saveButton, c);
 
