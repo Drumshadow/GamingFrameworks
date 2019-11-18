@@ -116,7 +116,7 @@ public class AddCollision {
         c.gridx = 0;
         pane.add(modLabel, c);
 
-        SpinnerNumberModel modModel = new SpinnerNumberModel(0, 0, 100, 1);
+        SpinnerNumberModel modModel = new SpinnerNumberModel(0, -10, 10, 1);
 
         modSpinner = new JSpinner(modModel);
         c.gridy = 7;

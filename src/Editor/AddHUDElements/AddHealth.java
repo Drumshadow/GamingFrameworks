@@ -1,6 +1,7 @@
 package Editor.AddHUDElements;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -91,6 +92,26 @@ public class AddHealth {
                 } else {
                     spriteFile.setEnabled(true);
                 }
+            }
+        });
+
+        spriteFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        return f.getPath().matches(".*\\.png$");
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return null;
+                    }
+                });
+                fc.showOpenDialog(pane);
+                sprPath = fc.getSelectedFile();
             }
         });
 

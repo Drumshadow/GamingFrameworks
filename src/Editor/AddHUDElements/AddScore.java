@@ -8,6 +8,8 @@ public class AddScore {
     private JFrame frame;
     private JLabel nameLabel;
     private JTextField nameTextField;
+    private JLabel startScoreLabel;
+    private JLabel maxScoreLabel;
     private JSpinner startSoreSpinner;
     private JSpinner maxScoreSpinner;
     private JButton saveButton;
@@ -38,9 +40,18 @@ public class AddScore {
         SpinnerNumberModel maxScoreModel = new SpinnerNumberModel(0, 0, 10000,
                 1);
 
-        startSoreSpinner = new JSpinner(startScoreModel);
+        startScoreLabel = new JLabel("Set the starting score for the game");
         c.gridy = 3;
+        c.gridx = 0;
         c.gridwidth = 1;
+        pane.add(startScoreLabel, c);
+
+        maxScoreLabel = new JLabel("Set the maximum score for the game");
+        c.gridx = 1;
+        pane.add(maxScoreLabel, c);
+
+        startSoreSpinner = new JSpinner(startScoreModel);
+        c.gridy = 4;
         pane.add(startSoreSpinner, c);
 
         maxScoreSpinner = new JSpinner(maxScoreModel);
@@ -48,7 +59,7 @@ public class AddScore {
         pane.add(maxScoreSpinner, c);
 
         saveButton = new JButton("Save");
-        c.gridy = 4;
+        c.gridy = 5;
         pane.add(saveButton, c);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,7 +67,7 @@ public class AddScore {
     }
 
     public void setVisible() {
-        frame.setSize(500, 300);
+        frame.setSize(500, 350);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

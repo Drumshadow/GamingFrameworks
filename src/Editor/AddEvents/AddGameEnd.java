@@ -24,11 +24,7 @@ public class AddGameEnd {
     private JLabel yPosLabel;
     private JSpinner xPosition;
     private JSpinner yPosition;
-    private JCheckBox audioCheck;
-    private JButton audioSelector;
     private JButton saveButton;
-
-    private File audioFile;
 
     public AddGameEnd() {
         GridBagLayout grid = new GridBagLayout();
@@ -88,15 +84,6 @@ public class AddGameEnd {
         c.gridy = 5;
         pane.add(nameTextField, c);
 
-        audioCheck = new JCheckBox("Does the collision have a sound?");
-        c.gridy = 6;
-        pane.add(audioCheck, c);
-
-        audioSelector = new JButton("Audio File");
-        c.gridy = 7;
-        pane.add(audioSelector, c);
-        audioSelector.setEnabled(false);
-
         positionLabel = new JLabel("Position to display the final text at");
         c.gridy = 8;
         c.gridx = 0;
@@ -130,13 +117,6 @@ public class AddGameEnd {
         c.gridy = 11;
         pane.add(saveButton, c);
 
-        audioCheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                audioSelector.setEnabled(audioCheck.isSelected());
-            }
-        });
-
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,13 +135,7 @@ public class AddGameEnd {
                     ini.put(strNum, "msg", msgTextField);
                     ini.put(strNum, "x", xPosition.getValue());
                     ini.put(strNum, "y", yPosition.getValue());
-
-                    if(audioFile != null) {
-                        ini.put(strNum, "audio",
-                                audioFile.getAbsolutePath().replace('\\', '/'));
-                    } else {
-                        ini.put(strNum, "audio", "null");
-                    }
+                    ini.put(strNum, "audio", "null");
 
                     ini.store();
                 } catch(IOException err) {
