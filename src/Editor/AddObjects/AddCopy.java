@@ -17,6 +17,7 @@ public class AddCopy {
     private JLabel yPosLabel;
     private JSpinner xPosition;
     private JSpinner yPosition;
+    private JButton saveButton;
 
     public AddCopy() {
         GridBagLayout grid = new GridBagLayout();
@@ -75,12 +76,17 @@ public class AddCopy {
         c.gridx = 1;
         pane.add(yPosition, c);
 
+        saveButton = new JButton("Save");
+        c.gridy = 4;
+        pane.add(saveButton);
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
     }
 
     public void setVisible() {
         frame.setSize(300, 300);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

@@ -1,5 +1,6 @@
 package Editor;
 
+import Editor.AddEvent.AddEventsHome;
 import Editor.AddObjects.AddObjectsHome;
 
 import javax.swing.*;
@@ -76,7 +77,7 @@ public class EditorHome {
         addEventsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddEventsHome().setVisible();
             }
         });
 
@@ -93,6 +94,7 @@ public class EditorHome {
 
     public void setVisible() {
         frame.setSize(500, 500);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

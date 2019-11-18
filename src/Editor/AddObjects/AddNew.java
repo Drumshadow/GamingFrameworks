@@ -7,18 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class AddAI {
+public class AddNew {
     private JPanel pane;
     private JFrame frame;
     private JCheckBox collisionCheck;
-    private JCheckBox ledgeCheck;
-    private JCheckBox bounceHorizontalCheck;
-    private JCheckBox bounceVerticalCheck;
-    private JCheckBox autoMoveCheck;
-    private JLabel xSpeedLabel;
-    private JLabel ySpeedLabel;
-    private JSpinner autoXSpeed;
-    private JSpinner autoYSpeed;
     private JLabel terminalVelocityLabel;
     private JSpinner terminalVelocity;
     private JLabel jumpLabel;
@@ -37,7 +29,7 @@ public class AddAI {
 
     private File sprite;
 
-    public AddAI() {
+    public AddNew() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -54,50 +46,6 @@ public class AddAI {
         c.gridx = 0;
         c.insets = new Insets(10, 0, 10, 0);
         pane.add(collisionCheck, c);
-
-        ledgeCheck = new JCheckBox("Does the object fear ledges? (Rebounds " +
-                "away from them)");
-        c.gridy = 1;
-        pane.add(ledgeCheck, c);
-
-        bounceHorizontalCheck = new JCheckBox("Does the object bounce off " +
-                "walls and other objects horizontally? (Reverse X direction)");
-        c.gridy = 2;
-        pane.add(bounceHorizontalCheck, c);
-
-        bounceVerticalCheck = new JCheckBox("Does the object bounce of floors" +
-                " and other objects vertically? (Reverse Y direction)");
-        c.gridy = 3;
-        pane.add(bounceVerticalCheck, c);
-
-        autoMoveCheck = new JCheckBox("Does the object move on its own?");
-        c.gridy = 4;
-        pane.add(autoMoveCheck, c);
-
-        SpinnerNumberModel xSpeedModel = new SpinnerNumberModel(0, -10, 10,
-                0.5);
-        SpinnerNumberModel ySpeedModel = new SpinnerNumberModel(0, -10, 10,
-                0.5);
-
-        xSpeedLabel = new JLabel("Auto X Speed Movement");
-        c.gridwidth = 1;
-        c.gridy = 5;
-        pane.add(xSpeedLabel, c);
-
-        ySpeedLabel = new JLabel("Auto Y Speed Movement");
-        c.gridx = 1;
-        pane.add(ySpeedLabel, c);
-
-        autoXSpeed = new JSpinner(xSpeedModel);
-        c.gridy = 6;
-        c.gridx = 0;
-        pane.add(autoXSpeed, c);
-        autoXSpeed.setEnabled(false);
-
-        autoYSpeed = new JSpinner(ySpeedModel);
-        c.gridx = 1;
-        pane.add(autoYSpeed, c);
-        autoYSpeed.setEnabled(false);
 
         jumpLabel = new JLabel("Jump Height");
         c.gridx = 0;
@@ -182,15 +130,6 @@ public class AddAI {
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
-        frame.pack();
-
-        autoMoveCheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                autoXSpeed.setEnabled(!autoXSpeed.isEnabled());
-                autoYSpeed.setEnabled(!autoYSpeed.isEnabled());
-            }
-        });
 
         chooseSprite.addActionListener(new ActionListener() {
             @Override

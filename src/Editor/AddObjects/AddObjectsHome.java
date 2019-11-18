@@ -52,12 +52,20 @@ public class AddObjectsHome {
             }
         });
 
+        addNewObject.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddNew().setVisible();
+            }
+        });
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
     }
 
     public void setVisible() {
         frame.setSize(500, 300);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
