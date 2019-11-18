@@ -31,8 +31,10 @@ public class AddObject {
     private JCheckBox shootsProjectileCheckBox;
     private JCheckBox destructsCheckBox;
     private JList<String> destructorsList;
-    private JSpinner xSpeedSpinner;
-    private JSpinner ySpeedSpinner;
+  //  private JSpinner xSpeedSpinner;
+  //  private JSpinner ySpeedSpinner;
+    private JComboBox<String> xSpeedCombo;
+    private JComboBox<String> ySpeedCombo;
     private File sprite;
     private Wini ini;
 
@@ -117,8 +119,50 @@ public class AddObject {
                             AI += ",";
                         }
                         AI += "auto";
-                        ini.put(strNum, "xSpeed", xSpeedSpinner.getValue());
-                        ini.put(strNum, "ySpeed", ySpeedSpinner.getValue());
+
+                        // get auto speeds
+                        double xS = 0.0;
+                        double yS = 0.0;
+
+                        // x speed
+                        if (xSpeedCombo.getSelectedItem() != null) {
+
+                            if (xSpeedCombo.getSelectedItem().equals("None")) {
+                                xS = 0.0;
+                            }
+                            else if (xSpeedCombo.getSelectedItem().equals("Slow")) {
+                                xS = 5.0;
+                            }
+                            else if (xSpeedCombo.getSelectedItem().equals("Medium")) {
+                                xS = 10.0;
+                            }
+                            else if (xSpeedCombo.getSelectedItem().equals("Fast")) {
+                                xS = 15.0;
+                            }
+                        }
+                        ini.put(strNum, "xSpeed", xS);
+
+                        // y speed
+                        if (ySpeedCombo.getSelectedItem() != null) {
+
+                            if (ySpeedCombo.getSelectedItem().equals("None")) {
+                                yS = 0.0;
+                            }
+                            else if (ySpeedCombo.getSelectedItem().equals("Slow")) {
+                                yS = 5.0;
+                            }
+                            else if (ySpeedCombo.getSelectedItem().equals("Medium")) {
+                                yS = 10.0;
+                            }
+                            else if (ySpeedCombo.getSelectedItem().equals("Fast")) {
+                                yS = 15.0;
+                            }
+                        }
+                        ini.put(strNum, "ySpeed", yS);
+
+
+                     //   ini.put(strNum, "xSpeed", xSpeedSpinner.getValue());
+                     //   ini.put(strNum, "ySpeed", ySpeedSpinner.getValue());
                     }
                     if(shootsProjectileCheckBox.isSelected()) {
                         if(AI.length() != 0) {
@@ -169,19 +213,33 @@ public class AddObject {
         SpinnerNumberModel weightModel = new SpinnerNumberModel(0, 0, 10, 0.5);
         SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
-        SpinnerNumberModel xSpeedModel = new SpinnerNumberModel(0, -10, 10,
-                0.5);
-        SpinnerNumberModel ySpeedModel = new SpinnerNumberModel(0, -10, 10,
-                0.5);
+      //  SpinnerNumberModel xSpeedModel = new SpinnerNumberModel(0, -10, 10,
+      //          0.5);
+      //  SpinnerNumberModel ySpeedModel = new SpinnerNumberModel(0, -10, 10,
+      //          0.5);
         SpinnerNumberModel tvModel = new SpinnerNumberModel(0, 0, 30, 1);
         SpinnerNumberModel jumpModel = new SpinnerNumberModel(0, 0, 30, 1);
         weightSpinner = new JSpinner(weightModel);
         xPositionSpinner = new JSpinner(xPosModel);
         yPositionSpinner = new JSpinner(yPosModel);
-        xSpeedSpinner = new JSpinner(xSpeedModel);
-        ySpeedSpinner = new JSpinner(ySpeedModel);
+     //   xSpeedSpinner = new JSpinner(xSpeedModel);
+     //   ySpeedSpinner = new JSpinner(ySpeedModel);
         terminalVelocitySpinner = new JSpinner(tvModel);
         jumpSpinner = new JSpinner(jumpModel);
+
+        // x speed combo box
+        xSpeedCombo = new JComboBox<>();
+        xSpeedCombo.addItem("None");
+        xSpeedCombo.addItem("Slow");
+        xSpeedCombo.addItem("Medium");
+        xSpeedCombo.addItem("Fast");
+
+        // y speed combo box
+        ySpeedCombo = new JComboBox<>();
+        ySpeedCombo.addItem("None");
+        ySpeedCombo.addItem("Slow");
+        ySpeedCombo.addItem("Medium");
+        ySpeedCombo.addItem("Fast");
 
         boundingBoxTypeComboBox = new JComboBox<>();
         boundingBoxTypeComboBox.addItem("Rectangle");

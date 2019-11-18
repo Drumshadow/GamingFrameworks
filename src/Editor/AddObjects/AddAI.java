@@ -14,40 +14,31 @@ import java.util.Set;
 public class AddAI {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
     private JTextField nameTextField;
     private JCheckBox collisionCheck;
     private JCheckBox ledgeCheck;
     private JCheckBox bounceHorizontalCheck;
     private JCheckBox bounceVerticalCheck;
     private JCheckBox autoMoveCheck;
-    private JLabel xSpeedLabel;
-    private JLabel ySpeedLabel;
-    private JSpinner autoXSpeed;
-    private JSpinner autoYSpeed;
-    private JLabel terminalVelocityLabel;
+    private JComboBox<String> xSpeedCombo;
+    private JComboBox<String> ySpeedCombo;
+
     private JSpinner terminalVelocity;
-    private JLabel jumpLabel;
     private JSpinner jumpHeight;
-    private JLabel weightLabel;
     private JSpinner weightSpinner;
-    private JLabel xPosLabel;
-    private JLabel yPosLabel;
     private JSpinner xPosition;
     private JSpinner yPosition;
-    private JLabel boundingBoxLabel;
     private JComboBox<String> boundingBox;
     private JButton chooseSprite;
     private JCheckBox animatedCheck;
     private JCheckBox destructsCheckBox;
-    private JLabel framesLabel;
     private JComboBox<Integer> frames;
     private JButton saveButton;
     private JList<String> destructorsList;
 
     private File sprite;
 
-    public AddAI() {
+    AddAI() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -58,7 +49,7 @@ public class AddAI {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
+        JLabel nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
                 "to allow a single event to apply to multiple AI)");
         c.gridy = 0;
         c.gridx = 0;
@@ -114,47 +105,39 @@ public class AddAI {
             pane.add(destructorsList, c);
             destructorsList.setEnabled(false);
 
-            destructsCheckBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    destructorsList.setEnabled(destructsCheckBox.isSelected());
-                }
-            });
+            destructsCheckBox.addActionListener(e ->
+                    destructorsList.setEnabled(destructsCheckBox.isSelected()));
+
         } catch(IOException err) {
-            err.printStackTrace();
+            System.out.println(err.getMessage());
         }
 
-        SpinnerNumberModel xSpeedModel = new SpinnerNumberModel(0, -10, 10,
-                0.5);
-        SpinnerNumberModel ySpeedModel = new SpinnerNumberModel(0, -10, 10,
-                0.5);
-
-        xSpeedLabel = new JLabel("Auto X Speed Movement");
+        JLabel xSpeedLabel = new JLabel("Auto X Speed Movement");
         c.gridwidth = 1;
         c.gridy = 9;
         pane.add(xSpeedLabel, c);
 
-        ySpeedLabel = new JLabel("Auto Y Speed Movement");
+        JLabel ySpeedLabel = new JLabel("Auto Y Speed Movement");
         c.gridx = 1;
         pane.add(ySpeedLabel, c);
 
-        autoXSpeed = new JSpinner(xSpeedModel);
+        xSpeedCombo = new JComboBox<>(new String[] {"None", "Slow", "Medium", "Fast"});
         c.gridy = 10;
         c.gridx = 0;
-        pane.add(autoXSpeed, c);
-        autoXSpeed.setEnabled(false);
+        pane.add(xSpeedCombo, c);
+        xSpeedCombo.setEnabled(false);
 
-        autoYSpeed = new JSpinner(ySpeedModel);
+        ySpeedCombo = new JComboBox<>(new String[] {"None", "Slow", "Medium", "Fast"});
         c.gridx = 1;
-        pane.add(autoYSpeed, c);
-        autoYSpeed.setEnabled(false);
+        pane.add(ySpeedCombo, c);
+        ySpeedCombo.setEnabled(false);
 
-        jumpLabel = new JLabel("Jump Height");
+        JLabel jumpLabel = new JLabel("Jump Height");
         c.gridx = 0;
         c.gridy = 11;
         pane.add(jumpLabel, c);
 
-        terminalVelocityLabel = new JLabel("Terminal Velocity");
+        JLabel terminalVelocityLabel = new JLabel("Terminal Velocity");
         c.gridx = 1;
         pane.add(terminalVelocityLabel, c);
 
@@ -170,12 +153,12 @@ public class AddAI {
         c.gridx = 1;
         pane.add(terminalVelocity, c);
 
-        xPosLabel = new JLabel("Starting X Position");
+        JLabel xPosLabel = new JLabel("Starting X Position");
         c.gridy = 13;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
-        yPosLabel = new JLabel("Starting Y Position");
+        JLabel yPosLabel = new JLabel("Starting Y Position");
         c.gridx = 1;
         pane.add(yPosLabel, c);
 
@@ -191,7 +174,7 @@ public class AddAI {
         c.gridx = 1;
         pane.add(yPosition, c);
 
-        weightLabel = new JLabel("Weight of the Object");
+        JLabel weightLabel = new JLabel("Weight of the Object");
         c.gridwidth = 2;
         c.gridy = 15;
         c.gridx = 0;
@@ -203,7 +186,7 @@ public class AddAI {
         c.gridy = 16;
         pane.add(weightSpinner, c);
 
-        boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
+        JLabel boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
         c.gridy = 17;
         pane.add(boundingBoxLabel, c);
 
@@ -219,7 +202,7 @@ public class AddAI {
         c.gridy = 20;
         pane.add(animatedCheck, c);
 
-        framesLabel = new JLabel("Number of Frames (Number of frames for an " +
+        JLabel framesLabel = new JLabel("Number of Frames (Number of frames for an " +
                 "animated sprite)");
         c.gridy = 21;
         pane.add(framesLabel, c);
@@ -247,134 +230,161 @@ public class AddAI {
         autoMoveCheck.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                autoXSpeed.setEnabled(!autoXSpeed.isEnabled());
-                autoYSpeed.setEnabled(!autoYSpeed.isEnabled());
+                xSpeedCombo.setEnabled(!xSpeedCombo.isEnabled());
+                ySpeedCombo.setEnabled(!ySpeedCombo.isEnabled());
             }
         });
 
-        chooseSprite.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                sprite = fc.getSelectedFile();
-            }
-        });
-
-        animatedCheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frames.setEnabled(!frames.isEnabled());
-            }
-        });
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Wini ini = null;
-                try {
-                    ini = new Wini(new File("./objects/objects.ini"));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                Set<String> keys = ini.keySet();
-                int num = 0;
-                while(keys.contains(Integer.toString(num))) {
-                    num++;
+        chooseSprite.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.png$");
                 }
 
-                String strNum = Integer.toString(num);
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            sprite = fc.getSelectedFile();
+        });
 
-                try {
+        animatedCheck.addActionListener(e -> frames.setEnabled(!frames.isEnabled()));
 
-                    ini.put(strNum, "name", nameTextField.getText());
-                    if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
-                        ini.put(strNum, "sprPath",
-                                sprite.getAbsolutePath().substring(0,
-                                        sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
-                    } else {
-                        ini.put(strNum, "sprPath",
-                                sprite.getAbsolutePath().substring(0,
-                                        sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
-                    }
-                    ini.put(strNum, "frames", frames.getSelectedItem());
-                    ini.put(strNum, "collide", collisionCheck.isSelected());
-                    ini.put(strNum, "weight", weightSpinner.getValue());
-                    ini.put(strNum, "tv", terminalVelocity.getValue());
-                    ini.put(strNum, "jump", jumpHeight.getValue());
-                    ini.put(strNum, "boxType", Integer.toString(
-                            boundingBox.getSelectedIndex()));
-                    ini.put(strNum, "x", xPosition.getValue());
-                    ini.put(strNum, "y", yPosition.getValue());
+        saveButton.addActionListener(e -> {
+            Wini ini = null;
+            try {
+                ini = new Wini(new File("./objects/objects.ini"));
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+            Set<String> keys = ini.keySet();
+            int num = 0;
+            while(keys.contains(Integer.toString(num))) {
+                num++;
+            }
 
-                    String AI = "";
+            String strNum = Integer.toString(num);
 
-                    if(ledgeCheck.isSelected()) {
-                        if(AI.length() != 0) {
-                            AI += ",";
-                        }
-                        AI += "ledges";
-                    }
-                    if(bounceHorizontalCheck.isSelected()) {
-                        if(AI.length() != 0) {
-                            AI += ",";
-                        }
-                        AI += "walls";
-                    }
-                    if(bounceVerticalCheck.isSelected()) {
-                        if(AI.length() != 0) {
-                            AI += ",";
-                        }
-                        AI += "bounce";
-                    }
-                    if(autoMoveCheck.isSelected()) {
-                        if(AI.length() != 0) {
-                            AI += ",";
-                        }
-                        AI += "auto";
-                        ini.put(strNum, "xSpeed", autoXSpeed.getValue());
-                        ini.put(strNum, "ySpeed", autoYSpeed.getValue());
-                    }
+            try {
 
-                    if(destructsCheckBox.isSelected()) {
-                        if(AI.length() != 0) {
-                            AI += ",";
-                        }
-                        AI += "destruct";
+                ini.put(strNum, "name", nameTextField.getText());
+                if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
+                    ini.put(strNum, "sprPath",
+                            sprite.getAbsolutePath().substring(0,
+                                    sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                } else {
+                    ini.put(strNum, "sprPath",
+                            sprite.getAbsolutePath().substring(0,
+                                    sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
+                }
+                ini.put(strNum, "frames", frames.getSelectedItem());
+                ini.put(strNum, "collide", collisionCheck.isSelected());
+                ini.put(strNum, "weight", weightSpinner.getValue());
+                ini.put(strNum, "tv", terminalVelocity.getValue());
+                ini.put(strNum, "jump", jumpHeight.getValue());
+                ini.put(strNum, "boxType", Integer.toString(
+                        boundingBox.getSelectedIndex()));
+                ini.put(strNum, "x", xPosition.getValue());
+                ini.put(strNum, "y", yPosition.getValue());
 
-                        StringBuilder destroyers = new StringBuilder();
-                        for(String value: destructorsList.getSelectedValuesList()) {
-                            if(destroyers.length() != 0) {
-                                destroyers.append(",");
-                            }
+                String AI = "";
 
-                            destroyers.append(value);
-                        }
-
-                        ini.put(strNum, "destroyers", destroyers);
-                    }
-
+                if(ledgeCheck.isSelected()) {
                     if(AI.length() != 0) {
-                        ini.put(strNum, "AI", AI);
-                    } else {
-                        ini.put(strNum, "AI", "null");
+                        AI += ",";
+                    }
+                    AI += "ledges";
+                }
+                if(bounceHorizontalCheck.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "walls";
+                }
+                if(bounceVerticalCheck.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "bounce";
+                }
+                if(autoMoveCheck.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "auto";
+
+                    // get auto speeds
+                    double xS = 0.0;
+                    double yS = 0.0;
+
+                    // x speed
+                    if (xSpeedCombo.getSelectedItem() != null) {
+
+                        if (xSpeedCombo.getSelectedItem().equals("None")) {
+                            xS = 0.0;
+                        }
+                        else if (xSpeedCombo.getSelectedItem().equals("Slow")) {
+                            xS = 4.0;
+                        }
+                        else if (xSpeedCombo.getSelectedItem().equals("Medium")) {
+                            xS = 8.0;
+                        }
+                        else if (xSpeedCombo.getSelectedItem().equals("Fast")) {
+                            xS = 12.0;
+                        }
+                    }
+                    ini.put(strNum, "xSpeed", xS);
+
+                    // y speed
+                    if (ySpeedCombo.getSelectedItem() != null) {
+
+                        if (ySpeedCombo.getSelectedItem().equals("None")) {
+                            yS = 0.0;
+                        }
+                        else if (ySpeedCombo.getSelectedItem().equals("Slow")) {
+                            yS = 4.0;
+                        }
+                        else if (ySpeedCombo.getSelectedItem().equals("Medium")) {
+                            yS = 8.0;
+                        }
+                        else if (ySpeedCombo.getSelectedItem().equals("Fast")) {
+                            yS = 12.0;
+                        }
+                    }
+                    ini.put(strNum, "ySpeed", yS);
+                }
+
+                if(destructsCheckBox.isSelected()) {
+                    if(AI.length() != 0) {
+                        AI += ",";
+                    }
+                    AI += "destruct";
+
+                    StringBuilder destroyers = new StringBuilder();
+                    for(String value: destructorsList.getSelectedValuesList()) {
+                        if(destroyers.length() != 0) {
+                            destroyers.append(",");
+                        }
+
+                        destroyers.append(value);
                     }
 
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
+                    ini.put(strNum, "destroyers", destroyers);
                 }
+
+                if(AI.length() != 0) {
+                    ini.put(strNum, "AI", AI);
+                } else {
+                    ini.put(strNum, "AI", "null");
+                }
+
+                ini.store();
+            } catch(IOException err) {
+                System.out.println(err.getMessage());
             }
         });
     }
