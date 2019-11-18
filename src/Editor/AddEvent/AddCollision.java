@@ -15,6 +15,8 @@ public class AddCollision {
     private JFrame frame;
     private JLabel nameLabel;
     private JTextField nameTextField;
+    private JLabel HUDLabel;
+    private JComboBox<String> HUDComboBox;
     private JLabel object1Label;
     private JLabel object2Label;
     private JComboBox<String> object1ComboBox;
@@ -50,29 +52,52 @@ public class AddCollision {
         c.gridy = 1;
         pane.add(nameTextField, c);
 
-        c.gridwidth = 1;
-
-        object1Label = new JLabel("Choose first object");
-        c.gridy = 2;
-        pane.add(object1Label, c);
-
-        object2Label = new JLabel("Choose second object");
-        c.gridx = 1;
-        pane.add(object2Label, c);
-
         try {
-            Wini ini = new Wini(new File("./objects/objects.ini"));
+            Wini ini = new Wini(new File("./HUD/HUD.ini"));
+
             Set<String> keys = ini.keySet();
             String[] values = new String[keys.size() + 1];
 
-            int i = 1;
+            keys = ini.keySet();
+            values = new String[keys.size()];
+
+            int i = 0;
+            for (String key : keys) {
+                values[i] = ini.get(key, "name");
+                i++;
+            }
+
+            HUDLabel = new JLabel("HUD Element that will be affected (Like " +
+                    "the health)");
+            c.gridy = 2;
+            pane.add(HUDLabel, c);
+
+            HUDComboBox = new JComboBox<>(values);
+            c.gridy = 3;
+            pane.add(HUDComboBox, c);
+
+            c.gridwidth = 1;
+
+            object1Label = new JLabel("Choose first object");
+            c.gridy = 4;
+            pane.add(object1Label, c);
+
+            object2Label = new JLabel("Choose second object");
+            c.gridx = 1;
+            pane.add(object2Label, c);
+
+            ini = new Wini(new File("./objects/objects.ini"));
+            keys = ini.keySet();
+            values = new String[keys.size() + 1];
+
+            i = 1;
             for(String key : keys) {
                 values[i] = ini.get(key, "name");
                 i++;
             }
 
             object1ComboBox = new JComboBox<>(values);
-            c.gridy = 3;
+            c.gridy = 5;
             c.gridx = 0;
             pane.add(object1ComboBox, c);
 
@@ -87,27 +112,27 @@ public class AddCollision {
 
         modLabel = new JLabel("Choose the amount the given element will be " +
                 "changed by (like health decreases by 5)");
-        c.gridy = 4;
+        c.gridy = 6;
         c.gridx = 0;
         pane.add(modLabel, c);
 
         SpinnerNumberModel modModel = new SpinnerNumberModel(0, 0, 100, 1);
 
         modSpinner = new JSpinner(modModel);
-        c.gridy = 5;
+        c.gridy = 7;
         pane.add(modSpinner, c);
 
         audioCheck = new JCheckBox("Does the collision have a sound?");
-        c.gridy = 6;
+        c.gridy = 8;
         pane.add(audioCheck, c);
 
         audioSelector = new JButton("Audio File");
-        c.gridy = 7;
+        c.gridy = 9;
         pane.add(audioSelector, c);
         audioSelector.setEnabled(false);
 
         saveButton = new JButton("Save");
-        c.gridy = 8;
+        c.gridy = 10;
         c.gridx = 1;
         pane.add(saveButton, c);
 
@@ -123,7 +148,7 @@ public class AddCollision {
     }
 
     public void setVisible() {
-        frame.setSize(600, 400);
+        frame.setSize(600, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
