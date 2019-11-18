@@ -49,6 +49,12 @@ public class AddBackground {
         c.gridy = 3;
         pane.add(ArtPath, c);
 
+        saveButton = new JButton("Save");
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.gridx = 1;
+        pane.add(saveButton, c);
+
         MusicPath.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
