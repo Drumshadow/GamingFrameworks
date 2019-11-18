@@ -4,6 +4,8 @@ import org.ini4j.Wini;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -22,6 +24,8 @@ public class AddCollision {
     private JCheckBox audioCheck;
     private JButton audioSelector;
     private JButton saveButton;
+
+    private File audioFile;
 
     public AddCollision() {
         GridBagLayout grid = new GridBagLayout();
@@ -93,10 +97,26 @@ public class AddCollision {
         c.gridy = 5;
         pane.add(modSpinner, c);
 
-        saveButton = new JButton("Save");
+        audioCheck = new JCheckBox("Does the collision have a sound?");
         c.gridy = 6;
+        pane.add(audioCheck, c);
+
+        audioSelector = new JButton("Audio File");
+        c.gridy = 7;
+        pane.add(audioSelector, c);
+        audioSelector.setEnabled(false);
+
+        saveButton = new JButton("Save");
+        c.gridy = 8;
         c.gridx = 1;
         pane.add(saveButton, c);
+
+        audioCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                audioSelector.setEnabled(audioCheck.isSelected());
+            }
+        });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
