@@ -11,7 +11,7 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class AddOptions {
+public class AddOption {
     private JPanel panel1;
     private JPanel AddOptions;
     private JLabel Music;
@@ -24,7 +24,7 @@ public class AddOptions {
     private File artPath;
     private File musicPath;
 
-    public AddOptions() {
+    public AddOption() {
         AddOptions.addComponentListener(new ComponentAdapter() {
             @Override
             public int hashCode() {
@@ -153,7 +153,7 @@ public class AddOptions {
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame("Add Options");
-        frame.setContentPane(new AddOptions().AddOptions);
+        frame.setContentPane(new AddOption().AddOptions);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
