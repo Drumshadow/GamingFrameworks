@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-public class AddEvents {
+public class AddEvent {
     private JPanel panel1;
     private JPanel AddEvents;
     private JComboBox typeComboBox;
@@ -24,7 +24,7 @@ public class AddEvents {
     private JComboBox<String> HUDComboBox;
     private File audioFile;
 
-    public AddEvents() {
+    public AddEvent() {
         audioSelector.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -97,7 +97,7 @@ public class AddEvents {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Add Events");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setContentPane(new AddEvents().AddEvents);
+        frame.setContentPane(new AddEvent().AddEvents);
         frame.pack();
         frame.setVisible(true);
     }

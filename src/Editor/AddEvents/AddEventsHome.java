@@ -1,4 +1,4 @@
-package Editor.AddEvent;
+package Editor.AddEvents;
 
 import javax.swing.*;
 import java.awt.*;

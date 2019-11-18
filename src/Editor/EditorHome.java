@@ -1,6 +1,6 @@
 package Editor;
 
-import Editor.AddEvent.AddEventsHome;
+import Editor.AddEvents.AddEventsHome;
 import Editor.AddObjects.AddObjectsHome;
 
 import javax.swing.*;

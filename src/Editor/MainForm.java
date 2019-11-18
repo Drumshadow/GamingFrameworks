@@ -48,7 +48,7 @@ public class MainForm {
         AddEvents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Editor.AddEvents.main(null);
+                AddEvent.main(null);
             }
         });
     }

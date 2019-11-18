@@ -1,4 +1,4 @@
-package Editor.AddEvent;
+package Editor.AddEvents;
 
 import org.ini4j.Wini;
 
@@ -10,27 +10,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-public class AddGameEnd {
+public class AddCollision {
     private JPanel pane;
     private JFrame frame;
     private JLabel nameLabel;
     private JTextField nameTextField;
     private JLabel HUDLabel;
     private JComboBox<String> HUDComboBox;
-    private JLabel msgLabel;
-    private JTextField msgTextField;
-    private JLabel positionLabel;
-    private JLabel xPosLabel;
-    private JLabel yPosLabel;
-    private JSpinner xPosition;
-    private JSpinner yPosition;
+    private JLabel object1Label;
+    private JLabel object2Label;
+    private JComboBox<String> object1ComboBox;
+    private JComboBox<String> object2ComboBox;
+    private JLabel modLabel;
+    private JSpinner modSpinner;
     private JCheckBox audioCheck;
     private JButton audioSelector;
     private JButton saveButton;
 
     private File audioFile;
 
-    public AddGameEnd() {
+    public AddCollision() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -56,8 +55,8 @@ public class AddGameEnd {
         try {
             Wini ini = new Wini(new File("./HUD/HUD.ini"));
 
-            Set<String> keys;
-            String[] values;
+            Set<String> keys = ini.keySet();
+            String[] values = new String[keys.size() + 1];
 
             keys = ini.keySet();
             values = new String[keys.size()];
@@ -76,58 +75,65 @@ public class AddGameEnd {
             HUDComboBox = new JComboBox<>(values);
             c.gridy = 3;
             pane.add(HUDComboBox, c);
+
+            c.gridwidth = 1;
+
+            object1Label = new JLabel("Choose first object");
+            c.gridy = 4;
+            pane.add(object1Label, c);
+
+            object2Label = new JLabel("Choose second object");
+            c.gridx = 1;
+            pane.add(object2Label, c);
+
+            ini = new Wini(new File("./objects/objects.ini"));
+            keys = ini.keySet();
+            values = new String[keys.size() + 1];
+
+            i = 1;
+            for(String key : keys) {
+                values[i] = ini.get(key, "name");
+                i++;
+            }
+
+            object1ComboBox = new JComboBox<>(values);
+            c.gridy = 5;
+            c.gridx = 0;
+            pane.add(object1ComboBox, c);
+
+            object2ComboBox = new JComboBox<>(values);
+            c.gridx = 1;
+            pane.add(object2ComboBox, c);
         } catch(IOException err) {
             err.printStackTrace();
         }
 
-        msgLabel = new JLabel("End Game Message");
-        c.gridy = 4;
-        pane.add(nameLabel, c);
+        c.gridwidth = 2;
 
-        msgTextField = new JTextField();
-        c.gridy = 5;
-        pane.add(nameTextField, c);
+        modLabel = new JLabel("Choose the amount the given element will be " +
+                "changed by (like health decreases by 5)");
+        c.gridy = 6;
+        c.gridx = 0;
+        pane.add(modLabel, c);
+
+        SpinnerNumberModel modModel = new SpinnerNumberModel(0, 0, 100, 1);
+
+        modSpinner = new JSpinner(modModel);
+        c.gridy = 7;
+        pane.add(modSpinner, c);
 
         audioCheck = new JCheckBox("Does the collision have a sound?");
-        c.gridy = 6;
+        c.gridy = 8;
         pane.add(audioCheck, c);
 
         audioSelector = new JButton("Audio File");
-        c.gridy = 7;
+        c.gridy = 9;
         pane.add(audioSelector, c);
         audioSelector.setEnabled(false);
 
-        positionLabel = new JLabel("Position to display the final text at");
-        c.gridy = 8;
-        c.gridx = 0;
-        c.gridwidth = 2;
-        pane.add(positionLabel, c);
-
-        c.gridwidth = 1;
-
-        xPosLabel = new JLabel("X Position");
-        c.gridy = 9;
-        c.gridx = 0;
-        pane.add(xPosLabel, c);
-
-        yPosLabel = new JLabel("Y Position");
-        c.gridx = 1;
-        pane.add(yPosLabel, c);
-
-        SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
-        SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
-
-        xPosition = new JSpinner(xPosModel);
-        c.gridy = 10;
-        c.gridx = 0;
-        pane.add(xPosition, c);
-
-        yPosition = new JSpinner(yPosModel);
-        c.gridx = 1;
-        pane.add(yPosition, c);
-
         saveButton = new JButton("Save");
-        c.gridy = 11;
+        c.gridy = 10;
+        c.gridx = 1;
         pane.add(saveButton, c);
 
         audioCheck.addActionListener(new ActionListener() {
@@ -142,7 +148,7 @@ public class AddGameEnd {
     }
 
     public void setVisible() {
-        frame.setSize(600, 600);
+        frame.setSize(600, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
