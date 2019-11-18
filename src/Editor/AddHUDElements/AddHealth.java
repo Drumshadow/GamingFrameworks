@@ -120,8 +120,8 @@ public class AddHealth {
                 ini.put(strNum, "hType", healthBarTypeComboBox.getSelectedItem());
                 ini.put(strNum, "max", maxLivesSpinner.getValue());
                 ini.put(strNum, "lives", livesSpinner.getValue());
-                ini.put(strNum, "width", 0.5);
-                ini.put(strNum, "height", 0.05);
+                ini.put(strNum, "width", "0.5");
+                ini.put(strNum, "height", "0.05");
 
                 if(sprPath != null) {
                     ini.put(strNum, "spFrames",
@@ -131,8 +131,8 @@ public class AddHealth {
                     ini.put(strNum, "spFrames", "1");
                 }
 
-                ini.put(strNum, "xPos", -0.9);
-                ini.put(strNum, "yPos", 0.85);
+                ini.put(strNum, "xPos", "-0.9");
+                ini.put(strNum, "yPos", "0.85");
 
                 ini.put(strNum, "name", nameTextField.getText());
 
