@@ -2,6 +2,7 @@ package Editor;
 
 import Editor.AddEvents.AddEventsHome;
 import Editor.AddObjects.AddObjectsHome;
+import Editor.AddOptions.AddOptionsHome;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,7 +71,7 @@ public class EditorHome {
         addOptionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddOptionsHome().setVisible();
             }
         });
 
