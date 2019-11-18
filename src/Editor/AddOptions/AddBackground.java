@@ -94,7 +94,7 @@ public class AddBackground {
     }
 
     public void setVisible() {
-        frame.setSize(250, 250);
+        frame.setSize(500, 250);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

@@ -43,7 +43,7 @@ public class AddOptionsHome {
     }
 
     public void setVisible() {
-        frame.setSize(250, 150);
+        frame.setSize(500, 150);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
