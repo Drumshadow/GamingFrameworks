@@ -33,6 +33,10 @@ public class HUD {
         this.elements.remove(he);
     }
 
+    public void removeAllElements() {
+        this.elements.removeAllElements();
+    }
+
     public void drawHUD() {
         this.elements.forEach(HUDElement::drawElement);
     }

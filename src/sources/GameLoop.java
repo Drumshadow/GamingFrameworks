@@ -26,16 +26,22 @@ import static org.lwjgl.opengl.GL11.*;
 public class GameLoop {
 
     private InitWindow newWindow = new InitWindow();
-    private InputList inputs = new InputList();
     private Audio bg = new Audio();
+
+    // ini file elements
+    private INI pivotalMoment = new INI();
+    private InputList inputs = new InputList();
     private ControllerList controls = new ControllerList();
     private HUD hud = new HUD();
     private EventHandler events = new EventHandler();
-    private INI pivotalMoment = new INI();
 
     private GameRoom room = new GameRoom();
     private boolean isPaused = false;
     private boolean isEnd = false;
+
+    // keeps track of changed in ini files:
+    // inputs, controls, hud, events, objects
+    static int[] changeKeeper = new int[]{0, 0, 0, 0, 0};
 
 
     private void paused(int key, int action){
@@ -57,83 +63,69 @@ public class GameLoop {
         alcMakeContextCurrent(context);
         ALCapabilities alCapabilities  = AL.createCapabilities(alcCapabilities);
 
-        // add pause button
-     //   inputs.add(new Input(GLFW_KEY_P, GLFW_PRESS));
-
         // setup key callback
         // called every time a key is pressed, repeated or released
         glfwSetKeyCallback(newWindow.window, (window, key, scanCode, action,
                                               mods) -> {
 
-            // reload
+            // restart room
             if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
                 inputs.removeAll();
                 controls.removeAll();
+                events.removeAll();
+                hud.removeAllElements();
                 room.getAllObjects().removeAllElements();
                 try {
-           //         inputs.add(new Input(GLFW_KEY_P, GLFW_PRESS));
-                    pivotalMoment.renderObjects(room, events);
-                    pivotalMoment.setControls(controls, events);
-                    pivotalMoment.setKeyboardControls(inputs, events);
+                    pivotalMoment.renderObjects(room, events, -1);
+                    pivotalMoment.setControls(controls, events, -1);
+                    pivotalMoment.setKeyboardControls(inputs, events, -1);
+                    pivotalMoment.renderHUD(hud, -1);
+                    pivotalMoment.renderEvents(events, -1);
                     System.out.println("reloaded");
                 } catch (IOException e) {
                     System.out.println("Error reloading after pause");
                 }
-                key = GLFW_KEY_X;
+
+                isPaused = false;
             }
 
-            // unpause
-            else if(key == GLFW_KEY_O && action == GLFW_PRESS && isPaused){
-             //   inputs.removeAll();
-             //   controls.removeAll();
-             //   room.getAllObjects().removeAllElements();
-                System.out.println("UNPAUSED");
-                isPaused = false;
-            /*    try {
-                    pivotalMoment.renderObjects(room, events);
-                    pivotalMoment.setControls(controls, events);
-                    pivotalMoment.setKeyboardControls(inputs, events);
+            // refresh room
+            else if (key == GLFW_KEY_9 && action == GLFW_PRESS) {
+
+                try {
+                    pivotalMoment.renderObjects(room, events, changeKeeper[4]);
+                    pivotalMoment.setControls(controls, events, changeKeeper[1]);
+                    pivotalMoment.setKeyboardControls(inputs, events, changeKeeper[0]);
+                    pivotalMoment.renderHUD(hud, changeKeeper[2]);
+                    pivotalMoment.renderEvents(events, changeKeeper[3]);
+                    System.out.println("refreshed");
                 } catch (IOException e) {
                     System.out.println("Error reloading after pause");
-                }*/
-                key = GLFW_KEY_X;
-            }
-
-            // pause
-            else if (key == GLFW_KEY_P && action == GLFW_PRESS && !isPaused) {
-                isPaused = true;
-                paused(key, action);
-                System.out.println("PAUSED");
-            }
-
-            else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true);
-            }
-
-            // pause or exit
-          /*  for (int i = 0; i < inputs.size(); i++) {
-
-                if (key == inputs.get(i).getKey() &&
-                        action == inputs.get(i).getAction()) {
-                    if (inputs.get(i).getPurpose() == Input.inputPurpose.PAUSE) {
-                        isPaused = inputs.get(i).execute(isPaused);
-                        System.out.println("PAUSED");
-                    }
-                    else {
-                        inputs.get(i).execute(room);
-                    }
                 }
+            }
 
-                else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                    glfwSetWindowShouldClose(window, true);
-                }
+            // pause/unpause room
+            else if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 
-                else if(key == GLFW_KEY_P && action == GLFW_PRESS && !isPaused){
+                // pause
+                if (!isPaused) {
+
                     isPaused = true;
                     paused(key, action);
                     System.out.println("PAUSED");
                 }
-            }*/
+
+                // unpause
+                else {
+                    System.out.println("UNPAUSED");
+                    isPaused = false;
+                }
+            }
+
+            // escape room
+            else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(window, true);
+            }
         });
 
         loop();
@@ -169,13 +161,13 @@ public class GameLoop {
             hud.setHudFont(ini.get("misc", "font"), 32);
         }
 
-        pivotalMoment.renderHUD(hud);
+        pivotalMoment.renderHUD(hud, 0);
 
         // get other game components
-        pivotalMoment.renderEvents(events);
-        pivotalMoment.setKeyboardControls(inputs, events);
-        pivotalMoment.setControls(controls, events);
-        pivotalMoment.renderObjects(room, events);
+        pivotalMoment.renderEvents(events, 0);
+        pivotalMoment.setKeyboardControls(inputs, events, 0);
+        pivotalMoment.setControls(controls, events, 0);
+        pivotalMoment.renderObjects(room, events, 0);
 
         /*==================================================
                           Game Loop

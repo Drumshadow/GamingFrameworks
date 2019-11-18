@@ -10,15 +10,24 @@ import sources.objCode.GameObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
 class INI {
-    void renderObjects(GameRoom room, EventHandler events) throws IOException {
+    void renderObjects(GameRoom room, EventHandler events, int index) throws IOException {
         Ini iniO = new Ini(new File("./objects/objects.ini"));
         Config.getGlobal().setEscape(false);
-        for (String section : (Set<String>)iniO.keySet()) {
+
+        int i = index;
+
+        if (index == -1) {
+            i = 0;
+        }
+
+        // for (String section : (Set<String>)iniO.keySet()) {
+        for (; i < iniO.keySet().size(); i++) {
+
+            String section = i + "";
 
             GameObject newObject = new GameObject(iniO.get(section, "name"),
                     iniO.get(section, "sprPath"),
@@ -36,13 +45,28 @@ class INI {
             this.applyAI(events, iniO, newObject, ai, section, null);
 
             room.addObject(newObject);
+
+            // update change keeper
+            if (index != -1) {
+                GameLoop.changeKeeper[4]++;
+            }
         }
     }
 
-    void setControls(ControllerList controls, EventHandler events) throws IOException {
+    void setControls(ControllerList controls, EventHandler events, int index) throws IOException {
         Ini iniC = new Ini(new File("./inputs/controller.ini"));
 
-        for (String section : (Set<String>)iniC.keySet()) {
+        int i = index;
+
+        if (index == -1) {
+            i = 0;
+        }
+
+        //for (String section : (Set<String>)iniC.keySet()) {
+        for (; i < iniC.keySet().size(); i++) {
+
+            String section = i + "";
+
             switch (iniC.get(section, "purpose")) {
                 case "Create":
                 case "Destroy":
@@ -108,13 +132,28 @@ class INI {
                             projectile));
                     break;
             }
+
+            // update change keeper
+            if (index != -1) {
+                GameLoop.changeKeeper[1]++;
+            }
         }
     }
 
-    void setKeyboardControls(InputList inputs, EventHandler events) throws IOException {
+    void setKeyboardControls(InputList inputs, EventHandler events, int index) throws IOException {
         Ini ini = new Ini(new File("./inputs/keyboard.ini"));
 
-        for (String section : (Set<String>)ini.keySet()) {
+        int i = index;
+
+        if (index == -1) {
+            i = 0;
+        }
+
+        //for (String section : (Set<String>)ini.keySet()) {
+        for (; i < ini.keySet().size(); i++) {
+
+            String section = i + "";
+
             switch (ini.get(section, "purpose")) {
                 case "Create":
                 case "Destroy":
@@ -177,12 +216,28 @@ class INI {
                             ini.get(section, "object"), projectile));
                     break;
             }
+
+            // update change keeper
+            if (index != -1) {
+                GameLoop.changeKeeper[0]++;
+            }
         }
     }
 
-    void renderHUD(HUD hud) throws IOException {
+    void renderHUD(HUD hud, int index) throws IOException {
         Ini ini = new Ini(new File("./HUD/HUD.ini"));
-        for (String section : (Set<String>)ini.keySet()) {
+
+        int i = index;
+
+        if (index == -1) {
+            i = 0;
+        }
+
+        //for (String section : (Set<String>)ini.keySet()) {
+        for (; i < ini.keySet().size(); i++) {
+
+            String section = i + "";
+
             switch (ini.get(section, "type")) {
                 case "HealthBar":
 
@@ -225,13 +280,27 @@ class INI {
                             ini.get(section, "name")));
                     break;
             }
+
+            // update change keeper
+            if (index != -1) {
+                GameLoop.changeKeeper[2]++;
+            }
         }
     }
 
-    void renderEvents(EventHandler events) throws IOException {
+    void renderEvents(EventHandler events, int index) throws IOException {
         Ini ini = new Ini(new File("./events/events.ini"));
 
-        for (String section : (Set<String>)ini.keySet()) {
+        int i = index;
+
+        if (index == -1) {
+            i = 0;
+        }
+
+        //for (String section : (Set<String>)ini.keySet()) {
+        for (; i < ini.keySet().size(); i++) {
+
+            String section = i + "";
 
             // get sound if there is one
             Audio a = null;
@@ -295,6 +364,11 @@ class INI {
                             ini.get(section, "msg"),
                             Integer.parseInt(ini.get(section, "x")),
                             Integer.parseInt(ini.get(section, "y")), a));
+            }
+
+            // update change keeper
+            if (index != -1) {
+                GameLoop.changeKeeper[3]++;
             }
         }
     }
