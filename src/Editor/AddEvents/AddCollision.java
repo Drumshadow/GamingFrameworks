@@ -145,6 +145,51 @@ public class AddCollision {
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./events/events.ini"));
+
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
+
+                    String strNum = Integer.toString(i);
+
+                    ini.put(strNum, "type", "collision");
+
+                    if(object1ComboBox.getSelectedIndex() != 0) {
+                        ini.put(strNum, "obj1",
+                                object1ComboBox.getSelectedItem());
+                    }
+
+                    if(object2ComboBox.getSelectedIndex() != 0) {
+                        ini.put(strNum, "obj2",
+                                object2ComboBox.getSelectedItem());
+                    }
+
+                    if(HUDComboBox.getSelectedIndex() != 0) {
+                        ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
+                        ini.put(strNum, "mod", modSpinner.getValue());
+                    }
+
+
+                    if(audioFile != null) {
+                        ini.put(strNum, "audio",
+                                audioFile.getAbsolutePath().replace('\\', '/'));
+                    } else {
+                        ini.put(strNum, "audio", "null");
+                    }
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
+        });
     }
 
     public void setVisible() {
