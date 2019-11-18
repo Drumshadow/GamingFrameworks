@@ -65,7 +65,7 @@ public class AddCopy {
         pane.add(yPosLabel, c);
 
         SpinnerNumberModel xPosModel = new SpinnerNumberModel(0, 0, 1920, 1);
-        SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
+        SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 2000, 1);
 
         xPosition = new JSpinner(xPosModel);
         c.gridy = 3;

@@ -8,6 +8,7 @@ import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
+import sources.HUDcode.FrameDisplay;
 import sources.HUDcode.HUD;
 import sources.objCode.GameObject;
 
@@ -229,6 +230,11 @@ public class GameLoop {
                     if (frame_time >= 1.0) {
                         frame_time = 0;
                         displayFrames = frames;
+                        for (int i = 0; i < hud.getElements().size(); i++) {
+                            if (hud.getElements().get(i) instanceof FrameDisplay) {
+                                ((FrameDisplay) hud.getElements().get(i)).setFrameCount(displayFrames);
+                            }
+                        }
                         frames = 0;
                     }
                 }
