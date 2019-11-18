@@ -13,12 +13,12 @@ import java.util.Set;
 public class AddGameEnd {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
-    private JTextField nameTextField;
     private JLabel HUDLabel;
     private JComboBox<String> HUDComboBox;
     private JLabel msgLabel;
     private JTextField msgTextField;
+    private JLabel modLabel;
+    private JSpinner modSpinner;
     private JLabel positionLabel;
     private JLabel xPosLabel;
     private JLabel yPosLabel;
@@ -37,17 +37,6 @@ public class AddGameEnd {
 
         pane = new JPanel(grid);
         frame = new JFrame();
-
-        nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
-                "to allow a single event to apply to multiple objects)");
-        c.gridy = 0;
-        c.gridx = 0;
-
-        pane.add(nameLabel, c);
-
-        nameTextField = new JTextField();
-        c.gridy = 1;
-        pane.add(nameTextField, c);
 
         try {
             Wini ini = new Wini(new File("./HUD/HUD.ini"));
@@ -78,11 +67,23 @@ public class AddGameEnd {
 
         msgLabel = new JLabel("End Game Message");
         c.gridy = 4;
-        pane.add(nameLabel, c);
+        pane.add(msgLabel, c);
 
         msgTextField = new JTextField();
         c.gridy = 5;
-        pane.add(nameTextField, c);
+        pane.add(msgTextField, c);
+
+        modLabel = new JLabel("Choose at what point the game ends (recommend " +
+                "0 for health instance)");
+        c.gridy = 6;
+        c.gridx = 0;
+        pane.add(modLabel, c);
+
+        SpinnerNumberModel modModel = new SpinnerNumberModel(0, 0, 1000, 1);
+
+        modSpinner = new JSpinner(modModel);
+        c.gridy = 7;
+        pane.add(modSpinner, c);
 
         positionLabel = new JLabel("Position to display the final text at");
         c.gridy = 8;

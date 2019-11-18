@@ -35,7 +35,7 @@ public class AddSound {
 
         for(int i = 48; i <= 90; i++) {
             if(i != 58 && i != 60 && !(i < 65 && i > 61)) {
-                mapToComboBox.addItem(Integer.toString(i));
+                mapToComboBox.addItem((char) i + "");
             }
         }
 

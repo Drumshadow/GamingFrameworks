@@ -31,6 +31,7 @@ public class AddEventsHome {
         addProjectileEvent = new JButton("Add Projectile Event");
         c.gridy = 1;
         pane.add(addProjectileEvent, c);
+        addProjectileEvent.setEnabled(false);
 
         addGameEndCase = new JButton("Add Game End Condition");
         c.gridy = 2;
