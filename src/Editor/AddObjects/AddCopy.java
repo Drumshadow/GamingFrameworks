@@ -94,7 +94,7 @@ public class AddCopy {
 
                 for(String key : keys) {
                     if(ini.get(key, "name").equals(objectCopyList.getSelectedItem())) {
-                        copy = ini.get(key);
+                        copy = (Profile.Section) ini.get(key);
                         break;
                     }
                 }
