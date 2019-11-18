@@ -3,14 +3,11 @@ package Editor.AddOptions;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 public class AddFont {
     private JPanel pane;
     private JFrame frame;
-    private JLabel FontPath;
     private JButton Font;
     private JButton saveButton;
 
@@ -27,7 +24,7 @@ public class AddFont {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        FontPath = new JLabel("Select a Font file of type .ttf");
+        JLabel FontPath = new JLabel("Select a Font file of type .ttf");
         c.gridy = 0;
         c.gridx = 0;
         pane.add(FontPath, c);
@@ -36,26 +33,21 @@ public class AddFont {
         c.gridy = 1;
         pane.add(Font, c);
 
+        Font.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.ttf$");
+                }
 
-
-        Font.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.ttf$");
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                fontPath = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            fontPath = fc.getSelectedFile();
         });
     }
 }

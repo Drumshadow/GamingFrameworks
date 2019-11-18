@@ -12,15 +12,12 @@ import java.util.TreeSet;
 public class AddCopy {
     private JPanel pane;
     private JFrame frame;
-    private JLabel objectCopyLabel;
     private JComboBox<Object> objectCopyList;
-    private JLabel xPosLabel;
-    private JLabel yPosLabel;
     private JSpinner xPosition;
     private JSpinner yPosition;
     private JButton saveButton;
 
-    public AddCopy() {
+    AddCopy() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -31,7 +28,7 @@ public class AddCopy {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        objectCopyLabel = new JLabel("Choose object to copy (if no selections" +
+        JLabel objectCopyLabel = new JLabel("Choose object to copy (if no selections" +
                 " appear, then no objects have been created)");
         c.gridx = 0;
         c.gridy = 0;
@@ -56,12 +53,12 @@ public class AddCopy {
 
         c.gridwidth = 1;
 
-        xPosLabel = new JLabel("Starting X Position");
+        JLabel xPosLabel = new JLabel("Starting X Position");
         c.gridy = 2;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
-        yPosLabel = new JLabel("Starting Y Position");
+        JLabel yPosLabel = new JLabel("Starting Y Position");
         c.gridx = 1;
         pane.add(yPosLabel, c);
 

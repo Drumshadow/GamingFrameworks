@@ -4,8 +4,6 @@ import org.ini4j.Wini;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -13,20 +11,14 @@ import java.util.Set;
 public class AddGameEnd {
     private JPanel pane;
     private JFrame frame;
-    private JLabel HUDLabel;
     private JComboBox<String> HUDComboBox;
-    private JLabel msgLabel;
     private JTextField msgTextField;
-    private JLabel modLabel;
     private JSpinner modSpinner;
-    private JLabel positionLabel;
-    private JLabel xPosLabel;
-    private JLabel yPosLabel;
     private JSpinner xPosition;
     private JSpinner yPosition;
     private JButton saveButton;
 
-    public AddGameEnd() {
+    AddGameEnd() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -53,7 +45,7 @@ public class AddGameEnd {
                 i++;
             }
 
-            HUDLabel = new JLabel("HUD Element that will be affected (Like " +
+            JLabel HUDLabel = new JLabel("HUD Element that will be affected (Like " +
                     "the health)");
             c.gridy = 2;
             pane.add(HUDLabel, c);
@@ -65,7 +57,7 @@ public class AddGameEnd {
             err.printStackTrace();
         }
 
-        msgLabel = new JLabel("End Game Message");
+        JLabel msgLabel = new JLabel("End Game Message");
         c.gridy = 4;
         pane.add(msgLabel, c);
 
@@ -73,7 +65,7 @@ public class AddGameEnd {
         c.gridy = 5;
         pane.add(msgTextField, c);
 
-        modLabel = new JLabel("Choose at what point the game ends (recommend " +
+        JLabel modLabel = new JLabel("Choose at what point the game ends (recommend " +
                 "0 for health instance)");
         c.gridy = 6;
         c.gridx = 0;
@@ -85,7 +77,7 @@ public class AddGameEnd {
         c.gridy = 7;
         pane.add(modSpinner, c);
 
-        positionLabel = new JLabel("Position to display the final text at");
+        JLabel positionLabel = new JLabel("Position to display the final text at");
         c.gridy = 8;
         c.gridx = 0;
         c.gridwidth = 2;
@@ -93,12 +85,12 @@ public class AddGameEnd {
 
         c.gridwidth = 1;
 
-        xPosLabel = new JLabel("X Position");
+        JLabel xPosLabel = new JLabel("X Position");
         c.gridy = 9;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
-        yPosLabel = new JLabel("Y Position");
+        JLabel yPosLabel = new JLabel("Y Position");
         c.gridx = 1;
         pane.add(yPosLabel, c);
 
@@ -118,31 +110,31 @@ public class AddGameEnd {
         c.gridy = 11;
         pane.add(saveButton, c);
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wini ini = new Wini(new File("./events/events.ini"));
+        saveButton.addActionListener(e -> {
+            try {
+                Wini ini = new Wini(new File("./events/events.ini"));
 
-                    int i = 0;
-                    while(ini.containsKey(Integer.toString(i))) {
-                        i++;
-                    }
-
-                    String strNum = Integer.toString(i);
-
-                    ini.put(strNum, "type", "end");
-                    ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
-                    ini.put(strNum, "msg", msgTextField);
-                    ini.put(strNum, "x", xPosition.getValue());
-                    ini.put(strNum, "y", yPosition.getValue());
-                    ini.put(strNum, "audio", "null");
-
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
+                int i = 0;
+                while(ini.containsKey(Integer.toString(i))) {
+                    i++;
                 }
+
+                String strNum = Integer.toString(i);
+
+                ini.put(strNum, "type", "end");
+                ini.put(strNum, "hud", HUDComboBox.getSelectedIndex());
+                ini.put(strNum, "msg", msgTextField);
+                ini.put(strNum, "x", xPosition.getValue());
+                ini.put(strNum, "y", yPosition.getValue());
+                ini.put(strNum, "audio", "null");
+
+                ini.store();
+            } catch(IOException err) {
+                err.printStackTrace();
             }
+
+            // close frame
+            frame.dispose();
         });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

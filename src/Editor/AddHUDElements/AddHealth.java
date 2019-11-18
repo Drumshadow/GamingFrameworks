@@ -5,20 +5,14 @@ import org.ini4j.Wini;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class AddHealth {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
     private JTextField nameTextField;
-    private JLabel healthBarTypeLabel;
     private JComboBox<String> healthBarTypeComboBox;
-    private JLabel livesLabel;
-    private JLabel maxLivesLabel;
     private JSpinner livesSpinner;
     private JSpinner maxLivesSpinner;
     private JButton spriteFile;
@@ -26,7 +20,7 @@ public class AddHealth {
 
     private File sprPath;
 
-    public AddHealth() {
+    AddHealth() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -38,7 +32,7 @@ public class AddHealth {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        nameLabel = new JLabel("Name of the health display");
+        JLabel nameLabel = new JLabel("Name of the health display");
         c.gridx = 0;
         c.gridy = 0;
         pane.add(nameLabel, c);
@@ -47,7 +41,7 @@ public class AddHealth {
         c.gridy = 1;
         pane.add(nameTextField, c);
 
-        healthBarTypeLabel = new JLabel("Select the type of health bar you " +
+        JLabel healthBarTypeLabel = new JLabel("Select the type of health bar you " +
                 "want");
         c.gridy = 2;
         pane.add(healthBarTypeLabel, c);
@@ -65,12 +59,12 @@ public class AddHealth {
         SpinnerNumberModel maxLivesModel = new SpinnerNumberModel(0, 0, 10,
                 1);
 
-        livesLabel = new JLabel("Select the starting number of lives/health");
+        JLabel livesLabel = new JLabel("Select the starting number of lives/health");
         c.gridwidth = 1;
         c.gridy = 5;
         pane.add(livesLabel, c);
 
-        maxLivesLabel = new JLabel("Select the maximum number of lives/health");
+        JLabel maxLivesLabel = new JLabel("Select the maximum number of lives/health");
         c.gridx = 1;
         pane.add(maxLivesLabel, c);
 
@@ -87,74 +81,68 @@ public class AddHealth {
         c.gridy = 7;
         pane.add(saveButton, c);
 
-        healthBarTypeComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(healthBarTypeComboBox.getSelectedIndex() != 0) {
-                    spriteFile.setEnabled(false);
-                } else {
-                    spriteFile.setEnabled(true);
-                }
+        healthBarTypeComboBox.addActionListener(e -> {
+            if(healthBarTypeComboBox.getSelectedIndex() != 0) {
+                spriteFile.setEnabled(false);
+            } else {
+                spriteFile.setEnabled(true);
             }
         });
 
-        spriteFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
+        spriteFile.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.png$");
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                sprPath = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            sprPath = fc.getSelectedFile();
         });
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wini ini = new Wini(new File("./HUD/HUD.ini"));
+        saveButton.addActionListener(e -> {
+            try {
+                Wini ini = new Wini(new File("./HUD/HUD.ini"));
 
-                    int i = 0;
-                    while(ini.containsKey(Integer.toString(i))) {
-                        i++;
-                    }
-
-                    String strNum = Integer.toString(i);
-                    ini.put(strNum, "type", "HealthBar");
-                    ini.put(strNum, "hType", healthBarTypeComboBox.getSelectedItem());
-                    ini.put(strNum, "max", maxLivesSpinner.getValue());
-                    ini.put(strNum, "lives", livesSpinner.getValue());
-                    ini.put(strNum, "width", 0.5);
-                    ini.put(strNum, "height", 0.05);
-
-                    if(sprPath != null) {
-                        ini.put(strNum, "spFrames",
-                                sprPath.getAbsolutePath().substring(0,
-                                        sprPath.getAbsolutePath().length() - 4).replace('\\',
-                                        '/'));
-                        ini.put(strNum, "spFrames", "1");
-                    }
-
-                    ini.put(strNum, "xPos", -0.9);
-                    ini.put(strNum, "yPos", 0.85);
-
-                    ini.put(strNum, "name", nameTextField.getText());
-
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
+                int i = 0;
+                while(ini.containsKey(Integer.toString(i))) {
+                    i++;
                 }
+
+                String strNum = Integer.toString(i);
+                ini.put(strNum, "type", "HealthBar");
+                ini.put(strNum, "hType", healthBarTypeComboBox.getSelectedItem());
+                ini.put(strNum, "max", maxLivesSpinner.getValue());
+                ini.put(strNum, "lives", livesSpinner.getValue());
+                ini.put(strNum, "width", 0.5);
+                ini.put(strNum, "height", 0.05);
+
+                if(sprPath != null) {
+                    ini.put(strNum, "spFrames",
+                            sprPath.getAbsolutePath().substring(0,
+                                    sprPath.getAbsolutePath().length() - 4).replace('\\',
+                                    '/'));
+                    ini.put(strNum, "spFrames", "1");
+                }
+
+                ini.put(strNum, "xPos", -0.9);
+                ini.put(strNum, "yPos", 0.85);
+
+                ini.put(strNum, "name", nameTextField.getText());
+
+                ini.store();
+            } catch(IOException err) {
+                err.printStackTrace();
             }
+
+            // close frame
+            frame.dispose();
         });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

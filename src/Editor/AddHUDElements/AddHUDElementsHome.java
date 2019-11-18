@@ -2,8 +2,6 @@ package Editor.AddHUDElements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AddHUDElementsHome {
     private JPanel pane;
@@ -36,26 +34,11 @@ public class AddHUDElementsHome {
         c.gridy = 2;
         pane.add(addScoreDisplay, c);
 
-        addScoreDisplay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddScore().setVisible();
-            }
-        });
+        addScoreDisplay.addActionListener(e -> new AddScore().setVisible());
 
-        addFPSDisplay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddFPS().setVisible();
-            }
-        });
+        addFPSDisplay.addActionListener(e -> new AddFPS().setVisible());
 
-        addHealthHUD.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddHealth().setVisible();
-            }
-        });
+        addHealthHUD.addActionListener(e -> new AddHealth().setVisible());
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

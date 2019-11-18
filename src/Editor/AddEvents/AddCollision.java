@@ -4,8 +4,6 @@ import org.ini4j.Wini;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -13,13 +11,9 @@ import java.util.Set;
 public class AddCollision {
     private JPanel pane;
     private JFrame frame;
-    private JLabel HUDLabel;
     private JComboBox<String> HUDComboBox;
-    private JLabel object1Label;
-    private JLabel object2Label;
     private JComboBox<String> object1ComboBox;
     private JComboBox<String> object2ComboBox;
-    private JLabel modLabel;
     private JSpinner modSpinner;
     private JCheckBox audioCheck;
     private JButton audioSelector;
@@ -27,7 +21,7 @@ public class AddCollision {
 
     private File audioFile;
 
-    public AddCollision() {
+    AddCollision() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -54,7 +48,7 @@ public class AddCollision {
                 i++;
             }
 
-            HUDLabel = new JLabel("HUD Element that will be affected (Like " +
+            JLabel HUDLabel = new JLabel("HUD Element that will be affected (Like " +
                     "the health)");
             c.gridy = 2;
             pane.add(HUDLabel, c);
@@ -65,11 +59,11 @@ public class AddCollision {
 
             c.gridwidth = 1;
 
-            object1Label = new JLabel("Choose first object");
+            JLabel object1Label = new JLabel("Choose first object");
             c.gridy = 4;
             pane.add(object1Label, c);
 
-            object2Label = new JLabel("Choose second object");
+            JLabel object2Label = new JLabel("Choose second object");
             c.gridx = 1;
             pane.add(object2Label, c);
 
@@ -97,7 +91,7 @@ public class AddCollision {
 
         c.gridwidth = 2;
 
-        modLabel = new JLabel("Choose the amount the given element will be " +
+        JLabel modLabel = new JLabel("Choose the amount the given element will be " +
                 "changed by (like health decreases by 5)");
         c.gridy = 6;
         c.gridx = 0;
@@ -123,50 +117,42 @@ public class AddCollision {
         c.gridx = 1;
         pane.add(saveButton, c);
 
-        audioCheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                audioSelector.setEnabled(audioCheck.isSelected());
-            }
-        });
+        audioCheck.addActionListener(e -> audioSelector.setEnabled(audioCheck.isSelected()));
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wini ini = new Wini(new File("./events/events.ini"));
+        saveButton.addActionListener(e -> {
+            try {
+                Wini ini = new Wini(new File("./events/events.ini"));
 
-                    int i = 0;
-                    while(ini.containsKey(Integer.toString(i))) {
-                        i++;
-                    }
-
-                    String strNum = Integer.toString(i);
-
-                    ini.put(strNum, "type", "collision");
-
-
-                    ini.put(strNum, "obj1", object1ComboBox.getSelectedItem());
-
-                    ini.put(strNum, "obj2", object2ComboBox.getSelectedItem());
-                    ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
-                    ini.put(strNum, "mod", modSpinner.getValue());
-
-                    if(audioFile != null) {
-                        ini.put(strNum, "audio",
-                                audioFile.getAbsolutePath().replace('\\', '/'));
-                    } else {
-                        ini.put(strNum, "audio", "null");
-                    }
-
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
+                int i = 0;
+                while(ini.containsKey(Integer.toString(i))) {
+                    i++;
                 }
+
+                String strNum = Integer.toString(i);
+
+                ini.put(strNum, "type", "collision");
+                ini.put(strNum, "obj1", object1ComboBox.getSelectedItem());
+                ini.put(strNum, "obj2", object2ComboBox.getSelectedItem());
+                ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
+                ini.put(strNum, "mod", modSpinner.getValue());
+
+                if(audioFile != null) {
+                    ini.put(strNum, "audio",
+                            audioFile.getAbsolutePath().replace('\\', '/'));
+                } else {
+                    ini.put(strNum, "audio", "null");
+                }
+                ini.store();
+
+            } catch(IOException err) {
+                System.out.println(err.getMessage());
             }
+
+            // close frame
+            frame.dispose();
         });
     }
 

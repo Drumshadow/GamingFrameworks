@@ -406,6 +406,9 @@ public class AddAI {
             } catch(IOException err) {
                 System.out.println(err.getMessage());
             }
+
+            // close frame
+            frame.dispose();
         });
     }
 

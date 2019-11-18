@@ -5,8 +5,6 @@ import org.ini4j.Wini;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -14,30 +12,22 @@ import java.util.Set;
 public class AddNew {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
     private JTextField nameTextField;
     private JCheckBox collisionCheck;
-    private JLabel terminalVelocityLabel;
     private JSpinner terminalVelocity;
-    private JLabel jumpLabel;
     private JSpinner jumpHeight;
-    private JLabel weightLabel;
     private JSpinner weightSpinner;
-    private JLabel xPosLabel;
-    private JLabel yPosLabel;
     private JSpinner xPosition;
     private JSpinner yPosition;
-    private JLabel boundingBoxLabel;
     private JComboBox<String> boundingBox;
     private JButton chooseSprite;
     private JCheckBox animatedCheck;
-    private JLabel framesLabel;
     private JComboBox<Integer> frames;
     private JButton saveButton;
 
     private File sprite;
 
-    public AddNew() {
+    AddNew() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -49,7 +39,7 @@ public class AddNew {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
+        JLabel nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
                 "to allow a single event to apply to multiple objects)");
         c.gridy = 0;
         c.gridx = 0;
@@ -66,13 +56,13 @@ public class AddNew {
 
         pane.add(collisionCheck, c);
 
-        jumpLabel = new JLabel("Jump Height");
+        JLabel jumpLabel = new JLabel("Jump Height");
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 3;
         pane.add(jumpLabel, c);
 
-        terminalVelocityLabel = new JLabel("Terminal Velocity");
+        JLabel terminalVelocityLabel = new JLabel("Terminal Velocity");
         c.gridx = 1;
         pane.add(terminalVelocityLabel, c);
 
@@ -88,12 +78,12 @@ public class AddNew {
         c.gridx = 1;
         pane.add(terminalVelocity, c);
 
-        xPosLabel = new JLabel("Starting X Position");
+        JLabel xPosLabel = new JLabel("Starting X Position");
         c.gridy = 5;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
-        yPosLabel = new JLabel("Starting Y Position");
+        JLabel yPosLabel = new JLabel("Starting Y Position");
         c.gridx = 1;
         pane.add(yPosLabel, c);
 
@@ -109,7 +99,7 @@ public class AddNew {
         c.gridx = 1;
         pane.add(yPosition, c);
 
-        weightLabel = new JLabel("Weight of the Object");
+        JLabel weightLabel = new JLabel("Weight of the Object");
         c.gridwidth = 2;
         c.gridy = 7;
         c.gridx = 0;
@@ -121,7 +111,7 @@ public class AddNew {
         c.gridy = 8;
         pane.add(weightSpinner, c);
 
-        boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
+        JLabel boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
         c.gridy = 9;
         pane.add(boundingBoxLabel, c);
 
@@ -137,7 +127,7 @@ public class AddNew {
         c.gridy = 12;
         pane.add(animatedCheck, c);
 
-        framesLabel = new JLabel("Number of Frames (Number of frames for an " +
+        JLabel framesLabel = new JLabel("Number of Frames (Number of frames for an " +
                 "animated sprite)");
         c.gridy = 13;
         pane.add(framesLabel, c);
@@ -161,77 +151,69 @@ public class AddNew {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
 
-        chooseSprite.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
+        chooseSprite.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.png$");
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                sprite = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            sprite = fc.getSelectedFile();
         });
 
-        animatedCheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frames.setEnabled(!frames.isEnabled());
+        animatedCheck.addActionListener(e -> frames.setEnabled(!frames.isEnabled()));
+
+        saveButton.addActionListener(e -> {
+            Wini ini = null;
+            try {
+                ini = new Wini(new File("./objects/objects.ini"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        });
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Wini ini = null;
-                try {
-                    ini = new Wini(new File("./objects/objects.ini"));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                Set<String> keys = ini.keySet();
-                int num = 0;
-                while(keys.contains(Integer.toString(num))) {
-                    num++;
-                }
-
-                String strNum = Integer.toString(num);
-
-                try {
-                    ini.put(strNum, "name", nameTextField.getText());
-                    if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
-                        ini.put(strNum, "sprPath",
-                                sprite.getAbsolutePath().substring(0,
-                                        sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
-                    } else {
-                        ini.put(strNum, "sprPath",
-                                sprite.getAbsolutePath().substring(0,
-                                        sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
-                    }
-                    ini.put(strNum, "frames", frames.getSelectedItem());
-                    ini.put(strNum, "collide", collisionCheck.isSelected());
-                    ini.put(strNum, "weight", weightSpinner.getValue());
-                    ini.put(strNum, "tv", terminalVelocity.getValue());
-                    ini.put(strNum, "jump", jumpHeight.getValue());
-                    ini.put(strNum, "boxType", Integer.toString(
-                            boundingBox.getSelectedIndex()));
-                    ini.put(strNum, "x", xPosition.getValue());
-                    ini.put(strNum, "y", yPosition.getValue());
-
-                    ini.put(strNum, "AI", "null");
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
-                }
+            Set<String> keys = ini.keySet();
+            int num = 0;
+            while(keys.contains(Integer.toString(num))) {
+                num++;
             }
+
+            String strNum = Integer.toString(num);
+
+            try {
+                ini.put(strNum, "name", nameTextField.getText());
+                if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
+                    ini.put(strNum, "sprPath",
+                            sprite.getAbsolutePath().substring(0,
+                                    sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                } else {
+                    ini.put(strNum, "sprPath",
+                            sprite.getAbsolutePath().substring(0,
+                                    sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
+                }
+                ini.put(strNum, "frames", frames.getSelectedItem());
+                ini.put(strNum, "collide", collisionCheck.isSelected());
+                ini.put(strNum, "weight", weightSpinner.getValue());
+                ini.put(strNum, "tv", terminalVelocity.getValue());
+                ini.put(strNum, "jump", jumpHeight.getValue());
+                ini.put(strNum, "boxType", Integer.toString(
+                        boundingBox.getSelectedIndex()));
+                ini.put(strNum, "x", xPosition.getValue());
+                ini.put(strNum, "y", yPosition.getValue());
+
+                ini.put(strNum, "AI", "null");
+                ini.store();
+            } catch(IOException err) {
+                err.printStackTrace();
+            }
+
+            // close frame
+            frame.dispose();
         });
     }
 
