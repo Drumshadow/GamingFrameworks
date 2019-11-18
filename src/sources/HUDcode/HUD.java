@@ -62,9 +62,9 @@ public class HUD {
         this.elements = elements;
     }
 
-    public void setHudFont(String fontPath, int fontSize) throws SlickException {
+    public void setHudFont() throws SlickException {
 
-        Font awtFont = new Font(fontPath, Font.PLAIN, fontSize);
+        Font awtFont = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
         hudFont = new UnicodeFont(awtFont);
 
         hudFont.addAsciiGlyphs();
