@@ -4,8 +4,6 @@ import org.ini4j.Wini;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -14,9 +12,7 @@ public class AddSound {
     private JPanel pane;
     private JFrame frame;
     private JComboBox<String> mapToComboBox;
-    private JLabel objectLabel;
     private JComboBox<String> objectComboBox;
-    private JLabel audioFileLabel;
     private JButton audioFile;
     private JButton saveButton;
     private File audioPath;
@@ -46,7 +42,7 @@ public class AddSound {
             }
         }
 
-        objectLabel = new JLabel("Select the object to apply the move to");
+        JLabel objectLabel = new JLabel("Select the object to apply the move to");
         c.gridy = 1;
         pane.add(objectLabel, c);
 
@@ -70,7 +66,7 @@ public class AddSound {
         c.gridy = 3;
         pane.add(mapToComboBox, c);
 
-        audioFileLabel = new JLabel("Audio File to Play On Key Press");
+        JLabel audioFileLabel = new JLabel("Audio File to Play On Key Press");
         c.gridy = 4;
         pane.add(audioFileLabel, c);
 
@@ -84,37 +80,37 @@ public class AddSound {
         c.gridx = 1;
         pane.add(saveButton, c);
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wini ini = new Wini(new File("./inputs/keyboard.ini"));
-                    int num = 0;
+        saveButton.addActionListener(e -> {
+            try {
+                Wini ini = new Wini(new File("./inputs/keyboard.ini"));
+                int num = 0;
 
-                    while(ini.containsKey(Integer.toString(num))) {
-                        num++;
-                    }
-
-                    String strNum = Integer.toString(num);
-
-                    ini.put(strNum, "action", 0);
-
-                    ini.put(strNum, "key",
-                            Byte.valueOf((String) mapToComboBox.getSelectedItem()));
-
-                    ini.put(strNum, "object", objectComboBox.getSelectedItem());
-                    ini.put(strNum, "purpose", "PlaySound");
-
-                    if(audioPath != null) {
-                        ini.put(strNum, "audio",
-                                audioPath.getAbsolutePath().replace('\\', '/'));
-                    }
-
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
+                while(ini.containsKey(Integer.toString(num))) {
+                    num++;
                 }
+
+                String strNum = Integer.toString(num);
+
+                ini.put(strNum, "action", 0);
+
+                ini.put(strNum, "key",
+                        Byte.valueOf((String) mapToComboBox.getSelectedItem()));
+
+                ini.put(strNum, "object", objectComboBox.getSelectedItem());
+                ini.put(strNum, "purpose", "PlaySound");
+
+                if(audioPath != null) {
+                    ini.put(strNum, "audio",
+                            audioPath.getAbsolutePath().replace('\\', '/'));
+                }
+
+                ini.store();
+            } catch(IOException err) {
+                err.printStackTrace();
             }
+
+            // close frame
+            frame.dispose();
         });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

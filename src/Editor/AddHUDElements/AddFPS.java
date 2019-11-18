@@ -4,8 +4,6 @@ import org.ini4j.Wini;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -42,30 +40,30 @@ public class AddFPS {
         c.gridwidth = 1;
         pane.add(saveButton, c);
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wini ini = new Wini(new File("./HUD/HUD.ini"));
+        saveButton.addActionListener(e -> {
+            try {
+                Wini ini = new Wini(new File("./HUD/HUD.ini"));
 
-                    int i = 0;
-                    while(ini.containsKey(Integer.toString(i))) {
-                        i++;
-                    }
-
-                    String strNum = Integer.toString(i);
-
-                    ini.put(strNum, "type", "FrameDisplay");
-                    ini.put(strNum, "xPos", 50);
-                    ini.put(strNum, "yPos", 950);
-
-                    ini.put(strNum, "name", nameTextField.getText());
-
-                    ini.store();
-                } catch(IOException err) {
-                    err.printStackTrace();
+                int i = 0;
+                while(ini.containsKey(Integer.toString(i))) {
+                    i++;
                 }
+
+                String strNum = Integer.toString(i);
+
+                ini.put(strNum, "type", "FrameDisplay");
+                ini.put(strNum, "xPos", 50);
+                ini.put(strNum, "yPos", 950);
+
+                ini.put(strNum, "name", nameTextField.getText());
+
+                ini.store();
+            } catch(IOException err) {
+                System.out.println(err.getMessage());
             }
+
+            // close frame
+            frame.dispose();
         });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
