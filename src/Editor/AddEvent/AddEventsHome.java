@@ -53,7 +53,7 @@ public class AddEventsHome {
         addGameEndCase.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddGameEnd().setVisible();
             }
         });
 
