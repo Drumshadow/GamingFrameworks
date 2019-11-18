@@ -124,7 +124,7 @@ public class AddGameEnd {
                 ini.put(strNum, "type", "end");
                 ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
                 ini.put(strNum, "mod", modSpinner.getValue());
-                ini.put(strNum, "msg", msgTextField);
+                ini.put(strNum, "msg", msgTextField.getText());
                 ini.put(strNum, "x", xPosition.getValue());
                 ini.put(strNum, "y", yPosition.getValue());
                 ini.put(strNum, "audio", "null");

@@ -114,10 +114,13 @@ public class AddSound {
 
                 String strNum = Integer.toString(num);
 
-                ini.put(strNum, "action", 0);
+
+
+
+                ini.put(strNum, "action", "0");
 
                 ini.put(strNum, "key",
-                        Byte.valueOf((String) mapToComboBox.getSelectedItem()));
+                        Integer.toString((int) ((String) mapToComboBox.getSelectedItem()).charAt(0)));
 
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", "PlaySound");
