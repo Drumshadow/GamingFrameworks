@@ -1,6 +1,7 @@
 package Editor;
 
 import Editor.AddEvents.AddEventsHome;
+import Editor.AddHUDElements.AddHUDElementsHome;
 import Editor.AddInputs.AddInputsHome;
 import Editor.AddObjects.AddObjectsHome;
 import Editor.AddOptions.AddOptionsHome;
@@ -58,7 +59,7 @@ public class EditorHome {
         addHUDElementsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddHUDElementsHome().setVisible();
             }
         });
 
