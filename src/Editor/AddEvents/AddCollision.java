@@ -13,8 +13,6 @@ import java.util.Set;
 public class AddCollision {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
-    private JTextField nameTextField;
     private JLabel HUDLabel;
     private JComboBox<String> HUDComboBox;
     private JLabel object1Label;
@@ -40,17 +38,6 @@ public class AddCollision {
 
         pane = new JPanel(grid);
         frame = new JFrame();
-
-        nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
-                "to allow a single event to apply to multiple objects)");
-        c.gridy = 0;
-        c.gridx = 0;
-
-        pane.add(nameLabel, c);
-
-        nameTextField = new JTextField();
-        c.gridy = 1;
-        pane.add(nameTextField, c);
 
         try {
             Wini ini = new Wini(new File("./HUD/HUD.ini"));
