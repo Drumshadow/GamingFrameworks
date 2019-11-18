@@ -52,8 +52,8 @@ public class AddFPS {
                 String strNum = Integer.toString(i);
 
                 ini.put(strNum, "type", "FrameDisplay");
-                ini.put(strNum, "xPos", 50);
-                ini.put(strNum, "yPos", 950);
+                ini.put(strNum, "xPos", "50");
+                ini.put(strNum, "yPos", "950");
 
                 ini.put(strNum, "name", nameTextField.getText());
 
