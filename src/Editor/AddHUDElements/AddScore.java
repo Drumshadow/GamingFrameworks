@@ -1,7 +1,13 @@
 package Editor.AddHUDElements;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class AddScore {
     private JPanel pane;
@@ -61,6 +67,35 @@ public class AddScore {
         saveButton = new JButton("Save");
         c.gridy = 5;
         pane.add(saveButton, c);
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./HUD/HUD.ini"));
+
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
+
+                    String strNum = Integer.toString(i);
+
+                    ini.put(strNum, "type", "Score");
+                    ini.put(strNum, "score", startSoreSpinner.getValue());
+                    ini.put(strNum, "maxScore", maxScoreSpinner.getValue());
+
+                    ini.put(strNum, "xPos", 50);
+                    ini.put(strNum, "yPos", 80);
+
+                    ini.put(strNum, "name", nameTextField.getText());
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
+        });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

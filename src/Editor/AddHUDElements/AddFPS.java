@@ -1,7 +1,13 @@
 package Editor.AddHUDElements;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class AddFPS {
     private JPanel pane;
@@ -36,6 +42,32 @@ public class AddFPS {
         c.gridx = 1;
         c.gridwidth = 1;
         pane.add(saveButton, c);
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./HUD/HUD.ini"));
+
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
+
+                    String strNum = Integer.toString(i);
+
+                    ini.put(strNum, "type", "FrameDisplay");
+                    ini.put(strNum, "xPos", 50);
+                    ini.put(strNum, "yPos", 950);
+
+                    ini.put(strNum, "name", nameTextField.getText());
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
+        });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

@@ -1,11 +1,14 @@
 package Editor.AddHUDElements;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 public class AddHealth {
     private JPanel pane;
@@ -112,6 +115,45 @@ public class AddHealth {
                 });
                 fc.showOpenDialog(pane);
                 sprPath = fc.getSelectedFile();
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./HUD/HUD.ini"));
+
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
+
+                    String strNum = Integer.toString(i);
+                    ini.put(strNum, "type", "HealthBar");
+                    ini.put(strNum, "hType", healthBarTypeComboBox.getSelectedItem());
+                    ini.put(strNum, "max", maxLivesSpinner.getValue());
+                    ini.put(strNum, "lives", livesSpinner.getValue());
+                    ini.put(strNum, "width", 0.5);
+                    ini.put(strNum, "height", 0.05);
+
+                    if(sprPath != null) {
+                        ini.put(strNum, "spFrames",
+                                sprPath.getAbsolutePath().substring(0,
+                                        sprPath.getAbsolutePath().length() - 4).replace('\\',
+                                        '/'));
+                        ini.put(strNum, "spFrames", "1");
+                    }
+
+                    ini.put(strNum, "xPos", -0.9);
+                    ini.put(strNum, "yPos", 0.85);
+
+                    ini.put(strNum, "name", nameTextField.getText());
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
             }
         });
 
