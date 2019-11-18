@@ -105,7 +105,7 @@ public class AddSound {
 
                     ini.put(strNum, "object", objectComboBox.getSelectedItem());
                     ini.put(strNum, "purpose", "PlaySound");
-                    
+
                     if(audioPath != null) {
                         ini.put(strNum, "audio",
                                 audioPath.getAbsolutePath().replace('\\', '/'));
