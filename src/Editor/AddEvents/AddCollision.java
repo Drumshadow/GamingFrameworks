@@ -42,8 +42,8 @@ public class AddCollision {
         try {
             Wini ini = new Wini(new File("./HUD/HUD.ini"));
 
-            Set<String> keys = ini.keySet();
-            String[] values = new String[keys.size() + 1];
+            Set<String> keys;
+            String[] values;
 
             keys = ini.keySet();
             values = new String[keys.size()];
@@ -148,21 +148,12 @@ public class AddCollision {
 
                     ini.put(strNum, "type", "collision");
 
-                    if(object1ComboBox.getSelectedIndex() != 0) {
-                        ini.put(strNum, "obj1",
-                                object1ComboBox.getSelectedItem());
-                    }
 
-                    if(object2ComboBox.getSelectedIndex() != 0) {
-                        ini.put(strNum, "obj2",
-                                object2ComboBox.getSelectedItem());
-                    }
+                    ini.put(strNum, "obj1", object1ComboBox.getSelectedItem());
 
-                    if(HUDComboBox.getSelectedIndex() != 0) {
-                        ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
-                        ini.put(strNum, "mod", modSpinner.getValue());
-                    }
-
+                    ini.put(strNum, "obj2", object2ComboBox.getSelectedItem());
+                    ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
+                    ini.put(strNum, "mod", modSpinner.getValue());
 
                     if(audioFile != null) {
                         ini.put(strNum, "audio",

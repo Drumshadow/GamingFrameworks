@@ -132,7 +132,7 @@ public class AddGameEnd {
                     String strNum = Integer.toString(i);
 
                     ini.put(strNum, "type", "end");
-                    ini.put(strNum, "hud", HUDComboBox.getSelectedIndex());
+                    ini.put(strNum, "hud", HUDComboBox.getSelectedItem());
                     ini.put(strNum, "msg", msgTextField);
                     ini.put(strNum, "x", xPosition.getValue());
                     ini.put(strNum, "y", yPosition.getValue());
