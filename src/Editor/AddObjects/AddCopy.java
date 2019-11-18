@@ -1,11 +1,15 @@
 package Editor.AddObjects;
 
+import org.ini4j.Profile;
 import org.ini4j.Wini;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -77,6 +81,44 @@ public class AddCopy {
         saveButton = new JButton("Save");
         c.gridy = 4;
         pane.add(saveButton, c);
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Wini ini = null;
+                try {
+                    ini = new Wini(new File("./objects/objects.ini"));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                Set<String> keys = ini.keySet();
+                int num = 0;
+                while (keys.contains(Integer.toString(num))) {
+                    num++;
+                }
+
+                String strNum = Integer.toString(num);
+                Profile.Section copy = null;
+
+                for(String key : keys) {
+                    if(ini.get(key, "name").equals(objectCopyList.getSelectedItem())) {
+                        copy = ini.get(key);
+                        break;
+                    }
+                }
+
+                if(copy != null) {
+                    for(String name : copy.childrenNames()) {
+                        if(!name.equals("x") && !name.equals("y")) {
+                            ini.put(strNum, name, copy.get(name));
+                        }
+                    }
+
+                    ini.put(strNum, "x", xPosition.getValue());
+                    ini.put(strNum, "y", yPosition.getValue());
+                }
+            }
+        });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

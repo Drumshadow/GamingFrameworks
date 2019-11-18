@@ -5,6 +5,8 @@ import org.ini4j.Wini;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -179,7 +181,7 @@ public class AddNew {
             }
             Set<String> keys = ini.keySet();
             int num = 0;
-            while(keys.contains(Integer.toString(num))) {
+            while (keys.contains(Integer.toString(num))) {
                 num++;
             }
 
@@ -187,7 +189,7 @@ public class AddNew {
 
             try {
                 ini.put(strNum, "name", nameTextField.getText());
-                if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
+                if (Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
                     ini.put(strNum, "sprPath",
                             sprite.getAbsolutePath().substring(0,
                                     sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
@@ -208,7 +210,7 @@ public class AddNew {
 
                 ini.put(strNum, "AI", "null");
                 ini.store();
-            } catch(IOException err) {
+            } catch (IOException err) {
                 err.printStackTrace();
             }
 
