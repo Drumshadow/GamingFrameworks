@@ -98,7 +98,7 @@ public class AddBackground {
 
                     if(artPath != null) {
                         ini.put("background", "art",
-                                artPath.getAbsolutePath().replace('\\', '/'));
+                                artPath.getAbsolutePath().replace('\\', '/').substring(0, artPath.getAbsolutePath().length() - 4));
                     }
 
                     if(musicPath != null) {

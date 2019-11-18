@@ -124,7 +124,7 @@ public class AddHealth {
                 ini.put(strNum, "height", "0.05");
 
                 if(sprPath != null) {
-                    ini.put(strNum, "spFrames",
+                    ini.put(strNum, "spPath",
                             sprPath.getAbsolutePath().substring(0,
                                     sprPath.getAbsolutePath().length() - 4).replace('\\',
                                     '/'));

@@ -125,6 +125,19 @@ public class GameLoop {
             // escape room
             else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                 glfwSetWindowShouldClose(window, true);
+            } else {
+                for (int i = 0; i < inputs.size(); i++) {
+
+                    if (key == inputs.get(i).getKey() &&
+                            action == inputs.get(i).getAction()) {
+                        if (inputs.get(i).getPurpose() == Input.inputPurpose.PAUSE) {
+                            isPaused = inputs.get(i).execute(isPaused);
+                        }
+                        else {
+                            inputs.get(i).execute(room);
+                        }
+                    }
+                }
             }
         });
 

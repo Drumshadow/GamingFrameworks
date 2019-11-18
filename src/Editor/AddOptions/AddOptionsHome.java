@@ -7,7 +7,6 @@ public class AddOptionsHome {
     private JPanel pane;
     private JFrame frame;
     private JButton addBackground;
-    private JButton addTextFont;
 
     public AddOptionsHome() {
         GridBagLayout grid = new GridBagLayout();
@@ -24,10 +23,6 @@ public class AddOptionsHome {
         c.gridy = 0;
         c.gridx = 0;
         pane.add(addBackground, c);
-
-        addTextFont = new JButton("Add a Text Font");
-        c.gridy = 1;
-        pane.add(addTextFont, c);
 
         addBackground.addActionListener(e -> new AddBackground().setVisible());
 

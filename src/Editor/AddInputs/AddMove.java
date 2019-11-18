@@ -97,19 +97,17 @@ public class AddMove {
                 Wini ini = new Wini(new File("./inputs/keyboard.ini"));
                 int num = 0;
 
-                while(ini.containsKey(Integer.toString(num)) &&
-                        ini.containsKey(Integer.toString(num + 1)) &&
+                while(ini.containsKey(Integer.toString(num)) ||
+                        ini.containsKey(Integer.toString(num + 1)) ||
                         ini.containsKey(Integer.toString(num + 2))) {
                     num++;
                 }
 
                 String strNum = Integer.toString(num);
 
-                ini.put(strNum, "action", 0);
-
                 ini.put(strNum, "key",
-                        Byte.valueOf((String) mapToComboBox.getSelectedItem()));
-
+                        Integer.toString((int) ((String) mapToComboBox.getSelectedItem()).charAt(0)));
+                ini.put(strNum, "action", "2");
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", directionComboBox.getSelectedItem());
                 ini.put(strNum, "speed", speedSpinner.getValue());
@@ -117,11 +115,9 @@ public class AddMove {
                 num++;
                 strNum = Integer.toString(num);
 
-                ini.put(strNum, "action", 1);
-
                 ini.put(strNum, "key",
-                        Byte.valueOf((String) mapToComboBox.getSelectedItem()));
-
+                        Integer.toString((int) ((String) mapToComboBox.getSelectedItem()).charAt(0)));
+                ini.put(strNum, "action", "1");
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", directionComboBox.getSelectedItem());
                 ini.put(strNum, "speed", speedSpinner.getValue());
@@ -129,14 +125,12 @@ public class AddMove {
                 num++;
                 strNum = Integer.toString(num);
 
-                ini.put(strNum, "action", 2);
-
                 ini.put(strNum, "key",
-                        Byte.valueOf((String) mapToComboBox.getSelectedItem()));
-
+                        Integer.toString((int) ((String) mapToComboBox.getSelectedItem()).charAt(0)));
+                ini.put(strNum, "action", "0");
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", directionComboBox.getSelectedItem());
-                ini.put(strNum, "speed", 0);
+                ini.put(strNum, "speed", "0");
 
                 ini.store();
             } catch(IOException err) {
