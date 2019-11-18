@@ -1,6 +1,7 @@
 package Editor;
 
 import Editor.AddEvents.AddEventsHome;
+import Editor.AddInputs.AddInputsHome;
 import Editor.AddObjects.AddObjectsHome;
 import Editor.AddOptions.AddOptionsHome;
 
@@ -64,7 +65,7 @@ public class EditorHome {
         addInputsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddInputsHome().setVisible();
             }
         });
 

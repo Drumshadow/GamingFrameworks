@@ -34,7 +34,7 @@ public class MainForm {
         addInputsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddInputs.main(null);
+                AddInput.main(null);
             }
         });
 

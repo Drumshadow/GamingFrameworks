@@ -6,13 +6,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-public class AddInputs {
+public class AddInput {
     private JPanel panel1;
     private JPanel AddInputs;
     private JComboBox buttonPurposeDropDown;
@@ -25,7 +23,7 @@ public class AddInputs {
     private JButton saveButton;
     private File audioPath;
 
-    public AddInputs() {
+    public AddInput() {
         audioFilleIfNeededButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +87,7 @@ public class AddInputs {
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame("Add Inputs");
-        frame.setContentPane(new AddInputs().AddInputs);
+        frame.setContentPane(new AddInput().AddInputs);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
