@@ -39,7 +39,7 @@ public class EditorHome {
         c.gridy = 1;
         pane.add(addInputsButton, c);
 
-        addEventsButton = new JButton("Add Event (Collision ");
+        addEventsButton = new JButton("Add Event");
         c.gridy = 2;
         pane.add(addEventsButton, c);
 
