@@ -31,19 +31,9 @@ public class AddInputsHome {
         c.gridy = 1;
         pane.add(addPlaySoundButton, c);
 
-        addMoveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddMove().setVisible();
-            }
-        });
+        addMoveButton.addActionListener(e -> new AddMove().setVisible());
 
-        addPlaySoundButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddSound().setVisible();
-            }
-        });
+        addPlaySoundButton.addActionListener(e -> new AddSound().setVisible());
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

@@ -2,8 +2,6 @@ package Editor.AddObjects;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AddObjectsHome {
     private JPanel pane;
@@ -38,26 +36,11 @@ public class AddObjectsHome {
         c.gridy = 2;
         pane.add(addNewObject, c);
 
-        addAIButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddAI().setVisible();
-            }
-        });
+        addAIButton.addActionListener(e -> new AddAI().setVisible());
 
-        addCopyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddCopy().setVisible();
-            }
-        });
+        addCopyButton.addActionListener(e -> new AddCopy().setVisible());
 
-        addNewObject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddNew().setVisible();
-            }
-        });
+        addNewObject.addActionListener(e -> new AddNew().setVisible());
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

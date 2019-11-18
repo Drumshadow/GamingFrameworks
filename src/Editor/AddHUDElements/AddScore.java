@@ -12,15 +12,12 @@ import java.io.IOException;
 public class AddScore {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
     private JTextField nameTextField;
-    private JLabel startScoreLabel;
-    private JLabel maxScoreLabel;
     private JSpinner startSoreSpinner;
     private JSpinner maxScoreSpinner;
     private JButton saveButton;
 
-    public AddScore() {
+    AddScore() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -32,7 +29,7 @@ public class AddScore {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        nameLabel = new JLabel("Name of the score display");
+        JLabel nameLabel = new JLabel("Name of the score display");
         c.gridx = 0;
         c.gridy = 0;
         pane.add(nameLabel, c);
@@ -46,13 +43,13 @@ public class AddScore {
         SpinnerNumberModel maxScoreModel = new SpinnerNumberModel(0, 0, 10000,
                 1);
 
-        startScoreLabel = new JLabel("Set the starting score for the game");
+        JLabel startScoreLabel = new JLabel("Set the starting score for the game");
         c.gridy = 3;
         c.gridx = 0;
         c.gridwidth = 1;
         pane.add(startScoreLabel, c);
 
-        maxScoreLabel = new JLabel("Set the maximum score for the game");
+        JLabel maxScoreLabel = new JLabel("Set the maximum score for the game");
         c.gridx = 1;
         pane.add(maxScoreLabel, c);
 

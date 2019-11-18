@@ -2,8 +2,6 @@ package Editor.AddOptions;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AddOptionsHome {
     private JPanel pane;
@@ -31,12 +29,7 @@ public class AddOptionsHome {
         c.gridy = 1;
         pane.add(addTextFont, c);
 
-        addBackground.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddBackground().setVisible();
-            }
-        });
+        addBackground.addActionListener(e -> new AddBackground().setVisible());
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);

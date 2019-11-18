@@ -13,7 +13,6 @@ import java.util.Set;
 public class AddSound {
     private JPanel pane;
     private JFrame frame;
-    private JLabel keyMapLabel;
     private JComboBox<String> mapToComboBox;
     private JLabel objectLabel;
     private JComboBox<String> objectComboBox;
@@ -22,7 +21,7 @@ public class AddSound {
     private JButton saveButton;
     private File audioPath;
 
-    public AddSound() {
+    AddSound() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -34,7 +33,7 @@ public class AddSound {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        keyMapLabel = new JLabel("Choose Key to Map Movement To");
+        JLabel keyMapLabel = new JLabel("Choose Key to Map Movement To");
         c.gridy = 0;
         c.gridx = 0;
         pane.add(keyMapLabel, c);
@@ -71,7 +70,7 @@ public class AddSound {
         c.gridy = 3;
         pane.add(mapToComboBox, c);
 
-        audioFileLabel = new JLabel("Audio File to Play One Key Press");
+        audioFileLabel = new JLabel("Audio File to Play On Key Press");
         c.gridy = 4;
         pane.add(audioFileLabel, c);
 

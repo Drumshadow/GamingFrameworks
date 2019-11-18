@@ -12,11 +12,10 @@ import java.io.IOException;
 public class AddFPS {
     private JPanel pane;
     private JFrame frame;
-    private JLabel nameLabel;
     private JTextField nameTextField;
     private JButton saveButton;
 
-    public AddFPS() {
+    AddFPS() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -28,7 +27,7 @@ public class AddFPS {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        nameLabel = new JLabel("Name of the fps display");
+        JLabel nameLabel = new JLabel("Name of the fps display");
         c.gridx = 0;
         c.gridy = 0;
         pane.add(nameLabel, c);

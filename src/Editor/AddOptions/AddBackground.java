@@ -3,23 +3,19 @@ package Editor.AddOptions;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 public class AddBackground {
     private JPanel pane;
     private JFrame frame;
-    private JLabel Music;
     private JButton MusicPath;
-    private JLabel Art;
     private JButton ArtPath;
     private JButton saveButton;
 
     private File musicPath;
     private File artPath;
 
-    public AddBackground() {
+    AddBackground() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -31,7 +27,7 @@ public class AddBackground {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        Music = new JLabel("Select Music to Loop in Background (Must end in " +
+        JLabel Music = new JLabel("Select Music to Loop in Background (Must end in " +
                 ".wav)");
         c.gridy = 0;
         c.gridx = 0;
@@ -41,7 +37,7 @@ public class AddBackground {
         c.gridy = 1;
         pane.add(MusicPath, c);
 
-        Art = new JLabel("Select Art for the Background (Must end in .png)");
+        JLabel Art = new JLabel("Select Art for the Background (Must end in .png)");
         c.gridy = 2;
         pane.add(Art, c);
 
@@ -55,44 +51,38 @@ public class AddBackground {
         c.gridx = 1;
         pane.add(saveButton, c);
 
-        MusicPath.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.wav$");
-                    }
+        MusicPath.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.wav$");
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                musicPath = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            musicPath = fc.getSelectedFile();
         });
 
-        ArtPath.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
+        ArtPath.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.png$");
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                artPath = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            artPath = fc.getSelectedFile();
         });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
