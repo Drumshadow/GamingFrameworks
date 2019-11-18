@@ -1,11 +1,15 @@
 package Editor.AddObjects;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
 public class AddAI {
     private JPanel pane;
@@ -35,9 +39,11 @@ public class AddAI {
     private JComboBox<String> boundingBox;
     private JButton chooseSprite;
     private JCheckBox animatedCheck;
+    private JCheckBox destructsCheckBox;
     private JLabel framesLabel;
     private JComboBox<Integer> frames;
     private JButton saveButton;
+    private JList<String> destructorsList;
 
     private File sprite;
 
@@ -239,6 +245,100 @@ public class AddAI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frames.setEnabled(!frames.isEnabled());
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            private Wini ini;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Set<String> keys = ini.keySet();
+                int num = 0;
+                while(keys.contains(Integer.toString(num))) {
+                    num++;
+                }
+
+                String strNum = Integer.toString(num);
+
+                try {
+
+                    ini.put(strNum, "name", nameTextField.getText());
+                    if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
+                        ini.put(strNum, "sprPath",
+                                sprite.getAbsolutePath().substring(0,
+                                        sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                    } else {
+                        ini.put(strNum, "sprPath",
+                                sprite.getAbsolutePath().substring(0,
+                                        sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
+                    }
+                    ini.put(strNum, "frames", frames.getSelectedItem());
+                    ini.put(strNum, "collide", collisionCheck.isSelected());
+                    ini.put(strNum, "weight", weightSpinner.getValue());
+                    ini.put(strNum, "tv", terminalVelocity.getValue());
+                    ini.put(strNum, "jump", jumpHeight.getValue());
+                    ini.put(strNum, "boxType", Integer.toString(
+                            boundingBox.getSelectedIndex()));
+                    ini.put(strNum, "x", xPosition.getValue());
+                    ini.put(strNum, "y", yPosition.getValue());
+
+                    String AI = "";
+
+                    if(ledgeCheck.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "ledges";
+                    }
+                    if(bounceHorizontalCheck.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "walls";
+                    }
+                    if(bounceVerticalCheck.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "bounce";
+                    }
+                    if(autoMoveCheck.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "auto";
+                        ini.put(strNum, "xSpeed", autoXSpeed.getValue());
+                        ini.put(strNum, "ySpeed", autoYSpeed.getValue());
+                    }
+
+                    if(destructsCheckBox.isSelected()) {
+                        if(AI.length() != 0) {
+                            AI += ",";
+                        }
+                        AI += "destruct";
+
+                        StringBuilder destroyers = new StringBuilder();
+                        for(String value: destructorsList.getSelectedValuesList()) {
+                            if(destroyers.length() != 0) {
+                                destroyers.append(",");
+                            }
+
+                            destroyers.append(value);
+                        }
+
+                        ini.put(strNum, "destroyers", destroyers);
+                    }
+
+                    if(AI.length() != 0) {
+                        ini.put(strNum, "AI", AI);
+                    } else {
+                        ini.put(strNum, "AI", "null");
+                    }
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
             }
         });
     }
