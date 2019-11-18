@@ -36,6 +36,20 @@ public class AddHUDElementsHome {
         c.gridy = 2;
         pane.add(addScoreDisplay, c);
 
+        addScoreDisplay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddScore().setVisible();
+            }
+        });
+
+        addFPSDisplay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddFPS().setVisible();
+            }
+        });
+
         addHealthHUD.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
