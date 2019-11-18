@@ -10,6 +10,8 @@ import java.io.File;
 public class AddNew {
     private JPanel pane;
     private JFrame frame;
+    private JLabel nameLabel;
+    private JTextField nameTextField;
     private JCheckBox collisionCheck;
     private JLabel terminalVelocityLabel;
     private JSpinner terminalVelocity;
@@ -34,22 +36,34 @@ public class AddNew {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = 2;
+        c.weighty = 0.5;
+        c.weightx = 0.5;
+        c.insets = new Insets(10, 0, 10, 0);
 
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        collisionCheck = new JCheckBox("Does the object collide with other " +
-                "objects?");
-        c.weighty = 0.5;
-        c.weightx = 0.5;
+        nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
+                "to allow a single event to apply to multiple objects)");
         c.gridy = 0;
         c.gridx = 0;
-        c.insets = new Insets(10, 0, 10, 0);
+        pane.add(nameLabel, c);
+
+        nameTextField = new JTextField();
+        c.gridy = 1;
+        pane.add(nameTextField, c);
+
+        collisionCheck = new JCheckBox("Does the object collide with other " +
+                "objects?");
+        c.gridy = 2;
+        c.gridx = 0;
+
         pane.add(collisionCheck, c);
 
         jumpLabel = new JLabel("Jump Height");
+        c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 3;
         pane.add(jumpLabel, c);
 
         terminalVelocityLabel = new JLabel("Terminal Velocity");
@@ -61,7 +75,7 @@ public class AddNew {
 
         jumpHeight = new JSpinner(jumpModel);
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 4;
         pane.add(jumpHeight, c);
 
         terminalVelocity = new JSpinner(tvModel);
@@ -69,7 +83,7 @@ public class AddNew {
         pane.add(terminalVelocity, c);
 
         xPosLabel = new JLabel("Starting X Position");
-        c.gridy = 9;
+        c.gridy = 5;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
@@ -81,7 +95,7 @@ public class AddNew {
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
 
         xPosition = new JSpinner(xPosModel);
-        c.gridy = 10;
+        c.gridy = 6;
         c.gridx = 0;
         pane.add(xPosition, c);
 
@@ -90,26 +104,26 @@ public class AddNew {
         pane.add(yPosition, c);
 
         boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
-        c.gridy = 11;
+        c.gridy = 7;
         c.gridx = 0;
         c.gridwidth = 2;
         pane.add(boundingBoxLabel, c);
 
         boundingBox = new JComboBox<>(new String[] {"Rectangle", "Oval"});
-        c.gridy = 12;
+        c.gridy = 8;
         pane.add(boundingBox, c);
 
         chooseSprite = new JButton("Sprite File (Requires PNG)");
-        c.gridy = 13;
+        c.gridy = 9;
         pane.add(chooseSprite, c);
 
         animatedCheck = new JCheckBox("Is the sprite animated?");
-        c.gridy = 14;
+        c.gridy = 10;
         pane.add(animatedCheck, c);
 
         framesLabel = new JLabel("Number of Frames (Number of frames for an " +
                 "animated sprite)");
-        c.gridy = 15;
+        c.gridy = 11;
         pane.add(framesLabel, c);
 
         frames = new JComboBox<>();
@@ -118,13 +132,13 @@ public class AddNew {
             frames.addItem(i);
         }
 
-        c.gridy = 16;
+        c.gridy = 12;
         pane.add(frames, c);
         frames.setEnabled(false);
 
         saveButton = new JButton("Save");
         c.gridwidth = 1;
-        c.gridy = 17;
+        c.gridy = 13;
         c.gridx = 1;
         pane.add(saveButton, c);
 

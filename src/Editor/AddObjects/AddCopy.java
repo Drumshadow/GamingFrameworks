@@ -7,12 +7,13 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class AddCopy {
     private JPanel pane;
     private JFrame frame;
     private JLabel objectCopyLabel;
-    private JComboBox<String> objectCopyList;
+    private JComboBox<Object> objectCopyList;
     private JLabel xPosLabel;
     private JLabel yPosLabel;
     private JSpinner xPosition;
@@ -28,7 +29,8 @@ public class AddCopy {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        objectCopyLabel = new JLabel("Choose object to copy");
+        objectCopyLabel = new JLabel("Choose object to copy (if no selections" +
+                " appear, then no objects have been created)");
         c.weightx = 0.5;
         c.weighty = 0.5;
         c.gridx = 0;
@@ -36,22 +38,21 @@ public class AddCopy {
         c.insets = new Insets(20, 0, 20, 0);
         pane.add(objectCopyLabel, c);
 
-        objectCopyList = new JComboBox<>();
-
         try {
             Wini ini = new Wini(new File("./objects/objects.ini"));
 
             Set<String> keys = ini.keySet();
+            Set<String> names = new TreeSet<>();
             for(String key : keys) {
-                System.out.println(ini.get(key, "name"));
-                objectCopyList.addItem(ini.get(key, "name"));
+                names.add(ini.get(key, "name"));
             }
+
+            objectCopyList = new JComboBox<>(names.toArray());
+            c.gridy = 1;
+            pane.add(objectCopyList, c);
         } catch(IOException err) {
             err.printStackTrace();
         }
-
-        c.gridy = 1;
-        pane.add(objectCopyList, c);
 
         c.gridwidth = 1;
 
@@ -78,6 +79,7 @@ public class AddCopy {
 
         saveButton = new JButton("Save");
         c.gridy = 4;
+        c.gridx = 0;
         pane.add(saveButton);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -85,7 +87,7 @@ public class AddCopy {
     }
 
     public void setVisible() {
-        frame.setSize(300, 300);
+        frame.setSize(500, 300);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
