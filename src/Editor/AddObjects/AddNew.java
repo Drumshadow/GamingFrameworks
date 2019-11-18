@@ -1,11 +1,15 @@
 package Editor.AddObjects;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
 public class AddNew {
     private JPanel pane;
@@ -181,6 +185,47 @@ public class AddNew {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frames.setEnabled(!frames.isEnabled());
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            private Wini ini;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Set<String> keys = ini.keySet();
+                int num = 0;
+                while(keys.contains(Integer.toString(num))) {
+                    num++;
+                }
+
+                String strNum = Integer.toString(num);
+
+                try {
+                    ini.put(strNum, "name", nameTextField.getText());
+                    if(Integer.parseInt(frames.getSelectedItem().toString()) > 1) {
+                        ini.put(strNum, "sprPath",
+                                sprite.getAbsolutePath().substring(0,
+                                        sprite.getAbsolutePath().length() - 6).replace('\\', '/'));
+                    } else {
+                        ini.put(strNum, "sprPath",
+                                sprite.getAbsolutePath().substring(0,
+                                        sprite.getAbsolutePath().length() - 4).replace('\\', '/'));
+                    }
+                    ini.put(strNum, "frames", frames.getSelectedItem());
+                    ini.put(strNum, "collide", collisionCheck.isSelected());
+                    ini.put(strNum, "weight", weightSpinner.getValue());
+                    ini.put(strNum, "tv", terminalVelocity.getValue());
+                    ini.put(strNum, "jump", jumpHeight.getValue());
+                    ini.put(strNum, "boxType", Integer.toString(
+                            boundingBox.getSelectedIndex()));
+                    ini.put(strNum, "x", xPosition.getValue());
+                    ini.put(strNum, "y", yPosition.getValue());
+
+                    ini.put(strNum, "AI", "null");
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
             }
         });
     }
