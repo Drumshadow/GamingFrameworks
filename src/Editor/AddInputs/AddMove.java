@@ -11,15 +11,12 @@ import java.util.Set;
 public class AddMove {
     private JPanel pane;
     private JFrame frame;
-    private JLabel keyMapLabel;
     private JComboBox<String> mapToComboBox;
-    private JLabel objectLabel;
     private JComboBox<String> objectComboBox;
-    private JLabel speedLabel;
     private JSpinner speedSpinner;
     private JButton saveButton;
 
-    public AddMove() {
+    AddMove() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -31,7 +28,7 @@ public class AddMove {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        keyMapLabel = new JLabel("Choose Key to Map Movement To");
+        JLabel keyMapLabel = new JLabel("Choose Key to Map Movement To");
         c.gridy = 0;
         c.gridx = 0;
         pane.add(keyMapLabel, c);
@@ -40,14 +37,14 @@ public class AddMove {
 
         for(int i = 48; i <= 90; i++) {
             if(i != 58 && i != 60 && !(i < 65 && i > 61)) {
-                mapToComboBox.addItem(Integer.toString(i));
+                mapToComboBox.addItem(Character.toString((char) i));
             }
         }
 
         c.gridy = 1;
         pane.add(mapToComboBox, c);
 
-        objectLabel = new JLabel("Select the object to apply the move to");
+        JLabel objectLabel = new JLabel("Select the object to apply the move to");
         c.gridy = 2;
         pane.add(objectLabel, c);
 
@@ -62,13 +59,13 @@ public class AddMove {
                 objectComboBox.addItem(ini.get(key, "name"));
             }
         } catch(IOException err) {
-            err.printStackTrace();
+            System.out.println(err.getMessage());
         }
 
         c.gridy = 3;
         pane.add(objectComboBox, c);
 
-        speedLabel = new JLabel("Set the speed of the object during the move");
+        JLabel speedLabel = new JLabel("Set the speed of the object during the move");
         c.gridy = 4;
         pane.add(speedLabel, c);
 

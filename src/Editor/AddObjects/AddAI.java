@@ -121,13 +121,15 @@ public class AddAI {
         c.gridx = 1;
         pane.add(ySpeedLabel, c);
 
-        xSpeedCombo = new JComboBox<>(new String[] {"None", "Slow", "Medium", "Fast"});
+        xSpeedCombo = new JComboBox<>(new String[] {"None", "Slow Left", "Medium Left", "Fast Left",
+                "Slow Right", "Medium Right", "Fast Right"});
         c.gridy = 10;
         c.gridx = 0;
         pane.add(xSpeedCombo, c);
         xSpeedCombo.setEnabled(false);
 
-        ySpeedCombo = new JComboBox<>(new String[] {"None", "Slow", "Medium", "Fast"});
+        ySpeedCombo = new JComboBox<>(new String[] {"None", "Slow Down", "Medium Down", "Fast Down",
+                "Slow Up", "Medium Up", "Fast Up"});
         c.gridx = 1;
         pane.add(ySpeedCombo, c);
         ySpeedCombo.setEnabled(false);
@@ -327,13 +329,22 @@ public class AddAI {
                         if (xSpeedCombo.getSelectedItem().equals("None")) {
                             xS = 0.0;
                         }
-                        else if (xSpeedCombo.getSelectedItem().equals("Slow")) {
+                        else if (xSpeedCombo.getSelectedItem().equals("Slow Left")) {
+                            xS = -4.0;
+                        }
+                        else if (xSpeedCombo.getSelectedItem().equals("Medium Left")) {
+                            xS = -8.0;
+                        }
+                        else if (xSpeedCombo.getSelectedItem().equals("Fast Left")) {
+                            xS = -12.0;
+                        }
+                        else if (xSpeedCombo.getSelectedItem().equals("Slow Right")) {
                             xS = 4.0;
                         }
-                        else if (xSpeedCombo.getSelectedItem().equals("Medium")) {
+                        else if (xSpeedCombo.getSelectedItem().equals("Medium Right")) {
                             xS = 8.0;
                         }
-                        else if (xSpeedCombo.getSelectedItem().equals("Fast")) {
+                        else if (xSpeedCombo.getSelectedItem().equals("Fast Right")) {
                             xS = 12.0;
                         }
                     }
@@ -345,13 +356,22 @@ public class AddAI {
                         if (ySpeedCombo.getSelectedItem().equals("None")) {
                             yS = 0.0;
                         }
-                        else if (ySpeedCombo.getSelectedItem().equals("Slow")) {
+                        else if (ySpeedCombo.getSelectedItem().equals("Slow Down")) {
+                            yS = -4.0;
+                        }
+                        else if (ySpeedCombo.getSelectedItem().equals("Medium Down")) {
+                            yS = -8.0;
+                        }
+                        else if (ySpeedCombo.getSelectedItem().equals("Fast Down")) {
+                            yS = -12.0;
+                        }
+                        else if (ySpeedCombo.getSelectedItem().equals("Slow Up")) {
                             yS = 4.0;
                         }
-                        else if (ySpeedCombo.getSelectedItem().equals("Medium")) {
+                        else if (ySpeedCombo.getSelectedItem().equals("Medium Up")) {
                             yS = 8.0;
                         }
-                        else if (ySpeedCombo.getSelectedItem().equals("Fast")) {
+                        else if (ySpeedCombo.getSelectedItem().equals("Fast Up")) {
                             yS = 12.0;
                         }
                     }
