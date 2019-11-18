@@ -93,6 +93,37 @@ public class AddAI {
         c.gridy = 6;
         pane.add(autoMoveCheck, c);
 
+        destructsCheckBox = new JCheckBox("Is the AI Destroyable by Another " +
+                "Object?");
+        c.gridy = 7;
+        pane.add(destructsCheckBox, c);
+
+        try {
+            Wini ini = new Wini(new File("./objects/objects.ini"));
+            Set<String> keys = ini.keySet();
+            String[] values = new String[keys.size()];
+
+            int i = 0;
+            for(String key : keys) {
+                values[i] = ini.get(key, "name");
+                i++;
+            }
+
+            destructorsList = new JList<>(values);
+            c.gridy = 8;
+            pane.add(destructorsList, c);
+            destructorsList.setEnabled(false);
+
+            destructsCheckBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    destructorsList.setEnabled(destructsCheckBox.isSelected());
+                }
+            });
+        } catch(IOException err) {
+            err.printStackTrace();
+        }
+
         SpinnerNumberModel xSpeedModel = new SpinnerNumberModel(0, -10, 10,
                 0.5);
         SpinnerNumberModel ySpeedModel = new SpinnerNumberModel(0, -10, 10,
@@ -100,7 +131,7 @@ public class AddAI {
 
         xSpeedLabel = new JLabel("Auto X Speed Movement");
         c.gridwidth = 1;
-        c.gridy = 7;
+        c.gridy = 9;
         pane.add(xSpeedLabel, c);
 
         ySpeedLabel = new JLabel("Auto Y Speed Movement");
@@ -108,7 +139,7 @@ public class AddAI {
         pane.add(ySpeedLabel, c);
 
         autoXSpeed = new JSpinner(xSpeedModel);
-        c.gridy = 8;
+        c.gridy = 10;
         c.gridx = 0;
         pane.add(autoXSpeed, c);
         autoXSpeed.setEnabled(false);
@@ -120,7 +151,7 @@ public class AddAI {
 
         jumpLabel = new JLabel("Jump Height");
         c.gridx = 0;
-        c.gridy = 9;
+        c.gridy = 11;
         pane.add(jumpLabel, c);
 
         terminalVelocityLabel = new JLabel("Terminal Velocity");
@@ -132,7 +163,7 @@ public class AddAI {
 
         jumpHeight = new JSpinner(jumpModel);
         c.gridx = 0;
-        c.gridy = 10;
+        c.gridy = 12;
         pane.add(jumpHeight, c);
 
         terminalVelocity = new JSpinner(tvModel);
@@ -140,7 +171,7 @@ public class AddAI {
         pane.add(terminalVelocity, c);
 
         xPosLabel = new JLabel("Starting X Position");
-        c.gridy = 11;
+        c.gridy = 13;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
@@ -152,7 +183,7 @@ public class AddAI {
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 1080, 1);
 
         xPosition = new JSpinner(xPosModel);
-        c.gridy = 12;
+        c.gridy = 14;
         c.gridx = 0;
         pane.add(xPosition, c);
 
@@ -162,35 +193,35 @@ public class AddAI {
 
         weightLabel = new JLabel("Weight of the Object");
         c.gridwidth = 2;
-        c.gridy = 13;
+        c.gridy = 15;
         c.gridx = 0;
         pane.add(weightLabel, c);
 
         SpinnerNumberModel weightModel = new SpinnerNumberModel(0, 0, 10, 1);
 
         weightSpinner = new JSpinner(weightModel);
-        c.gridy = 14;
+        c.gridy = 16;
         pane.add(weightSpinner, c);
 
         boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
-        c.gridy = 15;
+        c.gridy = 17;
         pane.add(boundingBoxLabel, c);
 
         boundingBox = new JComboBox<>(new String[] {"Rectangle", "Oval"});
-        c.gridy = 16;
+        c.gridy = 18;
         pane.add(boundingBox, c);
 
         chooseSprite = new JButton("Sprite File (Requires PNG)");
-        c.gridy = 17;
+        c.gridy = 19;
         pane.add(chooseSprite, c);
 
         animatedCheck = new JCheckBox("Is the sprite animated?");
-        c.gridy = 18;
+        c.gridy = 20;
         pane.add(animatedCheck, c);
 
         framesLabel = new JLabel("Number of Frames (Number of frames for an " +
                 "animated sprite)");
-        c.gridy = 19;
+        c.gridy = 21;
         pane.add(framesLabel, c);
 
         frames = new JComboBox<>();
@@ -199,13 +230,13 @@ public class AddAI {
             frames.addItem(i);
         }
 
-        c.gridy = 20;
+        c.gridy = 22;
         pane.add(frames, c);
         frames.setEnabled(false);
 
         saveButton = new JButton("Save");
         c.gridwidth = 1;
-        c.gridy = 21;
+        c.gridy = 23;
         c.gridx = 1;
         pane.add(saveButton, c);
 
@@ -344,7 +375,7 @@ public class AddAI {
     }
 
     public void setVisible() {
-        frame.setSize(600, 900);
+        frame.setSize(600, 1000);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
