@@ -57,32 +57,67 @@ public class GameLoop {
         alcMakeContextCurrent(context);
         ALCapabilities alCapabilities  = AL.createCapabilities(alcCapabilities);
 
+        // add pause button
+     //   inputs.add(new Input(GLFW_KEY_P, GLFW_PRESS));
+
         // setup key callback
         // called every time a key is pressed, repeated or released
         glfwSetKeyCallback(newWindow.window, (window, key, scanCode, action,
                                               mods) -> {
-            if(key == GLFW_KEY_O && action == GLFW_PRESS && isPaused){
+
+            // reload
+            if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
                 inputs.removeAll();
                 controls.removeAll();
                 room.getAllObjects().removeAllElements();
-                System.out.println("O");
-                isPaused = false;
                 try {
+           //         inputs.add(new Input(GLFW_KEY_P, GLFW_PRESS));
+                    pivotalMoment.renderObjects(room, events);
+                    pivotalMoment.setControls(controls, events);
+                    pivotalMoment.setKeyboardControls(inputs, events);
+                    System.out.println("reloaded");
+                } catch (IOException e) {
+                    System.out.println("Error reloading after pause");
+                }
+                key = GLFW_KEY_X;
+            }
+
+            // unpause
+            else if(key == GLFW_KEY_O && action == GLFW_PRESS && isPaused){
+             //   inputs.removeAll();
+             //   controls.removeAll();
+             //   room.getAllObjects().removeAllElements();
+                System.out.println("UNPAUSED");
+                isPaused = false;
+            /*    try {
                     pivotalMoment.renderObjects(room, events);
                     pivotalMoment.setControls(controls, events);
                     pivotalMoment.setKeyboardControls(inputs, events);
                 } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    System.out.println("Error reloading after pause");
+                }*/
                 key = GLFW_KEY_X;
-                //TODO: Render everything back
             }
-            for (int i = 0; i < inputs.size(); i++) {
+
+            // pause
+            else if (key == GLFW_KEY_P && action == GLFW_PRESS && !isPaused) {
+                isPaused = true;
+                paused(key, action);
+                System.out.println("PAUSED");
+            }
+
+            else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(window, true);
+            }
+
+            // pause or exit
+          /*  for (int i = 0; i < inputs.size(); i++) {
 
                 if (key == inputs.get(i).getKey() &&
                         action == inputs.get(i).getAction()) {
                     if (inputs.get(i).getPurpose() == Input.inputPurpose.PAUSE) {
                         isPaused = inputs.get(i).execute(isPaused);
+                        System.out.println("PAUSED");
                     }
                     else {
                         inputs.get(i).execute(room);
@@ -95,10 +130,10 @@ public class GameLoop {
 
                 else if(key == GLFW_KEY_P && action == GLFW_PRESS && !isPaused){
                     isPaused = true;
-                    System.out.println("P");
                     paused(key, action);
+                    System.out.println("PAUSED");
                 }
-            }
+            }*/
         });
 
         loop();
@@ -222,7 +257,7 @@ public class GameLoop {
                 // draw HUD
                 hud.drawHUD();
 
-                // TODO: make sure controller works
+                // Note: Controller not fully supported
                 if (glfwGetJoystickName(GLFW_JOYSTICK_1) != null) {
 
                     FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
@@ -257,6 +292,7 @@ public class GameLoop {
                 frames++;
 
             }
+
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
