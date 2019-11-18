@@ -88,34 +88,36 @@ public class AddCopy {
                 Wini ini = null;
                 try {
                     ini = new Wini(new File("./objects/objects.ini"));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                Set<String> keys = ini.keySet();
-                int num = 0;
-                while (keys.contains(Integer.toString(num))) {
-                    num++;
-                }
-
-                String strNum = Integer.toString(num);
-                Profile.Section copy = null;
-
-                for(String key : keys) {
-                    if(ini.get(key, "name").equals(objectCopyList.getSelectedItem())) {
-                        copy = ini.get(key);
-                        break;
+                    Set<String> keys = ini.keySet();
+                    int num = 0;
+                    while (keys.contains(Integer.toString(num))) {
+                        num++;
                     }
-                }
 
-                if(copy != null) {
-                    for(String name : copy.childrenNames()) {
-                        if(!name.equals("x") && !name.equals("y")) {
-                            ini.put(strNum, name, copy.get(name));
+                    String strNum = Integer.toString(num);
+                    Profile.Section copy = null;
+
+                    for(String key : keys) {
+                        if(ini.get(key, "name").equals(objectCopyList.getSelectedItem())) {
+                            copy = ini.get(key);
+                            break;
                         }
                     }
 
-                    ini.put(strNum, "x", xPosition.getValue());
-                    ini.put(strNum, "y", yPosition.getValue());
+                    if(copy != null) {
+                        for(String name : copy.childrenNames()) {
+                            if(!name.equals("x") && !name.equals("y")) {
+                                ini.put(strNum, name, copy.get(name));
+                            }
+                        }
+
+                        ini.put(strNum, "x", xPosition.getValue());
+                        ini.put(strNum, "y", yPosition.getValue());
+                    }
+
+                    ini.store();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
