@@ -79,8 +79,8 @@ public class AddScore {
                 ini.put(strNum, "score", startSoreSpinner.getValue());
                 ini.put(strNum, "maxScore", maxScoreSpinner.getValue());
 
-                ini.put(strNum, "xPos", 50);
-                ini.put(strNum, "yPos", 80);
+                ini.put(strNum, "xPos", "50");
+                ini.put(strNum, "yPos", "80");
 
                 ini.put(strNum, "name", nameTextField.getText());
 
