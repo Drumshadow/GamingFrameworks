@@ -137,6 +137,39 @@ public class AddGameEnd {
             }
         });
 
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./events/events.ini"));
+
+                    int i = 0;
+                    while(ini.containsKey(Integer.toString(i))) {
+                        i++;
+                    }
+
+                    String strNum = Integer.toString(i);
+
+                    ini.put(strNum, "type", "end");
+                    ini.put(strNum, "hud", HUDComboBox.getSelectedIndex());
+                    ini.put(strNum, "msg", msgTextField);
+                    ini.put(strNum, "x", xPosition.getValue());
+                    ini.put(strNum, "y", yPosition.getValue());
+
+                    if(audioFile != null) {
+                        ini.put(strNum, "audio",
+                                audioFile.getAbsolutePath().replace('\\', '/'));
+                    } else {
+                        ini.put(strNum, "audio", "null");
+                    }
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
+        });
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
     }
