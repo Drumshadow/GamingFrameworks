@@ -41,7 +41,7 @@ public class MainForm {
         addOptionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddOptions.main(null);
+                AddOption.main(null);
             }
         });
 
