@@ -105,7 +105,9 @@ public class AddMove {
                     Wini ini = new Wini(new File("./inputs/keyboard.ini"));
                     int num = 0;
 
-                    while(ini.containsKey(Integer.toString(num))) {
+                    while(ini.containsKey(Integer.toString(num)) &&
+                            ini.containsKey(Integer.toString(num + 1)) &&
+                            ini.containsKey(Integer.toString(num + 2))) {
                         num++;
                     }
 
