@@ -261,20 +261,20 @@ class INI {
 
                     hud.addElement(new HealthBar(hpType, Integer.parseInt(ini.get(section, "lives")),
                             Integer.parseInt(ini.get(section, "max")), hpSprite,
-                            Float.parseFloat(ini.get(section, "x")),
-                            Float.parseFloat(ini.get(section, "y")),
+                            Float.parseFloat(ini.get(section, "xPos")),
+                            Float.parseFloat(ini.get(section, "yPos")),
                             Float.parseFloat(ini.get(section, "width")),
                             Float.parseFloat(ini.get(section, "height")),
                             ini.get(section, "name")));
                     break;
                 case "FrameDisplay":
-                    hud.addElement(new FrameDisplay(Float.parseFloat(ini.get(section, "x")),
-                            Float.parseFloat(ini.get(section, "y")),
+                    hud.addElement(new FrameDisplay(Float.parseFloat(ini.get(section, "xPos")),
+                            Float.parseFloat(ini.get(section, "yPos")),
                             ini.get(section, "name")));
                     break;
                 case "Score":
-                    hud.addElement(new Score(Integer.parseInt(ini.get(section, "x")),
-                            Integer.parseInt(ini.get(section, "y")),
+                    hud.addElement(new Score(Integer.parseInt(ini.get(section, "xPos")),
+                            Integer.parseInt(ini.get(section, "yPos")),
                             Integer.parseInt(ini.get(section, "score")),
                             Integer.parseInt(ini.get(section, "maxScore")),
                             ini.get(section, "name")));
