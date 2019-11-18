@@ -1,9 +1,14 @@
 package Editor.AddOptions;
 
+import org.ini4j.Wini;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 public class AddBackground {
     private JPanel pane;
@@ -83,6 +88,29 @@ public class AddBackground {
             });
             fc.showOpenDialog(pane);
             artPath = fc.getSelectedFile();
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Wini ini = new Wini(new File("./options/options.ini"));
+
+                    if(artPath != null) {
+                        ini.put("background", "art",
+                                artPath.getAbsolutePath().replace('\\', '/'));
+                    }
+
+                    if(musicPath != null) {
+                        ini.put("background", "music",
+                                musicPath.getAbsolutePath().replace('\\', '/'));
+                    }
+
+                    ini.store();
+                } catch(IOException err) {
+                    err.printStackTrace();
+                }
+            }
         });
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
