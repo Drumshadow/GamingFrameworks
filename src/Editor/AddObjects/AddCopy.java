@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -100,7 +101,7 @@ public class AddCopy {
                 }
 
                 if(copy != null) {
-                    for(String name : copy.childrenNames()) {
+                    for(String name : (Set<String>)copy.keySet()) {
                         if(!name.equals("x") && !name.equals("y")) {
                             ini.put(strNum, name, copy.get(name));
                         }
