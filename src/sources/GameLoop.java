@@ -156,10 +156,7 @@ public class GameLoop {
             room.setBackground(new Sprite(ini.get("background", "art"), 1));
         }
 
-        // set hud
-        if(ini.containsKey("misc")) {
-            hud.setHudFont(ini.get("misc", "font"), 32);
-        }
+        hud.setHudFont();
 
         pivotalMoment.renderHUD(hud, 0);
 
