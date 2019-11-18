@@ -4,7 +4,7 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
 **Engine Skillfully Built By:** Cody Dowell, Stevie Damrel, Weston Straw, and Ashley Roesler
 
 # Current Features
-- **GUI:** allows the user to add game objects, events, inputs, HUD elements, AI, sounds, sprites, fonts, and backgrounds
+- **GUI:** allows the user to add game objects, events, inputs, HUD elements, AI, sounds, sprites, fonts, and backgrounds (can also copy objects)
 - **Pausing:**
   - Press `P` to pause or unpause the game
   - Press `0` to restart the game
