@@ -169,6 +169,7 @@ public class Sprite {
     public void drawObject(double x, double y) {
         glPushMatrix();
 
+        // deal with frames and animation
         this.currentTime = FPS.getTime();
         this.elapsedTime += currentTime - lastTime;
 
@@ -190,6 +191,7 @@ public class Sprite {
         glTranslated(x + (width / 1000.0),
                 y + (height / 1000.0), 0);
 
+        // draw texture
         glBegin(GL_QUADS);
         {
             glTexCoord2f(1.0f, 0.0f);
@@ -232,16 +234,6 @@ public class Sprite {
         }
     }
 
-    public void setSpritePath(String path) {
-        this.spritePath = path;
-
-        loadAnimation(this.frames);
-    }
-
-    public String getSpritePath() {
-        return this.spritePath;
-    }
-
     public void setSprite(BufferedImage[] i) {
         this.sprite = i;
 
@@ -265,9 +257,5 @@ public class Sprite {
 
     public void setVisible(boolean v) {
         this.isVisible = v;
-    }
-
-    public boolean getVisible() {
-        return this.isVisible;
     }
 }
