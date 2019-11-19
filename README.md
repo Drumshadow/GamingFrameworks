@@ -31,8 +31,6 @@ Here is the link to our dropbox!
 https://baylor.box.com/s/0v7nzy9ekbv443373czsu63zb6oqne5a
     
 # User's Guide (How to Play the Demo Game)
-**Download instructions will soon be posted!**
-
 **Here are the steps to play!**
 1) Move your player around with **WASD**.
 2) Shoot hearts by pressing **Enter**.
