@@ -152,26 +152,6 @@ class Event {
                     } else {
                         this.timer++;
                     }
-
-                   /* if (O.getAi().contains(GameObject.Behavior.EMIT)) {
-
-                        // prepare projectile
-                        prepProjectile(O, this.projectile);
-
-                        // add to room
-                        if (this.timer == this.fireTime) {
-                            room.addObject(new GameObject(this.projectile));
-                            this.timer = 0;
-
-                            // play sound
-                            if (this.sound != null) {
-                                this.sound.loadPlaySound();
-                            }
-
-                        } else {
-                            this.timer++;
-                        }
-                    }*/
                 }
                 break;
             }
@@ -226,6 +206,7 @@ class Event {
         }
     }
 
+    // draws the health bar or score
     boolean execute(HUD hud, UnicodeFont hudFont, boolean paused) {
         if (hud.getElement(this.hud) instanceof HealthBar) {
             if (((HealthBar) hud.getElement(this.hud)).getLives() == mod) {
@@ -271,6 +252,7 @@ class Event {
         }
     }
 
+    // updates hud elements according to mod amount or frames
     private void updateHUD(HUD hud, int displayFrames) {
         if (hud.getElement(this.hud) instanceof HealthBar) {
             ((HealthBar) hud.getElement(this.hud)).modHealth(this.mod);

@@ -21,7 +21,7 @@ public class EventHandler {
         return events.size();
     }
 
-    public void removeAll() {
+    void removeAll() {
         events.clear();
     }
 }

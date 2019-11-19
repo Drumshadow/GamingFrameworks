@@ -1,10 +1,6 @@
 package sources;
 
 import org.ini4j.Ini;
-import org.lwjgl.openal.AL;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALCCapabilities;
-import org.lwjgl.openal.ALCapabilities;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
@@ -44,12 +40,15 @@ public class GameLoop {
     // inputs, controls, hud, events, objects
     static int[] changeKeeper = new int[]{0, 0, 0, 0, 0};
 
-
-    private void paused(int key, int action){
+    // pauses the game
+    private void paused() {
         glfwWaitEvents();
     }
 
+    // game initialization
     private void run() throws Exception {
+
+        // initialize room with background and music
         Ini ini = new Ini(new File("./options/options.ini"));
         if(ini.containsKey("background")) {
             bg.playSound(ini.get("background", "music"));
@@ -59,10 +58,8 @@ public class GameLoop {
         // initialization
         String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
         long device = alcOpenDevice(defaultDeviceName);
-        ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
         long context = alcCreateContext(device, (IntBuffer)null);
         alcMakeContextCurrent(context);
-        ALCapabilities alCapabilities  = AL.createCapabilities(alcCapabilities);
 
         // setup key callback
         // called every time a key is pressed, repeated or released
@@ -89,7 +86,7 @@ public class GameLoop {
                 isPaused = false;
             }
 
-            // refresh room
+            // refresh room (only updates changes)
             else if (key == GLFW_KEY_9 && action == GLFW_PRESS) {
 
                 try {
@@ -108,9 +105,8 @@ public class GameLoop {
 
                 // pause
                 if (!isPaused) {
-
                     isPaused = true;
-                    paused(key, action);
+                    paused();
                 }
 
                 // unpause
@@ -122,7 +118,10 @@ public class GameLoop {
             // escape room
             else if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                 glfwSetWindowShouldClose(window, true);
-            } else {
+            }
+
+            // execute other inputs
+            else {
                 for (int i = 0; i < inputs.size(); i++) {
 
                     if (key == inputs.get(i).getKey() &&
@@ -138,6 +137,7 @@ public class GameLoop {
             }
         });
 
+        // perform game loop
         loop();
 
         alcDestroyContext(context);
@@ -151,7 +151,8 @@ public class GameLoop {
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
-  
+
+    // main game functionality
     private void loop() throws IOException, SlickException {
 
         /*==================================================
@@ -180,6 +181,7 @@ public class GameLoop {
                           Game Loop
         ==================================================*/
 
+        // initialize color and drawing settings
         GL11.glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -209,10 +211,7 @@ public class GameLoop {
             if (!isPaused && !isEnd) {
                 glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
 
-            /*==================================================
-                                 Frames
-            ==================================================*/
-
+                // calculate frames
                 time_2 = FPS.getTime();
                 passed = time_2 - time;
                 unprocesses += passed;
@@ -243,12 +242,13 @@ public class GameLoop {
                 }
                 glPopMatrix();
 
+                // draw all objects
                 for (GameObject GO : room.getAllObjects()) {
                     GO.drawObject();
                     GO.move(room);
                 }
 
-                // Execute events
+                // execute events
                 for (int i = 0; i < events.size(); i++) {
                     if (events.getEvent(i).getType() == Event.eventType.END) {
                         isEnd = events.getEvent(i).execute(hud, hud.getFont(), isPaused);

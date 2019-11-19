@@ -2,6 +2,7 @@ package sources;
 
 import sources.objCode.GameObject;
 
+// NOTE: Controller not fully supported
 public class Controller {
 
     private int button; // 1 if button, 0 if axes
