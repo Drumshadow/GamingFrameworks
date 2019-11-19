@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Set;
 
 public class AddSound {
@@ -16,8 +17,6 @@ public class AddSound {
     private JFrame frame;
     private JComboBox<String> mapToComboBox;
     private JComboBox<String> objectComboBox;
-    private JButton audioFile;
-    private JButton saveButton;
     private File audioPath;
 
     AddSound() {
@@ -73,34 +72,31 @@ public class AddSound {
         c.gridy = 4;
         pane.add(audioFileLabel, c);
 
-        audioFile = new JButton("Audio File");
+        JButton audioFile = new JButton("Audio File");
         c.gridy = 5;
         pane.add(audioFile, c);
 
-        saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Save");
         c.gridwidth = 1;
         c.gridy = 6;
         c.gridx = 1;
         pane.add(saveButton, c);
 
-        audioFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
+        audioFile.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.ogg$");
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                audioPath = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            audioPath = fc.getSelectedFile();
         });
 
         saveButton.addActionListener(e -> {
@@ -114,13 +110,10 @@ public class AddSound {
 
                 String strNum = Integer.toString(num);
 
-
-
-
                 ini.put(strNum, "action", "0");
 
                 ini.put(strNum, "key",
-                        Integer.toString((int) ((String) mapToComboBox.getSelectedItem()).charAt(0)));
+                        Integer.toString((int) ((String) Objects.requireNonNull(mapToComboBox.getSelectedItem())).charAt(0)));
 
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", "PlaySound");

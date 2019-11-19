@@ -1,4 +1,4 @@
-package Editor.AddEvents;
+package Editor.AddInputs;
 
 import org.ini4j.Wini;
 
@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 
-class AddProjectile {
-
+public class AddProjectileButton {
     private JFrame frame;
     private JPanel pane;
 
@@ -28,9 +27,9 @@ class AddProjectile {
     private JComboBox<String> xSpeedCombo;
     private JComboBox<String> ySpeedCombo;
     private JComboBox<String> firingObjCombo;
-    private JComboBox<String> fireRateCombo;
     private JComboBox<String> boundingBox;
     private JComboBox<Integer> frames;
+    private JComboBox<String> mapToComboBox;
 
     private JSpinner terminalVelocity;
     private JSpinner weightSpinner;
@@ -38,7 +37,7 @@ class AddProjectile {
     private File audioFile;
     private File sprite;
 
-    AddProjectile() {
+    AddProjectileButton() {
         GridBagLayout grid = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -50,6 +49,21 @@ class AddProjectile {
 
         pane = new JPanel(grid);
         frame = new JFrame();
+
+        JLabel keyMapLabel = new JLabel("Choose Key to Map Firing To");
+        c.gridy = gY++;
+        c.gridx = 0;
+        pane.add(keyMapLabel, c);
+
+        mapToComboBox = new JComboBox<>();
+
+        for(int i = 49; i <= 90; i++) {
+            if(i != 57 && i != 58 && i != 60 && i != 80 && !(i < 65 && i > 61)) {
+                mapToComboBox.addItem((char) i + "");
+            }
+        }
+        c.gridy = gY++;
+        pane.add(mapToComboBox, c);
 
         JLabel objectLabel = new JLabel("Choose firing object");
         c.gridy = gY++;
@@ -125,16 +139,6 @@ class AddProjectile {
                 "Slow Up", "Medium Up", "Fast Up"});
         c.gridx = 1;
         pane.add(ySpeedCombo, c);
-
-        JLabel fireRateLabel = new JLabel("Projectile Fire Rate");
-        c.gridx = 0;
-        c.gridy = gY++;
-        pane.add(fireRateLabel, c);
-
-        fireRateCombo = new JComboBox<>(new String[] {"Slow", "Medium", "Fast"});
-        c.gridx = 0;
-        c.gridy = gY++;
-        pane.add(fireRateCombo, c);
 
         JLabel terminalVelocityLabel = new JLabel("Terminal Velocity");
         c.gridx = 0;
@@ -214,12 +218,12 @@ class AddProjectile {
             fc.addChoosableFileFilter(new FileFilter() {
                 @Override
                 public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
+                    return f.getPath().matches(".*\\.png$");
+                }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
             });
             fc.showOpenDialog(pane);
             sprite = fc.getSelectedFile();
@@ -246,40 +250,25 @@ class AddProjectile {
         });
 
         saveButton.addActionListener(e -> {
-
             try {
-                Wini ini = new Wini(new File("./events/events.ini"));
-
-                Set<String> keys = ini.keySet();
+                Wini ini = new Wini(new File("./inputs/keyboard.ini"));
 
                 int num = 0;
-                while (keys.contains(Integer.toString(num))) {
+                while (ini.containsKey(Integer.toString(num))) {
                     num++;
                 }
                 String strNum = Integer.toString(num);
 
-                // collision type
-                ini.put(strNum, "type", "emission");
+                // key and action
+                ini.put(strNum, "key",
+                        Integer.toString((int) ((String) Objects.requireNonNull(mapToComboBox.getSelectedItem())).charAt(0)));
+                ini.put(strNum, "action", "1");
 
                 // firing object
-                ini.put(strNum, "obj1", firingObjCombo.getSelectedItem());
-
-                // timer
-                if (fireRateCombo.getSelectedItem() != null) {
-
-                    if (fireRateCombo.getSelectedItem().equals("Slow")) {
-                        ini.put(strNum, "timer", "10");
-                    }
-                    else if (fireRateCombo.getSelectedItem().equals("Medium")) {
-                        ini.put(strNum, "timer", "30");
-                    }
-                    else if (fireRateCombo.getSelectedItem().equals("Fast")) {
-                        ini.put(strNum, "timer", "60");
-                    }
-                }
+                ini.put(strNum, "object", firingObjCombo.getSelectedItem());
 
                 // projectile name
-                ini.put(strNum, "o2name", "projectile" + strNum);
+                ini.put(strNum, "o2name", "iProjectile" + strNum);
 
                 // projectile sprite
                 if(Integer.parseInt(Objects.requireNonNull(frames.getSelectedItem()).toString()) > 1) {
@@ -403,6 +392,9 @@ class AddProjectile {
                 } else {
                     ini.put(strNum, "audio", "null");
                 }
+
+                // purpose
+                ini.put(strNum, "purpose", "Fire");
 
                 ini.store();
 

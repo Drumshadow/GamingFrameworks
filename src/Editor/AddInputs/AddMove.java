@@ -6,16 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Set;
 
 public class AddMove {
-    private JPanel pane;
     private JFrame frame;
     private JComboBox<String> mapToComboBox;
     private JComboBox<String> objectComboBox;
     private JComboBox<String> speedCombo;
     private JComboBox<String> directionComboBox;
-    private JButton saveButton;
 
     AddMove() {
         GridBagLayout grid = new GridBagLayout();
@@ -26,7 +25,7 @@ public class AddMove {
         c.weightx = 0.5;
         c.insets = new Insets(10, 0, 10, 0);
 
-        pane = new JPanel(grid);
+        JPanel pane = new JPanel(grid);
         frame = new JFrame();
 
         JLabel keyMapLabel = new JLabel("Choose Key to Map Movement To");
@@ -36,8 +35,8 @@ public class AddMove {
 
         mapToComboBox = new JComboBox<>();
 
-        for(int i = 48; i <= 90; i++) {
-            if(i != 58 && i != 60 && !(i < 65 && i > 61)) {
+        for(int i = 49; i <= 90; i++) {
+            if(i != 57 && i != 58 && i != 60 && i != 80 && !(i < 65 && i > 61)) {
                 mapToComboBox.addItem((char) i + "");
             }
         }
@@ -85,7 +84,7 @@ public class AddMove {
         c.gridy = 7;
         pane.add(directionComboBox, c);
 
-        saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Save");
         c.gridwidth = 1;
         c.gridy = 8;
         c.gridx = 1;
@@ -123,7 +122,9 @@ public class AddMove {
                 String strNum = Integer.toString(num);
 
                 ini.put(strNum, "key",
-                        Integer.toString((int) ((String) mapToComboBox.getSelectedItem()).charAt(0)));
+                        Integer.toString((int) ((String) Objects.requireNonNull(
+                                mapToComboBox.getSelectedItem())).charAt(0)));
+
                 ini.put(strNum, "action", "2");
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", directionComboBox.getSelectedItem());
