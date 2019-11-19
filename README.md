@@ -16,8 +16,8 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
   - WALLS - an object turns around when it collides with something horizontally
   - BOUNCE - an object turns around when it collides with something vertically
   - AUTO - an object moves automatically without user input
-  - EMIT - an object emits another object
   - DESTRUCT - an object is destroyed by another
+- Objects can also fire projectiles
 - Drawing text to screen
 - End game conditions
 - Concurrent audio
