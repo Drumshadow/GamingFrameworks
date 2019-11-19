@@ -3,17 +3,12 @@ package sources.objCode;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
+// this is a rectangular hit box
 public class BoxyBox extends ObjectBox {
 
     /*==================================================
                      Initialization
     ==================================================*/
-
-    // default constructor
-    BoxyBox() {
-        super();
-        this.boundingBox = new Rectangle2D.Double();
-    }
 
     // copy constructor
     BoxyBox(ObjectBox b) {

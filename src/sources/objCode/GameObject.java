@@ -6,7 +6,6 @@ import sources.Sprite;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
-// represents generic object
 public class GameObject {
 
     private String objName;
@@ -39,22 +38,6 @@ public class GameObject {
     /*==================================================
                      Initialization
     ==================================================*/
-
-    // default constructor
-    public GameObject() {
-        this.objName = "Empty Object";
-        this.sprite = null;
-
-        this.weight = 0.0;
-        this.terminalV = 0.0;
-        this.jumpPower = 0.0;
-
-        this.canCollide = false;
-
-        // default hit box is square
-        this.boxCode = 0;
-        this.hitBox = new BoxyBox();
-    }
 
     // copy constructor
     public GameObject(GameObject other) {

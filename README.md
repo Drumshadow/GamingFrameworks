@@ -16,8 +16,8 @@ This is the game engine repository for Dr. Fendt's Fall 2019 Gaming Frameworks c
   - WALLS - an object turns around when it collides with something horizontally
   - BOUNCE - an object turns around when it collides with something vertically
   - AUTO - an object moves automatically without user input
-  - EMIT - an object emits another object
   - DESTRUCT - an object is destroyed by another
+- Objects can also fire projectiles
 - Drawing text to screen
 - End game conditions
 - Concurrent audio
@@ -47,4 +47,4 @@ https://baylor.box.com/s/m339rn394b0irfkpdmh107a3ipsouqau
 4) To replenish your health, collect the flower at the right side of the level.
 5) When you touch the fire balls, they are destroyed.
 6) If you touch the red enemy, your score goes up!
-7) Pause the game by pressing **P** and unpause by pressing **O**.
+7) Pause and unpause the game by pressing **P**.

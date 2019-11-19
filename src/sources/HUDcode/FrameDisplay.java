@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 
+// this displays the current frames
 public class FrameDisplay extends HUDElement {
 
     private int frameCount;
