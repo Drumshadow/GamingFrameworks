@@ -2,6 +2,8 @@ package sources;
 
 import sources.objCode.GameObject;
 
+// not sure what the purpose of this class is...
+// perhaps it is the remnants of an old idea
 class MultithreadingDemo implements Runnable
 {
     private Input.inputPurpose x;

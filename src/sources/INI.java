@@ -24,7 +24,6 @@ class INI {
             i = 0;
         }
 
-        // for (String section : (Set<String>)iniO.keySet()) {
         for (; i < iniO.keySet().size(); i++) {
 
             String section = i + "";
@@ -46,7 +45,7 @@ class INI {
 
             room.addObject(newObject);
 
-            // update change keeper
+            // update change keeper (used for refreshing the game)
             if (index != -1) {
                 GameLoop.changeKeeper[4]++;
             }
@@ -62,7 +61,6 @@ class INI {
             i = 0;
         }
 
-        //for (String section : (Set<String>)iniC.keySet()) {
         for (; i < iniC.keySet().size(); i++) {
 
             String section = i + "";
@@ -133,7 +131,7 @@ class INI {
                     break;
             }
 
-            // update change keeper
+            // update change keeper (used for refreshing the game)
             if (index != -1) {
                 GameLoop.changeKeeper[1]++;
             }
@@ -149,7 +147,6 @@ class INI {
             i = 0;
         }
 
-        //for (String section : (Set<String>)ini.keySet()) {
         for (; i < ini.keySet().size(); i++) {
 
             String section = i + "";
@@ -217,7 +214,7 @@ class INI {
                     break;
             }
 
-            // update change keeper
+            // update change keeper (used for refreshing the game)
             if (index != -1) {
                 GameLoop.changeKeeper[0]++;
             }
@@ -233,7 +230,6 @@ class INI {
             i = 0;
         }
 
-        //for (String section : (Set<String>)ini.keySet()) {
         for (; i < ini.keySet().size(); i++) {
 
             String section = i + "";
@@ -281,7 +277,7 @@ class INI {
                     break;
             }
 
-            // update change keeper
+            // update change keeper (used for refreshing the game)
             if (index != -1) {
                 GameLoop.changeKeeper[2]++;
             }
@@ -297,7 +293,6 @@ class INI {
             i = 0;
         }
 
-        //for (String section : (Set<String>)ini.keySet()) {
         for (; i < ini.keySet().size(); i++) {
 
             String section = i + "";
@@ -366,7 +361,7 @@ class INI {
                             Integer.parseInt(ini.get(section, "y")), a));
             }
 
-            // update change keeper
+            // update change keeper (used for refreshing the game)
             if (index != -1) {
                 GameLoop.changeKeeper[3]++;
             }

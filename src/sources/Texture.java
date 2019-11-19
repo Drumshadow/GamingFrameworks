@@ -1,9 +1,6 @@
 package sources;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_BGRA;
@@ -31,11 +28,6 @@ class Texture {
         // create texture image
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite.getWidth(),
                 sprite.getHeight(), 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixels_raw);
-    }
-
-    // creates texture from filePath
-    Texture(String filePath) throws IOException {
-        this(ImageIO.read(new File(filePath)));
     }
 
     public void bind() {

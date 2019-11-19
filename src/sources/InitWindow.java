@@ -15,9 +15,6 @@ class InitWindow {
 
     long window;
 
-    private int windowWidth;
-    private int windowHeight;
-
     void init() {
         init(1000, 1000);
     }
@@ -54,10 +51,6 @@ class InitWindow {
             // Get the window size passed to glfwCreateWindow
             glfwGetWindowSize(window, pWidth, pHeight);
 
-            // save width and height
-            this.windowWidth = pWidth.get();
-            this.windowHeight = pHeight.get();
-
             // Get the resolution of the primary monitor
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
@@ -76,13 +69,5 @@ class InitWindow {
 
         // Make the window visible
         glfwShowWindow(window);
-    }
-
-    public int getWindowWidth() {
-        return this.windowWidth;
-    }
-
-    public int getWindowHeight() {
-        return this.windowHeight;
     }
 }

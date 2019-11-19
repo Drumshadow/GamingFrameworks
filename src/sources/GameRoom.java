@@ -6,12 +6,7 @@ import java.util.Vector;
 
 public class GameRoom {
 
-    private String roomName;
-
     private Sprite background;
-
-    private double roomWidth;
-    private double roomHeight;
 
     // collection of all objects in room
     private Vector<GameObject> allObjects;
@@ -25,37 +20,7 @@ public class GameRoom {
 
     // default constructor
     GameRoom() {
-
-        this.roomName = "Empty Room";
         this.background = null;
-
-        this.roomWidth = 0.0;
-        this.roomHeight = 0.0;
-
-        this.allObjects = new Vector<>();
-    }
-
-    // copy constructor
-    GameRoom(GameRoom other) {
-
-        this.roomName = other.roomName;
-        this.background = new Sprite(other.background);
-
-        this.roomWidth = other.roomWidth;
-        this.roomHeight = other.roomHeight;
-
-        this.allObjects = new Vector<>(other.allObjects);
-    }
-
-    // value constructor (finds background via path)
-    GameRoom(String name, String path) {
-
-        this.roomName = name;
-        this.background = new Sprite(path, 1);
-
-        this.roomWidth = this.background.getWidth();
-        this.roomHeight = this.background.getHeight();
-
         this.allObjects = new Vector<>();
     }
 
@@ -77,53 +42,19 @@ public class GameRoom {
                    Setters and Getters
     ==================================================*/
 
-    public void setRoomName(String r) {
-        this.roomName = r;
-    }
-
-    public String getRoomName() {
-        return this.roomName;
-    }
-
     void setBackground(Sprite bk) {
         this.background = new Sprite(bk);
-
-        this.roomWidth = this.background.getWidth();
-        this.roomHeight = this.background.getHeight();
     }
 
     Sprite getBackground() {
         return this.background;
     }
 
-    public void setRoomWidth(double w) {
-        this.roomWidth = w;
-    }
-
-    public double getRoomWidth() {
-        return this.roomWidth;
-    }
-
-    public void setRoomHeight(double h) {
-        this.roomHeight = h;
-    }
-
-    public double getRoomHeight() {
-        return this.roomHeight;
-    }
-
-    public void setAllObjects(Vector<GameObject> o) {
-        this.allObjects = o;
-    }
-
     public Vector<GameObject> getAllObjects() {
         return this.allObjects;
     }
 
-    int objectCount() {
-        return this.allObjects.size();
-    }
-
+    // gets first game object with given name
     public GameObject getElement(String oN) {
 
         for (GameObject object : this.allObjects) {
@@ -133,10 +64,6 @@ public class GameRoom {
             }
         }
         return null;
-    }
-
-    GameObject getElement(int i) {
-        return this.allObjects.get(i);
     }
 
     // returns all elements with the same name
