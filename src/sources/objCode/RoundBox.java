@@ -3,17 +3,12 @@ package sources.objCode;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RectangularShape;
 
+// this is an oval-shaped hit box
 public class RoundBox extends ObjectBox {
 
     /*==================================================
                      Initialization
     ==================================================*/
-
-    // default constructor
-    RoundBox() {
-        super();
-        this.boundingBox = new Ellipse2D.Double();
-    }
 
     // copy constructor
     RoundBox(ObjectBox b) {

@@ -107,7 +107,6 @@ abstract public class ObjectBox {
         return this.ySpeed;
     }
 
-    abstract public void setBoundBox(RectangularShape s);
     abstract public RectangularShape getBoundBox();
 
     /*==================================================
