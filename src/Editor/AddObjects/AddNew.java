@@ -39,7 +39,7 @@ public class AddNew {
         pane = new JPanel(grid);
         frame = new JFrame();
 
-        JLabel nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
+        JLabel nameLabel = new JLabel("Name for the object (Can be unique or duplicate " +
                 "to allow a single event to apply to multiple objects)");
         c.gridy = 0;
         c.gridx = 0;

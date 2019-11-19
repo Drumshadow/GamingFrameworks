@@ -5,8 +5,6 @@ import org.ini4j.Wini;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -14,12 +12,18 @@ import java.util.Set;
 public class AddAI {
     private JPanel pane;
     private JFrame frame;
+
     private JTextField nameTextField;
+
     private JCheckBox collisionCheck;
     private JCheckBox ledgeCheck;
     private JCheckBox bounceHorizontalCheck;
     private JCheckBox bounceVerticalCheck;
     private JCheckBox autoMoveCheck;
+
+    private JCheckBox destructsCheckBox;
+    private JList<String> destructorsList;
+
     private JComboBox<String> xSpeedCombo;
     private JComboBox<String> ySpeedCombo;
 
@@ -28,13 +32,9 @@ public class AddAI {
     private JSpinner weightSpinner;
     private JSpinner xPosition;
     private JSpinner yPosition;
+
     private JComboBox<String> boundingBox;
-    private JButton chooseSprite;
-    private JCheckBox animatedCheck;
-    private JCheckBox destructsCheckBox;
     private JComboBox<Integer> frames;
-    private JButton saveButton;
-    private JList<String> destructorsList;
 
     private File sprite;
 
@@ -46,47 +46,49 @@ public class AddAI {
         c.weighty = 0.5;
         c.weightx = 0.5;
 
+        int gY = 0;
+
         pane = new JPanel(grid);
         frame = new JFrame();
 
         JLabel nameLabel = new JLabel("Name for the AI (Can be unique or duplicate " +
                 "to allow a single event to apply to multiple AI)");
-        c.gridy = 0;
+        c.gridy = gY++;
         c.gridx = 0;
         c.insets = new Insets(10, 0, 10, 0);
         pane.add(nameLabel, c);
 
         nameTextField = new JTextField();
-        c.gridy = 1;
+        c.gridy = gY++;
         pane.add(nameTextField, c);
 
         collisionCheck = new JCheckBox("Does the object collide with other " +
                 "objects?");
-        c.gridy = 2;
+        c.gridy = gY++;
         pane.add(collisionCheck, c);
 
         ledgeCheck = new JCheckBox("Does the object fear ledges? (Rebounds " +
                 "away from them)");
-        c.gridy = 3;
+        c.gridy = gY++;
         pane.add(ledgeCheck, c);
 
         bounceHorizontalCheck = new JCheckBox("Does the object bounce off " +
                 "walls and other objects horizontally? (Reverse X direction)");
-        c.gridy = 4;
+        c.gridy = gY++;
         pane.add(bounceHorizontalCheck, c);
 
         bounceVerticalCheck = new JCheckBox("Does the object bounce of floors" +
                 " and other objects vertically? (Reverse Y direction)");
-        c.gridy = 5;
+        c.gridy = gY++;
         pane.add(bounceVerticalCheck, c);
 
         autoMoveCheck = new JCheckBox("Does the object move on its own?");
-        c.gridy = 6;
+        c.gridy = gY++;
         pane.add(autoMoveCheck, c);
 
         destructsCheckBox = new JCheckBox("Is the AI Destroyable by Another " +
                 "Object?");
-        c.gridy = 7;
+        c.gridy = gY++;
         pane.add(destructsCheckBox, c);
 
         try {
@@ -101,7 +103,7 @@ public class AddAI {
             }
 
             destructorsList = new JList<>(values);
-            c.gridy = 8;
+            c.gridy = gY++;
             pane.add(destructorsList, c);
             destructorsList.setEnabled(false);
 
@@ -114,7 +116,7 @@ public class AddAI {
 
         JLabel xSpeedLabel = new JLabel("Auto X Speed Movement");
         c.gridwidth = 1;
-        c.gridy = 9;
+        c.gridy = gY++;
         pane.add(xSpeedLabel, c);
 
         JLabel ySpeedLabel = new JLabel("Auto Y Speed Movement");
@@ -123,7 +125,7 @@ public class AddAI {
 
         xSpeedCombo = new JComboBox<>(new String[] {"None", "Slow Left", "Medium Left", "Fast Left",
                 "Slow Right", "Medium Right", "Fast Right"});
-        c.gridy = 10;
+        c.gridy = gY++;
         c.gridx = 0;
         pane.add(xSpeedCombo, c);
         xSpeedCombo.setEnabled(false);
@@ -136,7 +138,7 @@ public class AddAI {
 
         JLabel jumpLabel = new JLabel("Jump Height");
         c.gridx = 0;
-        c.gridy = 11;
+        c.gridy = gY++;
         pane.add(jumpLabel, c);
 
         JLabel terminalVelocityLabel = new JLabel("Terminal Velocity");
@@ -148,7 +150,7 @@ public class AddAI {
 
         jumpHeight = new JSpinner(jumpModel);
         c.gridx = 0;
-        c.gridy = 12;
+        c.gridy = gY++;
         pane.add(jumpHeight, c);
 
         terminalVelocity = new JSpinner(tvModel);
@@ -156,7 +158,7 @@ public class AddAI {
         pane.add(terminalVelocity, c);
 
         JLabel xPosLabel = new JLabel("Starting X Position");
-        c.gridy = 13;
+        c.gridy = gY++;
         c.gridx = 0;
         pane.add(xPosLabel, c);
 
@@ -168,7 +170,7 @@ public class AddAI {
         SpinnerNumberModel yPosModel = new SpinnerNumberModel(0, 0, 2000, 1);
 
         xPosition = new JSpinner(xPosModel);
-        c.gridy = 14;
+        c.gridy = gY++;
         c.gridx = 0;
         pane.add(xPosition, c);
 
@@ -178,35 +180,35 @@ public class AddAI {
 
         JLabel weightLabel = new JLabel("Weight of the Object");
         c.gridwidth = 2;
-        c.gridy = 15;
+        c.gridy = gY++;
         c.gridx = 0;
         pane.add(weightLabel, c);
 
         SpinnerNumberModel weightModel = new SpinnerNumberModel(0, 0, 10, 1);
 
         weightSpinner = new JSpinner(weightModel);
-        c.gridy = 16;
+        c.gridy = gY++;
         pane.add(weightSpinner, c);
 
         JLabel boundingBoxLabel = new JLabel("Bounding Box Type (For collision)");
-        c.gridy = 17;
+        c.gridy = gY++;
         pane.add(boundingBoxLabel, c);
 
         boundingBox = new JComboBox<>(new String[] {"Rectangle", "Oval"});
-        c.gridy = 18;
+        c.gridy = gY++;
         pane.add(boundingBox, c);
 
-        chooseSprite = new JButton("Sprite File (Requires PNG)");
-        c.gridy = 19;
+        JButton chooseSprite = new JButton("Sprite File (Requires PNG)");
+        c.gridy = gY++;
         pane.add(chooseSprite, c);
 
-        animatedCheck = new JCheckBox("Is the sprite animated?");
-        c.gridy = 20;
+        JCheckBox animatedCheck = new JCheckBox("Is the sprite animated?");
+        c.gridy = gY++;
         pane.add(animatedCheck, c);
 
         JLabel framesLabel = new JLabel("Number of Frames (Number of frames for an " +
                 "animated sprite)");
-        c.gridy = 21;
+        c.gridy = gY++;
         pane.add(framesLabel, c);
 
         frames = new JComboBox<>();
@@ -215,26 +217,23 @@ public class AddAI {
             frames.addItem(i);
         }
 
-        c.gridy = 22;
+        c.gridy = gY++;
         pane.add(frames, c);
         frames.setEnabled(false);
 
-        saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Save");
         c.gridwidth = 1;
-        c.gridy = 23;
+        c.gridy = gY;
         c.gridx = 1;
         pane.add(saveButton, c);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setContentPane(pane);
+        frame.setContentPane(new JScrollPane(pane));
         frame.pack();
 
-        autoMoveCheck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                xSpeedCombo.setEnabled(!xSpeedCombo.isEnabled());
-                ySpeedCombo.setEnabled(!ySpeedCombo.isEnabled());
-            }
+        autoMoveCheck.addActionListener(e -> {
+            xSpeedCombo.setEnabled(!xSpeedCombo.isEnabled());
+            ySpeedCombo.setEnabled(!ySpeedCombo.isEnabled());
         });
 
         chooseSprite.addActionListener(e -> {
