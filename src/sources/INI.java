@@ -404,10 +404,6 @@ class INI {
                                 Double.parseDouble(ini.get(section, "ySpeed")) / 1000.0);
                         break;
 
-                    case "emit":
-                        projectile.addBehaviors(GameObject.Behavior.EMIT);
-                        break;
-
                     case "destruct":
                         projectile.addBehaviors(GameObject.Behavior.DESTRUCT);
 

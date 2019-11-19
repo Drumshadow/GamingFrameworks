@@ -5,8 +5,6 @@ import org.ini4j.Wini;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -20,7 +18,6 @@ public class AddCollision {
     private JSpinner modSpinner;
     private JCheckBox audioCheck;
     private JButton audioSelector;
-    private JButton saveButton;
 
     private File audioFile;
 
@@ -115,7 +112,7 @@ public class AddCollision {
         pane.add(audioSelector, c);
         audioSelector.setEnabled(false);
 
-        saveButton = new JButton("Save");
+        JButton saveButton = new JButton("Save");
         c.gridy = 10;
         c.gridx = 1;
         pane.add(saveButton, c);
@@ -125,24 +122,21 @@ public class AddCollision {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
 
-        audioSelector.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.addChoosableFileFilter(new FileFilter() {
-                    @Override
-                    public boolean accept(File f) {
-                        return f.getPath().matches(".*\\.png$");
-                    }
+        audioSelector.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.addChoosableFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.getPath().matches(".*\\.ogg$");
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return null;
-                    }
-                });
-                fc.showOpenDialog(pane);
-                audioFile = fc.getSelectedFile();
-            }
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+            });
+            fc.showOpenDialog(pane);
+            audioFile = fc.getSelectedFile();
         });
 
         saveButton.addActionListener(e -> {

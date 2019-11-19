@@ -82,7 +82,6 @@ public class GameLoop {
                     pivotalMoment.setKeyboardControls(inputs, events, -1);
                     pivotalMoment.renderHUD(hud, -1);
                     pivotalMoment.renderEvents(events, -1);
-                    System.out.println("reloaded");
                 } catch (IOException e) {
                     System.out.println("Error reloading after pause");
                 }
@@ -99,7 +98,6 @@ public class GameLoop {
                     pivotalMoment.setKeyboardControls(inputs, events, changeKeeper[0]);
                     pivotalMoment.renderHUD(hud, changeKeeper[2]);
                     pivotalMoment.renderEvents(events, changeKeeper[3]);
-                    System.out.println("refreshed");
                 } catch (IOException e) {
                     System.out.println("Error reloading after pause");
                 }
@@ -113,12 +111,10 @@ public class GameLoop {
 
                     isPaused = true;
                     paused(key, action);
-                    System.out.println("PAUSED");
                 }
 
                 // unpause
                 else {
-                    System.out.println("UNPAUSED");
                     isPaused = false;
                 }
             }

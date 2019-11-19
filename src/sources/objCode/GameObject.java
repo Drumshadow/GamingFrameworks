@@ -27,7 +27,7 @@ public class GameObject {
     private ObjectBox hitBox;
 
     // AI behaviors
-    public enum Behavior{COPY, LEDGES, WALLS, BOUNCE, AUTO, EMIT, DESTRUCT}
+    public enum Behavior{COPY, LEDGES, WALLS, BOUNCE, AUTO, DESTRUCT}
     private Set<Behavior> ai = new HashSet<>();
 
     private double autoX = 0.0;

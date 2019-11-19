@@ -295,9 +295,6 @@ public class AddAI {
                 String AI = "";
 
                 if(ledgeCheck.isSelected()) {
-                    if(AI.length() != 0) {
-                        AI += ",";
-                    }
                     AI += "ledges";
                 }
                 if(bounceHorizontalCheck.isSelected()) {
