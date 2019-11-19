@@ -2,14 +2,9 @@ package Editor.AddInputs;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AddInputsHome {
-    private JPanel pane;
     private JFrame frame;
-    private JButton addMoveButton;
-    private JButton addPlaySoundButton;
 
     public AddInputsHome() {
         GridBagLayout grid = new GridBagLayout();
@@ -19,28 +14,32 @@ public class AddInputsHome {
         c.weightx = 0.5;
         c.insets = new Insets(10, 0, 10, 0);
 
-        pane = new JPanel(grid);
+        JPanel pane = new JPanel(grid);
         frame = new JFrame();
 
-        addMoveButton = new JButton("Add Button for Movement");
+        JButton addMoveButton = new JButton("Add Button for Movement");
         c.gridy = 0;
         c.gridx = 0;
         pane.add(addMoveButton, c);
 
-        addPlaySoundButton = new JButton("Add Button for Sound");
+        JButton addPlaySoundButton = new JButton("Add Button for Sound");
         c.gridy = 1;
         pane.add(addPlaySoundButton, c);
 
-        addMoveButton.addActionListener(e -> new AddMove().setVisible());
+        JButton addProjectileButton = new JButton("Add Button for Firing Projectile");
+        c.gridy = 2;
+        pane.add(addProjectileButton, c);
 
+        addMoveButton.addActionListener(e -> new AddMove().setVisible());
         addPlaySoundButton.addActionListener(e -> new AddSound().setVisible());
+        addProjectileButton.addActionListener(e -> new AddProjectileButton().setVisible());
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(pane);
     }
 
     public void setVisible() {
-        frame.setSize(500, 150);
+        frame.setSize(250, 250);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
