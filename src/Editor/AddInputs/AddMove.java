@@ -13,7 +13,7 @@ public class AddMove {
     private JFrame frame;
     private JComboBox<String> mapToComboBox;
     private JComboBox<String> objectComboBox;
-    private JSpinner speedSpinner;
+    private JComboBox<String> speedCombo;
     private JComboBox<String> directionComboBox;
     private JButton saveButton;
 
@@ -70,12 +70,11 @@ public class AddMove {
         c.gridy = 4;
         pane.add(speedLabel, c);
 
-        SpinnerNumberModel speedModel = new SpinnerNumberModel(0, -20.0, 20.0,
-                0.5);
-
-        speedSpinner = new JSpinner(speedModel);
+        speedCombo = new JComboBox<>(new String[] {"Positive Fast", "Positive" +
+                " Medium", "Positive Slow", "Negative Fast", "Negative " +
+                "Medium", "Negative Slow"});
         c.gridy = 5;
-        pane.add(speedSpinner, c);
+        pane.add(speedCombo, c);
 
         JLabel directionLabel = new JLabel("Choose the direction the object will " +
                 "move in");
@@ -103,6 +102,24 @@ public class AddMove {
                     num++;
                 }
 
+                int speed;
+
+                if(speedCombo.getSelectedItem().equals("Positive Max")) {
+                    speed = 8;
+                } else if(speedCombo.getSelectedItem().equals("Positive " +
+                        "Medium")) {
+                    speed = 5;
+                } else if(speedCombo.getSelectedItem().equals("Positive Slow")) {
+                    speed = 2;
+                } else if(speedCombo.getSelectedItem().equals("Negative Slow")) {
+                    speed = -2;
+                } else if(speedCombo.getSelectedItem().equals("Negative " +
+                        "Medium")) {
+                    speed = -5;
+                } else {
+                    speed = -8;
+                }
+
                 String strNum = Integer.toString(num);
 
                 ini.put(strNum, "key",
@@ -110,7 +127,7 @@ public class AddMove {
                 ini.put(strNum, "action", "2");
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", directionComboBox.getSelectedItem());
-                ini.put(strNum, "speed", speedSpinner.getValue());
+                ini.put(strNum, "speed", speed);
 
                 num++;
                 strNum = Integer.toString(num);
@@ -120,7 +137,7 @@ public class AddMove {
                 ini.put(strNum, "action", "1");
                 ini.put(strNum, "object", objectComboBox.getSelectedItem());
                 ini.put(strNum, "purpose", directionComboBox.getSelectedItem());
-                ini.put(strNum, "speed", speedSpinner.getValue());
+                ini.put(strNum, "speed", speed);
 
                 num++;
                 strNum = Integer.toString(num);
