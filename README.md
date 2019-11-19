@@ -42,4 +42,4 @@ https://baylor.box.com/s/0v7nzy9ekbv443373czsu63zb6oqne5a
 4) To replenish your health, collect the flower at the right side of the level.
 5) When you touch the fire balls, they are destroyed.
 6) If you touch the red enemy, your score goes up!
-7) Pause the game by pressing **P** and unpause by pressing **O**.
+7) Pause and unpause the game by pressing **P**.
