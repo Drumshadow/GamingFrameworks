@@ -28,10 +28,15 @@ Here is the link to the tutorial for how to use our game engine!
 https://docs.google.com/document/d/12KBGy3d9sBkPRVUFHalbUuELw0DZ6vi1oxGVSpgAZ6o/edit?usp=sharing
 
 Here is the link to our dropbox!
-https://baylor.box.com/s/0v7nzy9ekbv443373czsu63zb6oqne5a
+https://baylor.box.com/s/m339rn394b0irfkpdmh107a3ipsouqau
     
 # User's Guide (How to Play the Demo Game)
-**Download instructions will soon be posted!**
+1) Follow the DropBox link and download the zipped folder
+2) Unzip the folder into a folder of your preference
+3) All sprites, music, and backgrounds for the example game are included, as well as a jar file to run it and its source code
+4) Double click the ExampleGame.jar file to run the example game
+5) Double click the GameEditor.jar file to begin to create your own game
+6) Double click the GameRunner.jar to run your game!
 
 **Here are the steps to play!**
 1) Move your player around with **WASD**.
